@@ -24,15 +24,18 @@ export function Header() {
       <div className="bg-[#e9e9cc] w-full border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 h-24 flex items-center justify-between gap-4">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 h-16 flex items-center">
+          <Link href="/" className="flex items-center gap-3 flex-shrink-0">
             <Image
-              src="/logo.png"
-              alt="bookxaydung.com logo"
-              width={260}
-              height={70}
-              className="h-full w-auto object-contain"
+              src="/favicon.png"
+              alt="EbookSamnorng Logo"
+              width={56}
+              height={56}
+              className="h-14 w-14 object-contain"
               priority
             />
+            <span className="font-bold text-2xl text-slate-800 tracking-tighter hidden sm:block">
+              Ebook<span className="text-[#1a4d2e]">Samnorng</span>
+            </span>
           </Link>
 
           {/* Search Bar */}

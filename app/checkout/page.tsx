@@ -21,6 +21,8 @@ export default function CheckoutPage() {
     paymentMethod: 'bank',
   });
 
+  const [finalTotal, setFinalTotal] = useState(0);
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -55,6 +57,7 @@ export default function CheckoutPage() {
   const handlePlaceOrder = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.firstName && formData.lastName && formData.email && formData.phone) {
+      setFinalTotal(total);
       setOrderPlaced(true);
       clearCart();
     }
@@ -109,7 +112,7 @@ export default function CheckoutPage() {
                         </div>
                         <div className="pt-4 border-t border-gray-200 mt-4 flex justify-between items-center">
                           <span className="text-[#1a4d2e] font-black uppercase tracking-tighter text-[12px]">Total Payment</span>
-                          <span className="text-2xl font-black text-[#1a4d2e]">${total.toFixed(2)}</span>
+                          <span className="text-2xl font-black text-[#1a4d2e]">${finalTotal.toFixed(2)}</span>
                         </div>
                       </div>
                     </div>
@@ -183,17 +186,16 @@ export default function CheckoutPage() {
                 </Link>
               </div>
             </div>
-          </div>
 
-          {/* Trust Footer */}
-          <div className="mt-12 text-center text-[10px] text-gray-400 uppercase tracking-widest font-bold">
-            Secure Digital Delivery • Professional Engineering Library • 24/7 Support
+            {/* Trust Footer */}
+            <div className="mt-12 text-center text-[10px] text-gray-400 uppercase tracking-widest font-bold">
+              Secure Digital Delivery • Professional Engineering Library • 24/7 Support
+            </div>
           </div>
+        </main>
+
+        <Footer />
       </div>
-        </main >
-
-      <Footer />
-      </div >
     );
   }
 
