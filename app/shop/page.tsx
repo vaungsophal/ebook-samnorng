@@ -9,16 +9,57 @@ import { ChevronDown, Search } from 'lucide-react';
 import { products, categories as allCategories } from '@/lib/products';
 import Footer from '@/components/footer';
 import Link from 'next/link';
+import { supabase } from '@/utils/supabase/client';
+
 
 function ShopContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const categoryParam = searchParams.get('category');
 
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [sortBy, setSortBy] = useState('latest');
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
+  // Fetch products from Supabase
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from('books')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching products:', error);
+        } else {
+          // Map Supabase data to Product interface
+          const mappedProducts = data?.map(book => ({
+            id: book.id,
+            title: book.title,
+            description: book.description || '',
+            category: book.category || 'Uncategorized',
+            price: Number(book.price) || 0,
+            image: book.image_url || '/placeholder.svg',
+            rating: Number(book.rating) || 5,
+            reviews: Number(book.reviews) || 0,
+            details: book.details || '',
+          })) || [];
+          setProducts(mappedProducts);
+        }
+      } catch (err) {
+        console.error('Unexpected error:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProducts();
+  }, []);
 
   useEffect(() => {
     if (categoryParam && allCategories.includes(categoryParam)) {
@@ -71,12 +112,12 @@ function ShopContent() {
         break;
       case 'latest':
       default:
-        // Keep original order
+        // Already sorted by created_at desc from DB
         break;
     }
 
     return sorted;
-  }, [selectedCategory, sortBy, searchQuery]);
+  }, [products, selectedCategory, sortBy, searchQuery]);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -84,12 +125,18 @@ function ShopContent() {
 
       {/* Breadcrumb Section */}
       <div className="bg-[#f5f5f5] py-3 border-b border-gray-200 mb-6">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
           <nav className="flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase">
             <Link href="/" className="text-gray-500 hover:text-primary transition-colors">HOME</Link>
             <span className="text-gray-300">/</span>
             <span className="text-foreground">SHOP</span>
           </nav>
+          <Link
+            href="/admin-b7e3f1c9-a0d2-4b5e-8f6a-9c3d2e1b0a4f/add-book"
+            className="text-[11px] font-bold uppercase tracking-wider text-indigo-600 hover:text-indigo-800"
+          >
+            + Add Book
+          </Link>
         </div>
       </div>
 
@@ -196,7 +243,12 @@ function ShopContent() {
             </div>
 
             {/* Products Grid */}
-            {filteredAndSortedProducts.length > 0 ? (
+            {loading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                <p className="mt-4 text-muted-foreground">Loading books...</p>
+              </div>
+            ) : filteredAndSortedProducts.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
                 {filteredAndSortedProducts.map((product) => (
                   <ProductCard key={product.id} {...product} />
@@ -204,7 +256,7 @@ function ShopContent() {
               </div>
             ) : (
               <div className="text-center py-12">
-                <p className="text-muted-foreground text-sm sm:text-base">No products found matching your criteria.</p>
+                <p className="text-muted-foreground text-sm sm:text-base">No products found. Be the first to add one!</p>
               </div>
             )}
           </div>

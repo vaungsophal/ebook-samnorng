@@ -6,9 +6,14 @@ import { ProductCard } from '@/components/product-card';
 import { Star, ShoppingCart, ChevronLeft, X, Download as DownloadIcon, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { products } from '@/lib/products';
+
+import { supabase } from '@/utils/supabase/client';
+
+// ... (imports remain the same, ensure to keep others)
+// removing 'products' import from lib/products if not needed, or keep for type
+import { products as staticProducts } from '@/lib/products';
 import { useCart } from '@/context/cart-context';
-import { use, useState } from 'react';
+import { use, useState, useEffect } from 'react';
 
 interface PageProps {
   params: Promise<{
@@ -18,23 +23,86 @@ interface PageProps {
 
 export default function ProductDetailPage({ params }: PageProps) {
   const { id } = use(params);
-  const product = products.find(p => p.id === id);
   const { addToCart } = useCart();
+  const [product, setProduct] = useState<any>(null);
+  const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
   const [showLightbox, setShowLightbox] = useState(false);
 
-  if (!product) {
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+        // Fetch current product
+        const { data: productData, error: productError } = await supabase
+          .from('books')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (productError && productError.code !== 'PGRST116') { // PGRST116 is "not found"
+          console.error('Error fetching product:', productError);
+        }
+
+        let currentProduct = productData;
+
+        // Fallback to static products if not found in DB (optional, for backward compatibility)
+        if (!currentProduct) {
+          currentProduct = staticProducts.find((p: any) => p.id === id);
+        } else {
+          // Map DB fields to app fields
+          currentProduct = {
+            ...currentProduct,
+            image: currentProduct.image_url || '/placeholder.svg'
+          };
+        }
+
+        setProduct(currentProduct);
+
+        if (currentProduct) {
+          // Fetch related products (same category, exclude current)
+          const { data: relatedData } = await supabase
+            .from('books')
+            .select('*')
+            .eq('category', currentProduct.category)
+            .neq('id', id)
+            .limit(4);
+
+          let related: any[] = relatedData?.map(p => ({ ...p, image: p.image_url || '/placeholder.svg' })) || [];
+
+          // If strictly using DB, rely on that. If mixing, maybe fetch from static too? 
+          // Let's stick to DB + static fallback for now for related? 
+          // Actually, if we are "updating by adding new book", we want to see new books.
+          // If the current product is from DB, show DB related. 
+          // If current product is static, show static related?
+          // Simpler: Just try to fill related with whatever we have.
+
+          if (related.length === 0) {
+            related = staticProducts
+              .filter((p: any) => p.category === currentProduct.category && p.id !== currentProduct.id)
+              .slice(0, 4);
+          }
+          setRelatedProducts(related);
+        }
+
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (id) fetchData();
+  }, [id]);
+
+  if (loading) {
     return (
-      <div className="min-h-screen bg-background flex flex-col">
+      <div className="min-h-screen bg-white flex flex-col">
         <Header />
-        <div className="flex-1 max-w-7xl mx-auto px-4 py-12 w-full">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-foreground mb-4">Product not found</h1>
-            <Link href="/shop" className="text-primary hover:underline">
-              Back to shop
-            </Link>
-          </div>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
         <Footer />
       </div>
@@ -42,14 +110,11 @@ export default function ProductDetailPage({ params }: PageProps) {
   }
 
   const handleAddToCart = () => {
+    if (!product) return;
     addToCart(product, quantity);
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 2000);
   };
-
-  const relatedProducts = products
-    .filter(p => p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -119,20 +184,10 @@ export default function ProductDetailPage({ params }: PageProps) {
               </span>
             </div>
 
-            {/* Meta Data */}
-            <div className="space-y-3.5 mb-8 sm:mb-10 text-[14px] border-b border-dashed border-gray-200 pb-8">
-              <div className="flex items-center gap-2">
-                <span className="text-[#888] w-24 sm:w-32 shrink-0">Author:</span>
-                <span className="font-bold text-[#333]">Ebook Samnorng</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[#888] w-24 sm:w-32 shrink-0">Pages:</span>
-                <span className="font-bold text-[#333]">25 pages</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[#888] w-24 sm:w-32 shrink-0">Format:</span>
-                <span className="font-bold text-[#333] uppercase">pdf</span>
-              </div>
+
+            {/* Short Description (Replaces Meta Data) */}
+            <div className="mb-8 sm:mb-10 text-base text-gray-600 leading-relaxed border-b border-dashed border-gray-200 pb-8">
+              {product.description}
             </div>
 
             {/* Download Link Section - SIMPLE & PROFESSIONAL */}
@@ -142,14 +197,27 @@ export default function ProductDetailPage({ params }: PageProps) {
                 <span className="text-[12px] font-bold text-[#444] uppercase tracking-wider">Verified Source</span>
               </div>
 
-              <button className="w-full flex items-center justify-between bg-gray-900 text-white px-6 py-4 rounded-sm shadow-lg hover:bg-black transition-all group overflow-hidden relative">
+              <a
+                href={product.file_url || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => {
+                  if (!product.file_url) {
+                    e.preventDefault();
+                    alert("No file available for download.");
+                  }
+                }}
+                className={`w-full flex items-center justify-between px-6 py-4 rounded-sm shadow-lg transition-all group overflow-hidden relative ${product.file_url ? 'bg-gray-900 text-white hover:bg-black cursor-pointer shadow-xl transform active:scale-[0.99]' : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-70'}`}
+              >
                 <div className="flex items-center gap-4 relative z-10">
                   <div className="p-2 bg-white/10 rounded">
                     <DownloadIcon className="w-5 h-5 group-hover:translate-y-0.5 transition-transform" />
                   </div>
                   <div className="text-left">
                     <div className="font-bold text-sm tracking-widest uppercase">Download Now</div>
-                    <div className="text-[10px] opacity-60">Complete purchase to unlock files</div>
+                    <div className="text-[10px] opacity-80">
+                      {product.file_url ? "Click to download file directly" : "File download unavailable"}
+                    </div>
                   </div>
                 </div>
                 <div className="text-[10px] font-bold bg-white/10 px-2 py-1 rounded relative z-10">
@@ -157,13 +225,21 @@ export default function ProductDetailPage({ params }: PageProps) {
                 </div>
 
                 {/* Subtle hover effect */}
-                <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </button>
+                {product.file_url && (
+                  <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                )}
+              </a>
             </div>
 
-            <p className="text-[#686868] text-[14px] mb-8 leading-relaxed italic pr-4 bg-gray-50/50 p-4 rounded-r-lg border-l-4 border-red-500/20">
-              {product.description || "Add this product to your cart to complete checkout and receive the decompression password immediately."}
-            </p>
+            {/* Full Details */}
+            {product.details && (
+              <div className="mb-8">
+                <h3 className="font-bold text-lg mb-3">Details</h3>
+                <div className="text-[#444] text-[14px] leading-relaxed whitespace-pre-wrap">
+                  {product.details}
+                </div>
+              </div>
+            )}
 
             {/* Quantity & Add to Cart - ALWAYS IN-LINE */}
             <div className="flex flex-row items-center gap-2 sm:gap-4 pt-4 border-t border-gray-100">
