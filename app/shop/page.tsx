@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { Header } from '@/components/header';
 import { Sidebar } from '@/components/sidebar';
 import { ProductCard } from '@/components/product-card';
@@ -8,11 +9,33 @@ import { ChevronDown, Search } from 'lucide-react';
 import { products, categories as allCategories } from '@/lib/products';
 import Footer from '@/components/footer';
 
-export default function ShopPage() {
+function ShopContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const categoryParam = searchParams.get('category');
+
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [sortBy, setSortBy] = useState('latest');
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
+  useEffect(() => {
+    if (categoryParam && allCategories.includes(categoryParam)) {
+      setSelectedCategory(categoryParam);
+    } else {
+      setSelectedCategory('All Categories');
+    }
+  }, [categoryParam]);
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    setIsMobileFilterOpen(false);
+    if (category === 'All Categories') {
+      router.push('/shop');
+    } else {
+      router.push(`/shop?category=${encodeURIComponent(category)}`);
+    }
+  };
 
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = products;
@@ -76,11 +99,8 @@ export default function ShopPage() {
                 {allCategories.map((category) => (
                   <button
                     key={category}
-                    onClick={() => {
-                      setSelectedCategory(category);
-                      setIsMobileFilterOpen(false);
-                    }}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-xs sm:text-sm transition-colors ${selectedCategory === category
+                    onClick={() => handleCategoryChange(category)}
+                    className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors ${selectedCategory === category
                       ? 'bg-primary text-primary-foreground font-semibold'
                       : 'hover:bg-secondary text-foreground'
                       }`}
@@ -114,10 +134,7 @@ export default function ShopPage() {
                     {allCategories.map((category) => (
                       <button
                         key={category}
-                        onClick={() => {
-                          setSelectedCategory(category);
-                          setIsMobileFilterOpen(false);
-                        }}
+                        onClick={() => handleCategoryChange(category)}
                         className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors ${selectedCategory === category
                           ? 'bg-primary text-primary-foreground font-semibold'
                           : 'hover:bg-secondary text-foreground'
@@ -190,5 +207,21 @@ export default function ShopPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function ShopPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background flex flex-col">
+        <Header />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </div>
+        <Footer />
+      </div>
+    }>
+      <ShopContent />
+    </Suspense>
   );
 }

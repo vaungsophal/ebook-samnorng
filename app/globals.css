@@ -127,6 +127,6 @@
 
 @layer components {
   .footer-bg {
-    @apply bg-[#000b2e];
+    @apply bg-[#064884];
   }
 }

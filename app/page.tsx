@@ -4,7 +4,7 @@ import { Header } from '@/components/header';
 import { ProductCard } from '@/components/product-card';
 import Footer from '@/components/footer';
 import Link from 'next/link';
-import { products } from '@/lib/products';
+import { products, categories } from '@/lib/products';
 import { ArrowRight, BookOpen, Shield, Zap } from 'lucide-react';
 import { BannerSlider } from '@/components/banner-slider';
 
@@ -22,19 +22,7 @@ export default function HomePage() {
             <div className="hidden lg:block lg:col-span-3">
               <div className="bg-white border border-gray-200 shadow-sm overflow-hidden">
                 <div className="flex flex-col">
-                  {[
-                    'Architectural Documentation',
-                    'Vietnamese Texture Books',
-                    'English Texture Books',
-                    'M&E Documents',
-                    'Construction Documents',
-                    'Construction Economics Document',
-                    'Construction Software',
-                    'Construction spreadsheet',
-                    'Building Standards',
-                    'Building Materials',
-                    'Traffic Works',
-                  ].map((name) => (
+                  {categories.filter(c => c !== 'All Categories').map((name) => (
                     <Link
                       key={name}
                       href={`/shop?category=${encodeURIComponent(name)}`}
@@ -58,59 +46,24 @@ export default function HomePage() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 space-y-16 pb-20">
-          {/* Features Section */}
-          <section className="py-12 sm:py-16 lg:py-20">
-            <div className="max-w-7xl mx-auto px-2 sm:px-4">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-12 text-center">
-                Why Choose EbookSamnorng?
-              </h2>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-                <div className="bg-card rounded-lg border border-border p-6 sm:p-8 text-center hover:shadow-lg transition-shadow">
-                  <div className="flex justify-center mb-4">
-                    <Zap className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
-                  </div>
-                  <h3 className="font-bold text-lg sm:text-xl text-foreground mb-3">Instant Access</h3>
-                  <p className="text-sm sm:text-base text-foreground leading-relaxed">
-                    Download e-books immediately after purchase. Access all your books anytime, anywhere on any device.
-                  </p>
+          {/* Featured Products with Slanted Section Header */}
+          <section className="py-8 sm:py-16">
+            <div className="max-w-7xl mx-auto">
+              <div className="w-full relative h-12 flex items-stretch mb-8 overflow-hidden rounded-sm">
+                <div className="bg-[#009661] text-white px-6 flex items-center font-bold text-sm sm:text-base italic tracking-tight" style={{ clipPath: 'polygon(0 0, 95% 0, 100% 100%, 0% 100%)' }}>
+                  FEATURED REPOSITORY
                 </div>
-
-                <div className="bg-card rounded-lg border border-border p-6 sm:p-8 text-center hover:shadow-lg transition-shadow">
-                  <div className="flex justify-center mb-4">
-                    <Shield className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
-                  </div>
-                  <h3 className="font-bold text-lg sm:text-xl text-foreground mb-3">Premium Quality</h3>
-                  <p className="text-sm sm:text-base text-foreground leading-relaxed">
-                    Every book is carefully curated and verified by industry experts to ensure quality and relevance.
-                  </p>
-                </div>
-
-                <div className="bg-card rounded-lg border border-border p-6 sm:p-8 text-center hover:shadow-lg transition-shadow">
-                  <div className="flex justify-center mb-4">
-                    <BookOpen className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
-                  </div>
-                  <h3 className="font-bold text-lg sm:text-xl text-foreground mb-3">Affordable Pricing</h3>
-                  <p className="text-sm sm:text-base text-foreground leading-relaxed">
-                    Professional resources at competitive prices. Great value for your investment in professional development.
-                  </p>
+                <div className="flex-1 bg-[#ffed4a] flex items-center justify-end px-6 font-black text-sm sm:text-base text-[#1a4d2e] italic tracking-tight" style={{ marginLeft: '-15px', clipPath: 'polygon(0 0, 100% 0, 100% 100%, 5% 100%)' }}>
+                  ONLINE LIBRARY
                 </div>
               </div>
-            </div>
-          </section>
-
-          {/* Featured Products */}
-          <section className="py-12 sm:py-16 lg:py-20 bg-secondary/30">
-            <div className="max-w-7xl mx-auto px-2 sm:px-4">
-              <div className="flex items-center justify-between mb-8 sm:mb-12">
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
-                  Featured E-Books
-                </h2>
+              <div className="flex justify-between items-center mb-6">
+                <p className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Latest Engineering Resources</p>
                 <Link
                   href="/shop"
-                  className="text-primary hover:text-primary/80 transition-colors font-semibold text-sm flex items-center gap-2"
+                  className="text-[#1a4d2e] hover:underline transition-colors font-bold text-xs sm:text-sm flex items-center gap-2"
                 >
-                  View All
+                  View All Gallery
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
