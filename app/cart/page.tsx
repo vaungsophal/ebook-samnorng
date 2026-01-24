@@ -56,71 +56,70 @@ export default function CartPage() {
                 {items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex flex-col sm:flex-row gap-4 p-4 sm:p-6 border-b border-border last:border-b-0 hover:bg-secondary/50 transition-colors"
+                    className="flex p-4 sm:p-6 gap-4 sm:gap-6 border-b border-gray-100 last:border-b-0 group transition-all"
                   >
-                    {/* Product Image */}
+                    {/* Product Image - Tall Book Cover Style */}
                     <Link
                       href={`/product/${item.id}`}
-                      className="flex-shrink-0 w-full sm:w-24 h-32 sm:h-24 rounded-lg overflow-hidden bg-secondary"
+                      className="w-24 sm:w-32 shrink-0 aspect-[3/4] rounded-lg overflow-hidden bg-gray-50 border border-gray-100 shadow-sm relative group-hover:shadow-md transition-shadow"
                     >
                       <img
                         src={item.image || "/placeholder.svg"}
                         alt={item.title}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform"
+                        className="w-full h-full object-contain sm:object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     </Link>
 
-                    {/* Product Info */}
-                    <div className="flex-1">
-                      <Link href={`/product/${item.id}`} className="hover:text-primary transition-colors">
-                        <h3 className="font-semibold text-sm sm:text-base text-foreground mb-1">
-                          {item.title}
-                        </h3>
-                      </Link>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-3">
-                        {item.category}
-                      </p>
-                      <p className="text-lg sm:text-xl font-bold text-foreground">
-                        ${item.price.toFixed(2)}
-                      </p>
-                    </div>
-
-                    {/* Quantity & Actions */}
-                    <div className="flex flex-col items-end justify-between">
-                      <div className="flex items-center gap-2 border border-border rounded-lg px-3 py-1">
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="text-foreground hover:text-primary transition-colors p-1"
-                        >
-                          <Minus className="w-4 h-4" />
-                        </button>
-                        <span className="text-foreground font-medium min-w-6 text-center">
-                          {item.quantity}
-                        </span>
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="text-foreground hover:text-primary transition-colors p-1"
-                        >
-                          <Plus className="w-4 h-4" />
-                        </button>
-                      </div>
-
-                      <div className="flex flex-col items-end gap-2">
-                        <p className="text-sm text-muted-foreground">
-                          Subtotal:
+                    <div className="flex-1 flex flex-col justify-between min-w-0">
+                      <div className="space-y-1">
+                        <Link href={`/product/${item.id}`} className="hover:text-red-600 transition-colors block">
+                          <h3 className="font-bold text-sm sm:text-lg text-[#222] leading-tight truncate sm:whitespace-normal">
+                            {item.title}
+                          </h3>
+                        </Link>
+                        <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest font-bold">
+                          {item.category}
                         </p>
-                        <p className="text-lg font-bold text-foreground">
-                          ${(item.price * item.quantity).toFixed(2)}
+                        <p className="text-base sm:text-xl font-black text-[#111] mt-1 sm:mt-2">
+                          ${item.price.toFixed(2)}
                         </p>
                       </div>
 
-                      <button
-                        onClick={() => removeFromCart(item.id)}
-                        className="text-destructive hover:bg-destructive/10 p-2 rounded-lg transition-colors mt-2"
-                        title="Remove from cart"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <div className="flex items-center justify-between mt-4">
+                        {/* Quantity Controls - Compact */}
+                        <div className="flex items-center border border-[#eee] rounded-md bg-white shadow-sm h-8 sm:h-9 overflow-hidden">
+                          <button
+                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            className="w-8 sm:w-10 h-full flex items-center justify-center text-gray-400 hover:text-red-600 transition-all border-r border-[#eee]"
+                          >
+                            <Minus className="w-3 h-3 sm:w-4 sm:h-4" />
+                          </button>
+                          <span className="w-8 sm:w-10 text-center font-bold text-xs sm:text-sm text-[#333]">
+                            {item.quantity}
+                          </span>
+                          <button
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            className="w-8 sm:w-10 h-full flex items-center justify-center text-gray-400 hover:text-red-600 transition-all border-l border-[#eee]"
+                          >
+                            <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
+                          </button>
+                        </div>
+
+                        {/* Subtotal & Delete */}
+                        <div className="flex items-center gap-3 sm:gap-6">
+                          <div className="hidden sm:block text-right">
+                            <p className="text-[9px] font-black text-gray-300 uppercase tracking-[0.2em]">Subtotal</p>
+                            <p className="text-sm font-black text-[#111]">${(item.price * item.quantity).toFixed(2)}</p>
+                          </div>
+                          <button
+                            onClick={() => removeFromCart(item.id)}
+                            className="text-gray-300 hover:text-red-600 p-1.5 transition-colors"
+                            title="Remove from cart"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
