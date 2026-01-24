@@ -8,6 +8,7 @@ import { ProductCard } from '@/components/product-card';
 import { ChevronDown, Search } from 'lucide-react';
 import { products, categories as allCategories } from '@/lib/products';
 import Footer from '@/components/footer';
+import Link from 'next/link';
 
 function ShopContent() {
   const searchParams = useSearchParams();
@@ -81,13 +82,18 @@ function ShopContent() {
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
 
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 py-6 sm:py-8 w-full">
-        {/* Breadcrumb */}
-        <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6 overflow-x-auto">
-          <a href="/" className="hover:text-foreground whitespace-nowrap transition-colors">HOME</a>
-          <span className="text-muted-foreground">/</span>
-          <span className="text-foreground font-semibold whitespace-nowrap">SHOP</span>
+      {/* Breadcrumb Section */}
+      <div className="bg-[#f5f5f5] py-3 border-b border-gray-200 mb-6">
+        <div className="max-w-7xl mx-auto px-4">
+          <nav className="flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase">
+            <Link href="/" className="text-gray-500 hover:text-primary transition-colors">HOME</Link>
+            <span className="text-gray-300">/</span>
+            <span className="text-foreground">SHOP</span>
+          </nav>
         </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 w-full">
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6">

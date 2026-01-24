@@ -19,14 +19,14 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
             {/* Left Sidebar: Product Categories - Always Visible on Home */}
-            <div className="hidden lg:block lg:col-span-3">
-              <div className="bg-white border border-gray-200 shadow-sm overflow-hidden">
-                <div className="flex flex-col">
+            <div className="hidden lg:block lg:col-span-3 h-full">
+              <div className="bg-white border border-gray-200 shadow-sm overflow-hidden h-full flex flex-col">
+                <div className="flex flex-col h-full">
                   {categories.filter(c => c !== 'All Categories').map((name) => (
                     <Link
                       key={name}
                       href={`/shop?category=${encodeURIComponent(name)}`}
-                      className="flex items-center justify-between px-4 py-3.5 text-[13px] text-[#4b5563] border-b border-gray-100 last:border-0 hover:bg-gray-50 hover:text-[#ff4d4d] group transition-colors"
+                      className="flex items-center justify-between px-4 flex-1 text-[13px] text-[#4b5563] border-b border-gray-100 last:border-0 hover:bg-gray-50 hover:text-[#ff4d4d] group transition-colors"
                     >
                       <span className="font-medium">{name}</span>
                       <svg className="w-3 h-3 text-gray-300 group-hover:text-[#ff4d4d] transition-colors" fill="currentColor" viewBox="0 0 20 20">

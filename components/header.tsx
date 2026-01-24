@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, ShoppingCart, Menu, X, Facebook, Youtube, ChevronDown, Mail, User } from 'lucide-react';
+import { Search, ShoppingCart, Menu, X, Facebook, Youtube, ChevronDown, Mail, User, Send } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -21,8 +21,33 @@ export function Header() {
   return (
     <>
       {/* Top Announcement Bar */}
-      <div className="bg-[#002b5c] text-white text-[10px] sm:text-xs py-1.5 px-4 text-center font-medium">
-        EbookSamnorng.com - Knowledge repository of the construction industry
+      <div className="bg-[#002b5c] text-white text-[10px] sm:text-xs py-1.5 font-medium border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
+          <div className="truncate">
+            EbookSamnorng.com - Knowledge repository of the construction industry
+          </div>
+          <div className="flex items-center gap-3 sm:gap-4 ml-4">
+            <a
+              href="https://www.facebook.com/groups/238173047768987"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-yellow-400 transition-colors flex items-center gap-1"
+            >
+              <Facebook className="w-3.5 h-3.5" />
+              <span className="hidden md:inline text-[10px]">Facebook</span>
+            </a>
+            <div className="w-[1px] h-3 bg-white/20"></div>
+            <a
+              href="https://t.me/yourusername"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-yellow-400 transition-colors flex items-center gap-1"
+            >
+              <Send className="w-3.5 h-3.5" />
+              <span className="hidden md:inline text-[10px]">Telegram</span>
+            </a>
+          </div>
+        </div>
       </div>
 
       {/* Main Header Section */}
@@ -107,7 +132,7 @@ export function Header() {
               { name: 'HOME', href: '/' },
               { name: 'SHOP', href: '/shop' },
               { name: 'SHOPPING CART', href: '/cart' },
-              { name: 'PAYMENT INSTRUCTIONS', href: '/checkout' },
+              { name: 'PAYMENT INSTRUCTIONS', href: '/payment-instruction' },
               { name: 'CONTACT US', href: '/contact' },
             ].map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));

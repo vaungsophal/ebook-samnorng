@@ -43,13 +43,18 @@ export default function ContactPage() {
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
 
-      <div className="flex-1 max-w-6xl mx-auto px-2 sm:px-4 py-6 sm:py-12 w-full">
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8">
-          <Link href="/" className="hover:text-foreground transition-colors">HOME</Link>
-          <span>/</span>
-          <span className="text-foreground font-semibold">CONTACT</span>
+      {/* Breadcrumb Section */}
+      <div className="bg-[#f5f5f5] py-3 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4">
+          <nav className="flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase">
+            <Link href="/" className="text-gray-500 hover:text-primary transition-colors">HOME</Link>
+            <span className="text-gray-300">/</span>
+            <span className="text-foreground">CONTACT US</span>
+          </nav>
         </div>
+      </div>
+
+      <div className="flex-1 max-w-6xl mx-auto px-2 sm:px-4 py-6 sm:py-12 w-full">
 
         {/* Header */}
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">

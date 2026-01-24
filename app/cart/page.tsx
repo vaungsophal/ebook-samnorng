@@ -23,13 +23,18 @@ export default function CartPage() {
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
 
-      <div className="flex-1 max-w-7xl mx-auto px-2 sm:px-4 py-6 sm:py-8 w-full">
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8">
-          <Link href="/" className="hover:text-foreground transition-colors">HOME</Link>
-          <span>/</span>
-          <span className="text-foreground font-semibold">SHOPPING CART</span>
+      {/* Breadcrumb Section */}
+      <div className="bg-[#f5f5f5] py-3 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4">
+          <nav className="flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase">
+            <Link href="/" className="text-gray-500 hover:text-primary transition-colors">HOME</Link>
+            <span className="text-gray-300">/</span>
+            <span className="text-foreground">SHOPPING CART</span>
+          </nav>
         </div>
+      </div>
+
+      <div className="flex-1 max-w-7xl mx-auto px-2 sm:px-4 py-6 sm:py-8 w-full">
 
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-8">Shopping Cart</h1>
 

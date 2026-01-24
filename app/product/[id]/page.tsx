@@ -3,7 +3,7 @@
 import { Header } from '@/components/header';
 import Footer from '@/components/footer';
 import { ProductCard } from '@/components/product-card';
-import { Star, ShoppingCart, ChevronLeft } from 'lucide-react';
+import { Star, ShoppingCart, ChevronLeft, X, Download as DownloadIcon, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { products } from '@/lib/products';
@@ -22,6 +22,7 @@ export default function ProductDetailPage({ params }: PageProps) {
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
+  const [showLightbox, setShowLightbox] = useState(false);
 
   if (!product) {
     return (
@@ -59,15 +60,21 @@ export default function ProductDetailPage({ params }: PageProps) {
 
           {/* Left Column: Product Image (5/12) */}
           <div className="lg:col-span-6 xl:col-span-5">
-            <div className="border border-[#e5e5e5] p-3 sm:p-6 relative bg-[#fff] shadow-sm rounded-sm">
-              <div className="aspect-[1/1.4] bg-white overflow-hidden text-center flex items-center justify-center">
+            <div className="border border-[#eee] relative bg-white shadow-sm rounded-sm overflow-hidden">
+              <div
+                className="w-full bg-white text-center flex items-center justify-center cursor-zoom-in"
+                onClick={() => setShowLightbox(true)}
+              >
                 <img
                   src={product.image || "/placeholder.svg"}
                   alt={product.title}
-                  className="max-w-full max-h-full object-contain"
+                  className="w-full h-auto object-cover"
                 />
               </div>
-              <button className="absolute bottom-4 left-4 w-10 h-10 flex items-center justify-center bg-gray-50/80 backdrop-blur-sm border border-gray-100 rounded-full text-gray-400 hover:text-primary transition-all hover:scale-110">
+              <button
+                onClick={() => setShowLightbox(true)}
+                className="absolute bottom-4 left-4 w-10 h-10 flex items-center justify-center bg-white border border-gray-100 rounded-full text-gray-400 hover:text-[#c0392b] transition-all hover:scale-110 shadow-sm"
+              >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
                 </svg>
@@ -77,7 +84,7 @@ export default function ProductDetailPage({ params }: PageProps) {
 
           {/* Middle Column: Product Info (4/12) */}
           <div className="lg:col-span-6 xl:col-span-4 flex flex-col">
-            {/* Breadcrumb - Hidden on very small screens or made more compact */}
+            {/* Breadcrumb */}
             <nav className="flex flex-wrap items-center gap-1.5 text-[10px] tracking-[0.05em] text-[#999] uppercase mb-4 sm:mb-6 font-semibold">
               <Link href="/" className="hover:text-primary transition-colors">HOME</Link>
               <span className="text-[#ccc]">/</span>
@@ -128,23 +135,29 @@ export default function ProductDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Download Link Section */}
-            <div className="mb-8 sm:mb-10 p-4 sm:p-5 bg-[#fff8f8] border border-red-50/50 rounded-lg">
-              <p className="text-[#e63946] font-bold text-base sm:text-lg mb-4 flex items-center gap-2">
-                <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                Product download link:
-              </p>
-              <button className="w-full flex items-center justify-center gap-3 bg-[#248a3d] text-white px-4 sm:px-6 py-3.5 rounded shadow-md hover:bg-[#1e7232] transition-all transform hover:-translate-y-0.5">
-                <div className="bg-white/20 p-1.5 rounded shrink-0">
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                  </svg>
+            {/* Download Link Section - SIMPLE & PROFESSIONAL */}
+            <div className="mb-8 sm:mb-10">
+              <div className="flex items-center gap-2 mb-3">
+                <ShieldCheck className="w-4 h-4 text-[#248a3d]" />
+                <span className="text-[12px] font-bold text-[#444] uppercase tracking-wider">Verified Source</span>
+              </div>
+
+              <button className="w-full flex items-center justify-between bg-gray-900 text-white px-6 py-4 rounded-sm shadow-lg hover:bg-black transition-all group overflow-hidden relative">
+                <div className="flex items-center gap-4 relative z-10">
+                  <div className="p-2 bg-white/10 rounded">
+                    <DownloadIcon className="w-5 h-5 group-hover:translate-y-0.5 transition-transform" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-sm tracking-widest uppercase">Download Now</div>
+                    <div className="text-[10px] opacity-60">Complete purchase to unlock files</div>
+                  </div>
                 </div>
-                <div className="text-left">
-                  <div className="font-black text-lg sm:text-xl leading-none">DOWNLOAD</div>
-                  <div className="text-[9px] sm:text-[10px] opacity-80 uppercase tracking-widest font-bold">Encrypted Source</div>
+                <div className="text-[10px] font-bold bg-white/10 px-2 py-1 rounded relative z-10">
+                  PDF / ZIP
                 </div>
-                <div className="ml-auto bg-black/10 px-2 py-1 text-[10px] sm:text-xs font-bold rounded shrink-0">ZIP/RAR</div>
+
+                {/* Subtle hover effect */}
+                <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </button>
             </div>
 
@@ -152,19 +165,19 @@ export default function ProductDetailPage({ params }: PageProps) {
               {product.description || "Add this product to your cart to complete checkout and receive the decompression password immediately."}
             </p>
 
-            {/* Quantity & Add to Cart */}
-            <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-4">
-              <div className="flex items-center border-2 border-[#eee] rounded bg-white h-12">
+            {/* Quantity & Add to Cart - STACKED */}
+            <div className="space-y-4 pt-4 border-t border-gray-100">
+              <div className="inline-flex items-center border border-[#eee] rounded bg-white shadow-sm overflow-hidden h-11">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-12 h-full flex items-center justify-center text-[#ccc] hover:text-red-500 hover:bg-gray-50 transition-colors text-xl font-light"
+                  className="w-11 h-full flex items-center justify-center text-[#999] hover:text-[#c0392b] hover:bg-gray-50 transition-colors text-lg"
                 >
                   −
                 </button>
-                <span className="w-12 text-center font-bold text-base border-x border-[#eee] h-full flex items-center justify-center">{quantity}</span>
+                <span className="w-12 text-center font-bold text-sm border-x border-[#eee] h-full flex items-center justify-center text-[#333]">{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-12 h-full flex items-center justify-center text-[#ccc] hover:text-red-500 hover:bg-gray-50 transition-colors text-xl font-light"
+                  className="w-11 h-full flex items-center justify-center text-[#999] hover:text-[#c0392b] hover:bg-gray-50 transition-colors text-lg"
                 >
                   +
                 </button>
@@ -172,10 +185,18 @@ export default function ProductDetailPage({ params }: PageProps) {
 
               <button
                 onClick={handleAddToCart}
-                className={`flex-1 h-12 bg-[#c0392b] text-white font-black text-sm tracking-[0.1em] hover:bg-[#a93226] transition-all shadow-lg hover:shadow-red-500/20 active:scale-95 flex items-center justify-center gap-2 ${isAdded ? 'bg-green-600' : ''}`}
+                className={`w-full h-12 rounded-sm text-white font-black text-sm tracking-[0.1em] transition-all shadow-lg active:scale-[0.98] flex items-center justify-center gap-3 uppercase relative overflow-hidden group ${isAdded
+                  ? 'bg-[#27ae60] shadow-green-500/20'
+                  : 'bg-[#c0392b] hover:bg-[#a93226] shadow-red-500/20 hover:shadow-red-500/30'
+                  }`}
               >
-                {!isAdded && <ShoppingCart className="w-4 h-4" />}
-                {isAdded ? 'ADDED TO CART' : 'ADD TO CART'}
+                {!isAdded && <ShoppingCart className="w-4 h-4 transition-transform group-hover:-translate-y-1" />}
+                <span className="relative z-10">
+                  {isAdded ? 'SUCCESSFULLY ADDED' : 'ADD TO SHOPPING CART'}
+                </span>
+
+                {/* Subtle shine effect on hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] pointer-events-none"></div>
               </button>
             </div>
 
@@ -247,6 +268,30 @@ export default function ProductDetailPage({ params }: PageProps) {
       </main>
 
       <Footer />
+
+      {/* Lightbox / Fullscreen Overlay */}
+      {showLightbox && (
+        <div
+          className="fixed inset-0 bg-black/95 z-[9999] flex items-center justify-center p-4 sm:p-10 transition-all"
+          onClick={() => setShowLightbox(false)}
+        >
+          <button
+            className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors"
+            onClick={() => setShowLightbox(false)}
+          >
+            <X className="w-10 h-10" />
+          </button>
+
+          <div className="max-w-full max-h-full relative flex items-center justify-center">
+            <img
+              src={product.image || "/placeholder.svg"}
+              alt={product.title}
+              className="max-w-full max-h-[90vh] object-contain shadow-2xl animate-in zoom-in-95 duration-300"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

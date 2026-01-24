@@ -129,4 +129,10 @@
   .footer-bg {
     @apply bg-[#064884];
   }
+
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
 }
