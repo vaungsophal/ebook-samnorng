@@ -195,19 +195,6 @@ export function Header() {
               </Link>
             ))}
 
-            {/* Additional Links */}
-            <Link
-              href="/login"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-2 px-5 py-4 text-[11px] font-bold text-[#4b5563] border-b border-gray-100 uppercase tracking-tight"
-            >
-              <User className="w-4 h-4" />
-              LOG IN
-            </Link>
-            <div className="flex items-center gap-2 px-5 py-4 text-[11px] font-bold text-[#4b5563] border-b border-gray-100 uppercase tracking-tight">
-              <Mail className="w-4 h-4" />
-              NEWSLETTER
-            </div>
           </div>
         </div>
 

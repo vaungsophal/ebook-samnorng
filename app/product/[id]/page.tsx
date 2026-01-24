@@ -165,19 +165,19 @@ export default function ProductDetailPage({ params }: PageProps) {
               {product.description || "Add this product to your cart to complete checkout and receive the decompression password immediately."}
             </p>
 
-            {/* Quantity & Add to Cart - STACKED */}
-            <div className="space-y-4 pt-4 border-t border-gray-100">
-              <div className="inline-flex items-center border border-[#eee] rounded bg-white shadow-sm overflow-hidden h-11">
+            {/* Quantity & Add to Cart - ALWAYS IN-LINE */}
+            <div className="flex flex-row items-center gap-2 sm:gap-4 pt-4 border-t border-gray-100">
+              <div className="flex items-center border border-[#eee] rounded bg-white shadow-sm overflow-hidden h-10 shrink-0">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-11 h-full flex items-center justify-center text-[#999] hover:text-[#c0392b] hover:bg-gray-50 transition-colors text-lg"
+                  className="w-8 sm:w-11 h-full flex items-center justify-center text-[#999] hover:text-[#c0392b] hover:bg-gray-50 transition-colors text-base"
                 >
                   −
                 </button>
-                <span className="w-12 text-center font-bold text-sm border-x border-[#eee] h-full flex items-center justify-center text-[#333]">{quantity}</span>
+                <span className="w-10 sm:w-12 text-center font-bold text-xs sm:text-sm border-x border-[#eee] h-full flex items-center justify-center text-[#333]">{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-11 h-full flex items-center justify-center text-[#999] hover:text-[#c0392b] hover:bg-gray-50 transition-colors text-lg"
+                  className="w-8 sm:w-11 h-full flex items-center justify-center text-[#999] hover:text-[#c0392b] hover:bg-gray-50 transition-colors text-base"
                 >
                   +
                 </button>
@@ -185,14 +185,14 @@ export default function ProductDetailPage({ params }: PageProps) {
 
               <button
                 onClick={handleAddToCart}
-                className={`w-full h-12 rounded-sm text-white font-black text-sm tracking-[0.1em] transition-all shadow-lg active:scale-[0.98] flex items-center justify-center gap-3 uppercase relative overflow-hidden group ${isAdded
-                  ? 'bg-[#27ae60] shadow-green-500/20'
-                  : 'bg-[#c0392b] hover:bg-[#a93226] shadow-red-500/20 hover:shadow-red-500/30'
+                className={`flex-1 h-10 rounded-sm text-white font-bold text-[10px] sm:text-[11px] tracking-[0.05em] transition-all shadow-lg active:scale-[0.98] flex items-center justify-center gap-1.5 uppercase relative overflow-hidden group ${isAdded
+                  ? 'bg-[#27ae60] shadow-green-500/10'
+                  : 'bg-[#c0392b] hover:bg-[#a93226] shadow-red-500/10'
                   }`}
               >
-                {!isAdded && <ShoppingCart className="w-4 h-4 transition-transform group-hover:-translate-y-1" />}
-                <span className="relative z-10">
-                  {isAdded ? 'SUCCESSFULLY ADDED' : 'ADD TO SHOPPING CART'}
+                {!isAdded && <ShoppingCart className="w-3.5 h-3.5" />}
+                <span className="relative z-10 whitespace-nowrap">
+                  {isAdded ? 'ADDED' : 'ADD TO CART'}
                 </span>
 
                 {/* Subtle shine effect on hover */}
