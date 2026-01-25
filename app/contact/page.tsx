@@ -60,17 +60,17 @@ export default function ContactPage() {
       <div className="flex-1 max-w-6xl mx-auto px-2 sm:px-4 py-6 sm:py-12 w-full">
 
         {/* Header */}
-        <h1 className="text-2xl sm:text-3xl font-black text-foreground mb-4 uppercase tracking-tight">
+        <h1 className="text-xl sm:text-3xl font-black text-foreground mb-4 uppercase tracking-tight">
           {t('contact_page.title')}
         </h1>
-        <p className="text-sm sm:text-base text-muted-foreground mb-8 sm:mb-12">
+        <p className="text-xs sm:text-base text-muted-foreground mb-8 sm:mb-12">
           {t('contact_page.subtitle')}
         </p>
 
         {/* Contact Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8 mb-12 sm:mb-16">
           {/* Contact Info Cards */}
-          <div className="bg-card rounded-lg border border-border p-6 sm:p-8 text-center">
+          <div className="bg-card rounded-md border border-border p-5 sm:p-8 text-center">
             <div className="flex justify-center mb-4">
               <Mail className="w-8 h-8 text-primary" />
             </div>
@@ -110,8 +110,8 @@ export default function ContactPage() {
         {/* Contact Form & FAQ */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
           {/* Contact Form */}
-          <div className="bg-card rounded-lg border border-border p-6 sm:p-8">
-            <h2 className="text-xl sm:text-2xl font-black text-foreground mb-6 uppercase tracking-tight">{t('contact_page.form_title')}</h2>
+          <div className="bg-card rounded-md border border-border p-5 sm:p-8">
+            <h2 className="text-lg sm:text-2xl font-black text-foreground mb-5 uppercase tracking-tight">{t('contact_page.form_title')}</h2>
 
             {submitted && (
               <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-900">
@@ -162,7 +162,7 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="w-full px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold text-sm sm:text-base"
+                className="w-full px-6 py-2.5 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors font-semibold text-sm sm:text-base"
               >
                 {t('contact_page.send_button')}
               </button>
@@ -174,7 +174,7 @@ export default function ContactPage() {
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6">{t('contact_page.faq_title')}</h2>
 
             <div className="space-y-4">
-              <details className="bg-card rounded-lg border border-border p-4 sm:p-6 cursor-pointer group">
+              <details className="bg-card rounded-md border border-border p-4 sm:p-6 cursor-pointer group">
                 <summary className="font-semibold text-foreground group-open:text-primary transition-colors">
                   {t('contact_page.faq_q1')}
                 </summary>
@@ -183,7 +183,7 @@ export default function ContactPage() {
                 </p>
               </details>
 
-              <details className="bg-card rounded-lg border border-border p-4 sm:p-6 cursor-pointer group">
+              <details className="bg-card rounded-md border border-border p-4 sm:p-6 cursor-pointer group">
                 <summary className="font-semibold text-foreground group-open:text-primary transition-colors">
                   {t('contact_page.faq_q2')}
                 </summary>
@@ -192,7 +192,7 @@ export default function ContactPage() {
                 </p>
               </details>
 
-              <details className="bg-card rounded-lg border border-border p-4 sm:p-6 cursor-pointer group">
+              <details className="bg-card rounded-md border border-border p-4 sm:p-6 cursor-pointer group">
                 <summary className="font-semibold text-foreground group-open:text-primary transition-colors">
                   {t('contact_page.faq_q3')}
                 </summary>
@@ -201,7 +201,7 @@ export default function ContactPage() {
                 </p>
               </details>
 
-              <details className="bg-card rounded-lg border border-border p-4 sm:p-6 cursor-pointer group">
+              <details className="bg-card rounded-md border border-border p-4 sm:p-6 cursor-pointer group">
                 <summary className="font-semibold text-foreground group-open:text-primary transition-colors">
                   {t('contact_page.faq_q4')}
                 </summary>
@@ -210,7 +210,7 @@ export default function ContactPage() {
                 </p>
               </details>
 
-              <details className="bg-card rounded-lg border border-border p-4 sm:p-6 cursor-pointer group">
+              <details className="bg-card rounded-md border border-border p-4 sm:p-6 cursor-pointer group">
                 <summary className="font-semibold text-foreground group-open:text-primary transition-colors">
                   {t('contact_page.faq_q5')}
                 </summary>
@@ -223,14 +223,14 @@ export default function ContactPage() {
         </div>
 
         {/* CTA */}
-        <div className="mt-12 sm:mt-16 bg-primary text-primary-foreground rounded-lg border border-primary/20 p-6 sm:p-8 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-3">{t('contact_page.ready_title')}</h2>
-          <p className="mb-6 text-sm sm:text-base opacity-90">
+        <div className="mt-12 sm:mt-16 bg-primary text-primary-foreground rounded-md border border-primary/20 p-6 sm:p-10 text-center">
+          <h2 className="text-xl sm:text-3xl font-bold mb-3">{t('contact_page.ready_title')}</h2>
+          <p className="mb-6 text-xs sm:text-base opacity-90">
             {t('contact_page.ready_subtitle')}
           </p>
           <Link
             href="/shop"
-            className="inline-block px-8 py-3 bg-accent text-accent-foreground rounded-lg hover:opacity-90 transition-opacity font-semibold"
+            className="inline-block px-8 py-2.5 bg-accent text-accent-foreground rounded-md hover:opacity-90 transition-opacity font-semibold text-sm"
           >
             {t('contact_page.browse_button')}
           </Link>

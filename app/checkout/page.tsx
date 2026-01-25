@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { Download } from 'lucide-react';
 
 export default function CheckoutPage() {
   const { items, total, clearCart } = useCart();
@@ -184,24 +185,24 @@ export default function CheckoutPage() {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
 
               {/* Header Visual Section */}
-              <div className="bg-[#1a4d2e] py-12 px-8 text-center relative">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-md mb-6 shadow-md">
+              <div className="bg-[#1a4d2e] py-8 px-6 text-center relative">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-white rounded-md mb-4 shadow-md">
                   <svg className="w-8 h-8 text-[#1a4d2e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
 
-                <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">{t('checkout.purchase_verified')}</h1>
-                <p className="text-white/80 text-lg max-w-xl mx-auto">
+                <h1 className="text-2xl font-bold text-white mb-2 tracking-tight">{t('checkout.purchase_verified')}</h1>
+                <p className="text-white/80 text-base max-w-xl mx-auto">
                   {t('checkout.success_message')}
                 </p>
               </div>
 
-              <div className="p-8 sm:p-12">
-                <div className="text-center mb-10">
+              <div className="p-6 sm:p-12">
+                <div className="text-center mb-8">
                   <button
                     onClick={generateReceipt}
-                    className="inline-flex items-center justify-center gap-2 bg-primary text-white px-8 py-3 rounded-md font-bold hover:bg-primary/90 transition-colors shadow-sm"
+                    className="inline-flex items-center justify-center gap-2 bg-primary text-white px-6 py-2.5 rounded-md font-bold hover:bg-primary/90 transition-colors shadow-sm text-sm"
                   >
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -276,15 +277,28 @@ export default function CheckoutPage() {
                               <p className="text-[13px] font-bold text-gray-700 leading-snug">{item.title}</p>
                             </div>
 
-                            <a
-                              href={(item as any).file_url || "#"}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="w-full bg-[#1a4d2e] text-white py-3 rounded-md font-black text-sm flex items-center justify-center gap-2 hover:bg-[#143d24] transition-all shadow-md active:scale-[0.98]"
-                            >
-                              <DownloadIcon className="w-4 h-4" />
-                              {t('checkout.access_library')}
-                            </a>
+                            <div className="flex flex-col gap-2">
+                              <a
+                                href={(item as any).file_url || "#"}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-full bg-[#1a4d2e] text-white py-3 rounded-md font-black text-sm flex items-center justify-center gap-2 hover:bg-[#143d24] transition-all shadow-md active:scale-[0.98]"
+                              >
+                                <Download className="w-4 h-4" />
+                                {t('checkout.access_library')}
+                              </a>
+                              <a
+                                href={`https://t.me/ebooksamnorng?text=Hello, I just purchased: ${item.title} (ID: ${item.id}). Here is my receipt. Please provide the unzip password.`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-full bg-[#0088cc] text-white py-3 rounded-md font-black text-sm flex items-center justify-center gap-2 hover:bg-[#0077b5] transition-all shadow-md active:scale-[0.98]"
+                              >
+                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.52-1.4.51-.46-.01-1.35-.26-2.01-.48-.81-.27-1.46-.42-1.4-.88.03-.24.37-.48 1.02-.73 3.98-1.73 6.64-2.88 7.99-3.45 3.8-1.59 4.59-1.86 5.1-.14z" />
+                                </svg>
+                                Request Unzip Pass
+                              </a>
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -337,17 +351,17 @@ export default function CheckoutPage() {
 
       <div className="flex-1 max-w-7xl mx-auto px-2 sm:px-4 py-10 sm:py-16 w-full font-sans">
 
-        <h1 className={`font-black text-foreground mb-12 ${language === 'km' ? 'text-2xl sm:text-3xl' : 'text-3xl sm:text-4xl'}`}>
+        <h1 className={`font-black text-foreground mb-8 ${language === 'km' ? 'text-xl sm:text-3xl' : 'text-2xl sm:text-4xl'}`}>
           {t('checkout.title')}
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 sm:gap-14">
           {/* Checkout Form */}
           <div className="lg:col-span-2">
-            <form onSubmit={handlePlaceOrder} className="space-y-10">
+            <form onSubmit={handlePlaceOrder} className="space-y-6 sm:space-y-10">
               {/* Personal Information */}
-              <div className="bg-card rounded-2xl border-2 border-border p-8 sm:p-10 shadow-sm">
-                <h2 className="font-black text-xl sm:text-2xl text-foreground mb-8 uppercase tracking-tight">{t('checkout.personal_info')}</h2>
+              <div className="bg-card rounded-md border border-border p-6 sm:p-10 shadow-sm">
+                <h2 className="font-black text-lg sm:text-2xl text-foreground mb-6 sm:mb-8 uppercase tracking-tight">{t('checkout.personal_info')}</h2>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <input
@@ -357,7 +371,7 @@ export default function CheckoutPage() {
                     value={formData.firstName}
                     onChange={handleInputChange}
                     required
-                    className="px-6 py-4 border-2 border-border rounded-xl focus:outline-none focus:ring-4 focus:ring-primary/20 bg-background text-base sm:text-lg font-bold"
+                    className="px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-4 focus:ring-primary/20 bg-background text-sm sm:text-lg font-bold"
                   />
                   <input
                     type="text"
@@ -366,7 +380,7 @@ export default function CheckoutPage() {
                     value={formData.lastName}
                     onChange={handleInputChange}
                     required
-                    className="px-6 py-4 border-2 border-border rounded-xl focus:outline-none focus:ring-4 focus:ring-primary/20 bg-background text-base sm:text-lg font-bold"
+                    className="px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-4 focus:ring-primary/20 bg-background text-sm sm:text-lg font-bold"
                   />
                 </div>
 
@@ -377,7 +391,7 @@ export default function CheckoutPage() {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-6 py-4 border-2 border-border rounded-xl focus:outline-none focus:ring-4 focus:ring-primary/20 bg-background text-base sm:text-lg font-bold mt-6"
+                  className="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-4 focus:ring-primary/20 bg-background text-sm sm:text-lg font-bold mt-4"
                 />
 
                 <input
@@ -387,22 +401,22 @@ export default function CheckoutPage() {
                   value={formData.phone}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-6 py-4 border-2 border-border rounded-xl focus:outline-none focus:ring-4 focus:ring-primary/20 bg-background text-base sm:text-lg font-bold mt-6"
+                  className="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-4 focus:ring-primary/20 bg-background text-sm sm:text-lg font-bold mt-4"
                 />
               </div>
 
               {/* Payment Method */}
-              <div className="bg-card rounded-2xl border-2 border-border p-8 sm:p-10 overflow-hidden shadow-sm">
-                <h2 className="font-black text-xl sm:text-2xl text-foreground mb-8 uppercase tracking-tight">{t('checkout.payment_info')}</h2>
+              <div className="bg-card rounded-md border border-border p-6 sm:p-10 overflow-hidden shadow-sm">
+                <h2 className="font-black text-lg sm:text-2xl text-foreground mb-6 sm:mb-8 uppercase tracking-tight">{t('checkout.payment_info')}</h2>
 
-                <div className="space-y-10">
+                <div className="space-y-6 sm:space-y-10">
                   {/* Digital Wallet / KHQR */}
-                  <div className="p-8 border-2 border-primary/20 rounded-[32px] bg-primary/5">
-                    <div className="flex items-center gap-5 mb-8">
-                      <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white text-lg font-black shadow-lg">
+                  <div className="p-6 sm:p-8 border border-primary/10 rounded-xl bg-primary/5">
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-base font-black shadow-md">
                         <span>1</span>
                       </div>
-                      <h3 className="font-black text-xl text-foreground uppercase tracking-tight">{t('checkout.scan_khqr')}</h3>
+                      <h3 className="font-black text-lg text-foreground uppercase tracking-tight">{t('checkout.scan_khqr')}</h3>
                     </div>
 
                     <div className="flex flex-col md:flex-row gap-10 items-center md:items-start text-center md:text-left">
@@ -416,25 +430,25 @@ export default function CheckoutPage() {
                         />
                       </div>
 
-                      <div className="flex-1 space-y-6">
-                        <div className="space-y-2">
-                          <p className="text-[12px] text-muted-foreground uppercase font-black tracking-widest">{t('checkout.account_name')}</p>
-                          <div className="flex flex-col sm:flex-row sm:items-center gap-5 items-center">
-                            <p className="text-xl font-black text-foreground">VAUNG SOPHAL</p>
+                      <div className="flex-1 space-y-4">
+                        <div className="space-y-1">
+                          <p className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">{t('checkout.account_name')}</p>
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-3 items-center">
+                            <p className="text-lg font-black text-gray-900">VAUNG SOPHAL</p>
                             <a
                               href="https://pay.ababank.com/oRF8/mox4etnp"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-3 bg-[#005a8c] text-white px-5 py-2.5 rounded-xl text-[12px] font-black hover:bg-[#004b75] transition-all shadow-lg active:scale-95"
+                              className="inline-flex items-center gap-2 bg-[#005a8c] text-white px-4 py-2 rounded-lg text-[10px] font-black hover:bg-[#004b75] transition-all shadow-md active:scale-95"
                             >
                               {t('checkout.pay_aba_link')}
                             </a>
                           </div>
                         </div>
 
-                        <div className="space-y-2">
-                          <p className="text-[12px] text-muted-foreground uppercase font-black tracking-widest">{t('checkout.amount_due')}</p>
-                          <p className="text-4xl font-black text-primary">${total.toFixed(2)}</p>
+                        <div className="space-y-1">
+                          <p className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">{t('checkout.amount_due')}</p>
+                          <p className="text-3xl font-black text-[#1a4d2e]">${total.toFixed(2)}</p>
                         </div>
 
                         <div className="p-5 bg-white/50 border-2 border-primary/10 rounded-2xl text-[14px] text-foreground italic font-medium leading-relaxed shadow-inner">
@@ -452,7 +466,7 @@ export default function CheckoutPage() {
 
               <button
                 type="submit"
-                className="w-full px-10 py-6 bg-primary text-primary-foreground rounded-[24px] hover:bg-primary/90 transition-all font-black text-2xl shadow-2xl active:scale-[0.98] border-b-4 border-black/20"
+                className="w-full px-8 py-4 bg-[#1a4d2e] text-white rounded-md hover:bg-[#143d24] transition-all font-black text-lg sm:text-xl shadow-lg active:scale-[0.98] border-b-2 border-black/10"
               >
                 {t('checkout.place_order')}
               </button>
@@ -461,8 +475,8 @@ export default function CheckoutPage() {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-card rounded-2xl border-2 border-border p-8 sm:p-10 sticky top-28 shadow-xl">
-              <h2 className="font-black text-xl sm:text-2xl text-foreground mb-8 uppercase tracking-tight">{t('cart.order_summary')}</h2>
+            <div className="bg-card rounded-md border border-border p-6 sm:p-10 sticky top-28 shadow-lg">
+              <h2 className="font-black text-lg sm:text-2xl text-foreground mb-6 uppercase tracking-tight">{t('cart.order_summary')}</h2>
 
               <div className="space-y-5 mb-8 pb-8 border-b-2 border-border max-h-96 overflow-y-auto custom-scrollbar pr-2">
                 {items.map((item) => (
@@ -488,9 +502,9 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              <div className="flex justify-between text-3xl font-black text-foreground tracking-tighter">
+              <div className="flex justify-between text-2xl font-black text-foreground tracking-tighter">
                 <span>{t('cart.total')}:</span>
-                <span className="text-primary">${total.toFixed(2)}</span>
+                <span className="text-[#1a4d2e]">${total.toFixed(2)}</span>
               </div>
             </div>
           </div>

@@ -38,16 +38,16 @@ export default function CartPage() {
 
       <div className="flex-1 max-w-7xl mx-auto px-2 sm:px-4 py-8 sm:py-12 w-full">
 
-        <h1 className={`font-black text-foreground mb-10 ${language === 'km' ? 'text-2xl sm:text-3xl' : 'text-3xl sm:text-4xl'}`}>
+        <h1 className={`font-black text-foreground mb-6 sm:mb-10 ${language === 'km' ? 'text-xl sm:text-3xl' : 'text-2xl sm:text-4xl'}`}>
           {t('cart.title')}
         </h1>
 
         {items.length === 0 ? (
-          <div className="text-center py-20 bg-card rounded-lg border border-border shadow-sm">
-            <p className="text-muted-foreground text-xl sm:text-2xl mb-10 font-bold">{t('cart.empty')}</p>
+          <div className="text-center py-12 sm:py-20 bg-card rounded-md border border-border shadow-sm">
+            <p className="text-muted-foreground text-lg sm:text-2xl mb-8 font-bold">{t('cart.empty')}</p>
             <Link
               href="/shop"
-              className="inline-block px-10 py-4 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all font-black text-lg active:scale-95 shadow-lg"
+              className="inline-block px-8 py-3 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-all font-black text-base sm:text-lg active:scale-95 shadow-md"
             >
               {t('cart.continue_shopping')}
             </Link>
@@ -56,16 +56,16 @@ export default function CartPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 sm:gap-14">
             {/* Cart Items */}
             <div className="lg:col-span-2">
-              <div className="bg-card rounded-lg border border-border overflow-hidden shadow-sm">
+              <div className="bg-card rounded-md border border-border overflow-hidden shadow-sm">
                 {items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex p-6 sm:p-10 gap-6 sm:gap-10 border-b border-gray-100 last:border-b-0 group transition-all"
+                    className="flex p-4 sm:p-10 gap-4 sm:gap-10 border-b border-gray-100 last:border-b-0 group transition-all"
                   >
                     {/* Product Image - Tall Book Cover Style */}
                     <Link
                       href={`/product/${item.id}`}
-                      className="w-32 sm:w-44 shrink-0 aspect-[3/4] rounded-lg overflow-hidden bg-gray-50 border border-gray-100 shadow-sm relative group-hover:shadow-lg transition-all"
+                      className="w-24 sm:w-44 shrink-0 aspect-[3/4] rounded-md overflow-hidden bg-gray-50 border border-gray-100 shadow-sm relative group-hover:shadow-lg transition-all"
                     >
                       <img
                         src={item.image || "/placeholder.svg"}
@@ -75,37 +75,37 @@ export default function CartPage() {
                     </Link>
 
                     <div className="flex-1 flex flex-col justify-between min-w-0">
-                      <div className="space-y-2">
+                      <div className="space-y-1">
                         <Link href={`/product/${item.id}`} className="hover:text-red-600 transition-colors block">
-                          <h3 className={`font-black text-[#222] leading-tight ${language === 'km' ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl line-clamp-2'}`}>
+                          <h3 className={`font-black text-[#222] leading-tight ${language === 'km' ? 'text-lg sm:text-2xl' : 'text-xl sm:text-3xl line-clamp-2'}`}>
                             {item.title}
                           </h3>
                         </Link>
-                        <p className="text-[12px] sm:text-[14px] text-gray-400 uppercase tracking-widest font-black">
+                        <p className="text-[10px] sm:text-[14px] text-gray-400 uppercase tracking-widest font-black">
                           {item.category}
                         </p>
-                        <p className="text-2xl sm:text-3xl font-black text-[#111] mt-3 sm:mt-4">
+                        <p className="text-xl sm:text-3xl font-black text-[#111] mt-2 sm:mt-4">
                           ${item.price.toFixed(2)}
                         </p>
                       </div>
 
-                      <div className="flex items-center justify-between mt-8">
+                      <div className="flex items-center justify-between mt-4 sm:mt-8">
                         {/* Quantity Controls - Larger */}
-                        <div className="flex items-center border-2 border-[#eee] rounded-lg bg-white shadow-sm h-12 sm:h-14 overflow-hidden">
+                        <div className="flex items-center border border-[#eee] rounded bg-white shadow-sm h-10 sm:h-14 overflow-hidden">
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="w-12 sm:w-16 h-full flex items-center justify-center text-gray-400 hover:text-red-600 transition-all border-r-2 border-[#eee] hover:bg-gray-50"
+                            className="w-10 sm:w-16 h-full flex items-center justify-center text-gray-400 hover:text-red-600 transition-all border-r border-[#eee] hover:bg-gray-50"
                           >
-                            <Minus className="w-5 h-5 sm:w-6 sm:h-6" />
+                            <Minus className="w-4 h-4 sm:w-6 sm:h-6" />
                           </button>
-                          <span className="w-12 sm:w-16 text-center font-black text-lg sm:text-xl text-[#333]">
+                          <span className="w-10 sm:w-16 text-center font-black text-base sm:text-xl text-[#333]">
                             {item.quantity}
                           </span>
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="w-12 sm:w-16 h-full flex items-center justify-center text-gray-400 hover:text-red-600 transition-all border-l-2 border-[#eee] hover:bg-gray-50"
+                            className="w-10 sm:w-16 h-full flex items-center justify-center text-gray-400 hover:text-red-600 transition-all border-l border-[#eee] hover:bg-gray-50"
                           >
-                            <Plus className="w-5 h-5 sm:w-6 sm:h-6" />
+                            <Plus className="w-4 h-4 sm:w-6 sm:h-6" />
                           </button>
                         </div>
 
@@ -117,10 +117,10 @@ export default function CartPage() {
                           </div>
                           <button
                             onClick={() => removeFromCart(item.id)}
-                            className="text-gray-300 hover:text-red-600 p-2 transition-all hover:scale-125"
+                            className="text-gray-300 hover:text-red-600 p-2 transition-all hover:scale-110"
                             title={t('cart.remove_item')}
                           >
-                            <Trash2 className="w-7 h-7 sm:w-8 sm:h-8" />
+                            <Trash2 className="w-6 h-6 sm:w-8 sm:h-8" />
                           </button>
                         </div>
                       </div>
@@ -132,46 +132,46 @@ export default function CartPage() {
 
             {/* Cart Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-card rounded-xl border-2 border-border p-8 sm:p-10 sticky top-28 shadow-xl">
-                <h2 className="font-black text-2xl sm:text-3xl text-foreground mb-8 uppercase tracking-tight">{t('cart.order_summary')}</h2>
+              <div className="bg-card rounded-md border border-border p-6 sm:p-10 sticky top-28 shadow-lg">
+                <h2 className="font-black text-xl sm:text-3xl text-foreground mb-6 uppercase tracking-tight">{t('cart.order_summary')}</h2>
 
-                <div className="space-y-5 mb-8 pb-8 border-b-2 border-border">
-                  <div className="flex justify-between text-lg text-foreground font-bold">
+                <div className="space-y-4 mb-6 pb-6 border-b border-border">
+                  <div className="flex justify-between text-base text-foreground font-bold">
                     <span>{t('cart.subtotal')}:</span>
                     <span>${total.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-lg text-foreground font-bold">
+                  <div className="flex justify-between text-base text-foreground font-bold">
                     <span>{t('cart.shipping')}:</span>
                     <span className="text-green-600 uppercase italic">{t('cart.free')}</span>
                   </div>
-                  <div className="flex justify-between text-lg text-foreground font-bold">
+                  <div className="flex justify-between text-base text-foreground font-bold">
                     <span>{t('cart.tax')}:</span>
                     <span className="text-[#888] italic">{t('cart.included')}</span>
                   </div>
                 </div>
 
-                <div className="flex justify-between text-3xl sm:text-4xl font-black text-foreground mb-10 tracking-tighter">
+                <div className="flex justify-between text-2xl sm:text-4xl font-black text-foreground mb-8 tracking-tighter">
                   <span>{t('cart.total')}:</span>
                   <span>${total.toFixed(2)}</span>
                 </div>
 
                 <Link
                   href="/checkout"
-                  className="w-full px-8 py-5 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-all font-black text-xl text-center mb-5 block shadow-lg active:scale-[0.98]"
+                  className="w-full px-8 py-3.5 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-all font-black text-lg text-center mb-4 block shadow-md active:scale-[0.98]"
                 >
                   {t('cart.proceed_to_checkout')}
                 </Link>
 
                 <button
                   onClick={() => clearCart()}
-                  className="w-full px-8 py-3 border-2 border-border text-foreground rounded-xl hover:bg-secondary transition-all font-bold text-base active:scale-[0.98] mb-4"
+                  className="w-full px-8 py-2.5 border border-border text-foreground rounded-md hover:bg-secondary transition-all font-bold text-sm active:scale-[0.98] mb-4"
                 >
                   {t('cart.clear_cart')}
                 </button>
 
                 <Link
                   href="/shop"
-                  className="w-full px-8 py-3 text-primary hover:underline text-center mt-6 block text-lg font-black transition-all"
+                  className="w-full px-8 py-2 text-primary hover:underline text-center mt-4 block text-base font-black transition-all"
                 >
                   {t('cart.continue_shopping')}
                 </Link>
