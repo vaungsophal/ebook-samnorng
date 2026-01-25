@@ -8,6 +8,7 @@ export interface Product {
   rating: number;
   reviews: number;
   details: string;
+  file_url?: string;
 }
 
 export const products: Product[] = [

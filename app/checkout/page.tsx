@@ -7,6 +7,8 @@ import { useLanguage } from '@/context/language-context';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 export default function CheckoutPage() {
   const { items, total, clearCart } = useCart();
@@ -20,6 +22,7 @@ export default function CheckoutPage() {
     phone: '',
     paymentMethod: 'bank',
   });
+  const [cartSnapshot, setCartSnapshot] = useState<typeof items>([]);
 
   const [finalTotal, setFinalTotal] = useState(0);
 
@@ -58,137 +61,253 @@ export default function CheckoutPage() {
     e.preventDefault();
     if (formData.firstName && formData.lastName && formData.email && formData.phone) {
       setFinalTotal(total);
+      setCartSnapshot([...items]); // Save items for receipt
       setOrderPlaced(true);
       clearCart();
     }
   };
 
+  const generateReceipt = () => {
+    const doc = new jsPDF();
+
+    // Define colors
+    const primaryColor = [26, 77, 46] as [number, number, number]; // #1a4d2e
+
+    // Header
+    doc.setFontSize(22);
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.text('EbookSamnorng Receipt', 14, 20);
+
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    const date = new Date().toLocaleDateString();
+    doc.text(`Date: ${date}`, 14, 28);
+    doc.text(`Receipt ID: #${Math.floor(Math.random() * 100000)}`, 14, 33);
+
+    // Customer Info Section
+    doc.setDrawColor(200);
+    doc.line(14, 38, 196, 38);
+
+    doc.setFontSize(12);
+    doc.setTextColor(0);
+    doc.text('Customer Information:', 14, 46);
+    doc.setFontSize(10);
+    doc.text(`Name: ${formData.firstName} ${formData.lastName}`, 14, 52);
+    doc.text(`Email: ${formData.email}`, 14, 57);
+    doc.text(`Phone: ${formData.phone}`, 14, 62);
+
+    // Items Table
+    const tableColumn = ["No.", "ID", "Item", "Price", "Qty", "Total", "Drive Link"];
+    const tableRows = cartSnapshot.map((item, index) => [
+      index + 1,
+      item.id,
+      item.title,
+      `$${item.price.toFixed(2)}`,
+      item.quantity,
+      `$${(item.price * item.quantity).toFixed(2)}`,
+      (item as any).file_url || "Link pending"
+    ]);
+
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 70,
+      theme: 'grid',
+      headStyles: { fillColor: primaryColor },
+      styles: {
+        fontSize: 7,
+        cellPadding: 2,
+        overflow: 'linebreak', // Ensure text wraps
+      },
+      columnStyles: {
+        0: { cellWidth: 8 },  // No.
+        1: { cellWidth: 20 }, // ID
+        2: { cellWidth: 50 }, // Item
+        3: { cellWidth: 15 }, // Price
+        4: { cellWidth: 10 }, // Qty
+        5: { cellWidth: 15 }, // Total
+        6: { cellWidth: 'auto' } // Drive Link
+      },
+      didDrawCell: (data) => {
+        // Only target the "Drive Link" column (index 6) and exclude header
+        if (data.section === 'body' && data.column.index === 6) {
+          const url = data.cell.raw as string;
+          if (url && url.startsWith('http')) {
+            // Add blue color to indicate it's a link
+            doc.setTextColor(0, 0, 255);
+            // Add clickable link on top of the cell
+            doc.link(data.cell.x, data.cell.y, data.cell.width, data.cell.height, { url: url });
+          }
+        }
+      }
+    });
+
+    // Total Section
+    const finalY = (doc as any).lastAutoTable.finalY + 10;
+
+    doc.setFontSize(14);
+    doc.setTextColor(0);
+    doc.text(`Total Amount Paid: $${finalTotal.toFixed(2)}`, 14, finalY);
+
+    // Instructions
+    const instructionY = finalY + 15;
+    doc.setFillColor(245, 245, 245);
+    doc.setDrawColor(220, 220, 220);
+    doc.rect(14, instructionY, 182, 30, 'FD');
+
+    doc.setFontSize(11);
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.text('Next Step:', 18, instructionY + 8);
+
+    doc.setFontSize(10);
+    doc.setTextColor(60);
+    doc.text('Please send this receipt PDF to our Telegram support to receive', 18, instructionY + 16);
+    doc.text('your unzip password/access key immediately.', 18, instructionY + 22);
+    doc.text('Telegram: @ebooksamnorng', 18, instructionY + 28); // Placeholder telegram
+
+    // Footer
+    doc.setFontSize(8);
+    doc.setTextColor(150);
+    doc.text('Thank you for choosing EbookSamnorng!', 105, 285, { align: 'center' });
+
+    doc.save(`Receipt_EbookSamnorng_${formData.phone}.pdf`);
+  };
+
   if (orderPlaced) {
     return (
-      <div className="min-h-screen bg-[#f1f5f9] flex flex-col font-sans">
+      <div className="min-h-screen bg-[#f8fafc] flex flex-col font-sans">
         <Header />
 
-        <main className="flex-1 py-16 px-4 sm:py-24">
-          <div className="max-w-4xl mx-auto">
+        <main className="flex-1 py-12 px-4">
+          <div className="max-w-3xl mx-auto">
             {/* Main Success Container */}
-            <div className="bg-white rounded-[40px] shadow-[0_30px_70px_rgba(0,0,0,0.08)] overflow-hidden border border-white">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
 
               {/* Header Visual Section */}
-              <div className="bg-[#1a4d2e] pt-20 pb-16 px-10 text-center relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-80 h-80 bg-white/5 rounded-full translate-x-1/2 -translate-y-1/2"></div>
-
-                {/* Checkmark Animation Hub */}
-                <div className="inline-flex items-center justify-center w-24 h-24 bg-white rounded-full mb-10 shadow-2xl relative z-10">
-                  <svg className="w-12 h-12 text-[#1a4d2e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 13l4 4L19 7" />
+              <div className="bg-[#1a4d2e] py-12 px-8 text-center relative">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-md mb-6 shadow-md">
+                  <svg className="w-8 h-8 text-[#1a4d2e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
 
-                <h1 className="text-4xl md:text-6xl font-black text-white mb-6 uppercase tracking-tight">{t('checkout.purchase_verified')}</h1>
-                <p className="text-white/80 text-xl font-bold max-w-2xl mx-auto leading-relaxed">
+                <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">{t('checkout.purchase_verified')}</h1>
+                <p className="text-white/80 text-lg max-w-xl mx-auto">
                   {t('checkout.success_message')}
                 </p>
               </div>
 
-              <div className="p-10 md:p-16">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+              <div className="p-8 sm:p-12">
+                <div className="text-center mb-10">
+                  <button
+                    onClick={generateReceipt}
+                    className="inline-flex items-center justify-center gap-2 bg-primary text-white px-8 py-3 rounded-md font-bold hover:bg-primary/90 transition-colors shadow-sm"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="7 10 12 15 17 10"></polyline>
+                      <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download Receipt PDF
+                  </button>
+                  <p className="mt-3 text-sm text-gray-500 max-w-md mx-auto">
+                    Please download the receipt and send it to our Telegram to get your access key.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
                   {/* Left Column: Order Details */}
-                  <div className="space-y-12">
+                  <div className="space-y-8">
                     <div>
-                      <h3 className="text-[13px] font-black text-[#1a4d2e] uppercase tracking-[0.2em] mb-6">{t('checkout.receipt_details')}</h3>
-                      <div className="space-y-5 bg-gray-50 p-8 rounded-3xl border border-gray-100">
-                        <div className="flex justify-between items-center text-base">
-                          <span className="text-gray-400 font-black uppercase tracking-tighter text-[11px]">{t('checkout.client_name')}</span>
-                          <span className="text-[#222] font-black">{formData.firstName} {formData.lastName}</span>
+                      <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4 border-b pb-2">{t('checkout.receipt_details')}</h3>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center text-sm">
+                          <span className="text-gray-500">{t('checkout.client_name')}</span>
+                          <span className="font-medium text-gray-900">{formData.firstName} {formData.lastName}</span>
                         </div>
-                        <div className="flex justify-between items-center text-base">
-                          <span className="text-gray-400 font-black uppercase tracking-tighter text-[11px]">{t('checkout.registered_email')}</span>
-                          <span className="text-[#222] font-black lowercase">{formData.email}</span>
+                        <div className="flex justify-between items-center text-sm">
+                          <span className="text-gray-500">{t('checkout.registered_email')}</span>
+                          <span className="font-medium text-gray-900">{formData.email}</span>
                         </div>
-                        <div className="flex justify-between items-center text-base">
-                          <span className="text-gray-400 font-black uppercase tracking-tighter text-[11px]">{t('checkout.support_id')}</span>
-                          <span className="text-[#222] font-black">{formData.phone}</span>
+                        <div className="flex justify-between items-center text-sm">
+                          <span className="text-gray-500">{t('checkout.support_id')}</span>
+                          <span className="font-medium text-gray-900">{formData.phone}</span>
                         </div>
-                        <div className="pt-6 border-t border-gray-200 mt-6 flex justify-between items-center">
-                          <span className="text-[#1a4d2e] font-black uppercase tracking-tighter text-[13px]">{t('checkout.total_payment')}</span>
-                          <span className="text-3xl font-black text-[#1a4d2e]">${finalTotal.toFixed(2)}</span>
+                        <div className="pt-3 border-t border-gray-100 mt-3 flex justify-between items-center">
+                          <span className="text-gray-900 font-bold">{t('checkout.total_payment')}</span>
+                          <span className="text-xl font-bold text-primary">${finalTotal.toFixed(2)}</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="space-y-6">
-                      <h3 className="text-[13px] font-black text-[#1a4d2e] uppercase tracking-[0.2em]">{t('checkout.next_steps')}</h3>
-                      <div className="space-y-5">
+                    <div className="space-y-4">
+                      <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-2 border-b pb-2">{t('checkout.next_steps')}</h3>
+                      <ul className="space-y-3">
                         {[
-                          "Confirm receipt of the automated confirmation email",
-                          "Download the encrypted ZIP/RAR from Drive below",
-                          "Message us on Telegram with your verify ID",
-                          "Receive your technical extraction key instantly"
+                          "Download your receipt (above)",
+                          "Click Telegram button used below",
+                          "Send the receipt PDF to chat",
+                          "Receive your password instantly"
                         ].map((step, i) => (
-                          <div key={i} className="flex items-center gap-5">
-                            <div className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center shrink-0 border border-green-100">
-                              <svg className="w-4 h-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 13l4 4L19 7" />
-                              </svg>
+                          <li key={i} className="flex items-start gap-3">
+                            <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center shrink-0 mt-0.5">
+                              <span className="text-green-700 text-xs font-bold">{i + 1}</span>
                             </div>
-                            <span className="text-[15px] text-gray-600 font-black">{step}</span>
+                            <span className="text-sm text-gray-600">{step}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Actions */}
+                  <div className="space-y-6">
+                    <div className="bg-white border border-gray-100 rounded-xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                      <div className="text-center mb-8">
+                        <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">{t('checkout.secure_access')}</h2>
+                      </div>
+
+                      <div className="space-y-10">
+                        {cartSnapshot.map((item, idx) => (
+                          <div key={idx} className="space-y-4">
+                            <div className="flex items-start gap-3">
+                              <div className="w-5 h-5 bg-[#1a4d2e]/10 text-[#1a4d2e] rounded flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-black">{idx + 1}</div>
+                              <p className="text-[13px] font-bold text-gray-700 leading-snug">{item.title}</p>
+                            </div>
+
+                            <a
+                              href={(item as any).file_url || "#"}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-full bg-[#1a4d2e] text-white py-3 rounded-md font-black text-sm flex items-center justify-center gap-2 hover:bg-[#143d24] transition-all shadow-md active:scale-[0.98]"
+                            >
+                              <DownloadIcon className="w-4 h-4" />
+                              {t('checkout.access_library')}
+                            </a>
                           </div>
                         ))}
                       </div>
                     </div>
                   </div>
-
-                  {/* Right Column: Dynamic Access */}
-                  <div className="space-y-8 flex flex-col">
-                    <div className="bg-[#f0f9ff] border-2 border-dashed border-blue-200 rounded-[40px] p-10 text-center flex-1">
-                      <div className="w-24 h-24 bg-white rounded-[32px] flex items-center justify-center mx-auto mb-10 shadow-xl">
-                        <svg className="w-12 h-12 text-[#0088cc]" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.17 11L10 18l-1.41-1.42L11.76 13 8.59 9.83 10 8.41 13.17 11.59 16.34 8.41 17.76 9.83 14.59 13l3.17 3.17-1.42 1.41z" opacity=".1" />
-                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.35-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.96-.75 3.78-1.65 6.31-2.74 7.58-3.27 3.61-1.51 4.35-1.77 4.84-1.78.11 0 .35.03.5.16.13.12.16.28.18.39.02.05.02.2.01.32z" />
-                        </svg>
-                      </div>
-                      <h4 className="text-2xl font-black text-[#1e3a8a] mb-4 uppercase tracking-tight">{t('checkout.secure_access')}</h4>
-                      <p className="text-blue-700/70 text-[14px] font-black mb-12 leading-relaxed uppercase tracking-widest italic">
-                        {t('checkout.password_required')}
-                      </p>
-
-                      <div className="space-y-6 px-6">
-                        <a
-                          href="https://drive.google.com"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-full bg-[#1a4d2e] text-white py-6 rounded-[24px] font-black text-[14px] uppercase tracking-widest flex items-center justify-center gap-4 hover:bg-[#143d24] transition-all shadow-xl hover:-translate-y-1 active:scale-95 border-b-4 border-[#0e2a19]"
-                        >
-                          {t('checkout.access_library')}
-                        </a>
-                        <a
-                          href="https://t.me/ebooksamnorng"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-full bg-[#0088cc] text-white py-6 rounded-[24px] font-black text-[14px] uppercase tracking-widest flex items-center justify-center gap-4 hover:bg-[#0077b5] transition-all shadow-xl hover:-translate-y-1 active:scale-95 border-b-4 border-[#006e9c]"
-                        >
-                          {t('checkout.request_key')}
-                        </a>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
 
-              <div className="mt-20 text-center pb-12 border-t border-gray-100">
+              <div className="bg-gray-50 p-4 text-center border-t border-gray-100">
                 <Link
                   href="/shop"
-                  className="inline-flex items-center gap-8 text-[13px] font-black text-gray-400 uppercase tracking-[0.2em] group hover:text-[#1a4d2e] transition-colors"
+                  className="inline-flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-primary transition-colors uppercase tracking-wider"
                 >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                  </svg>
                   <span>{t('checkout.back_to_shop')}</span>
-                  <div className="w-16 h-[3px] bg-red-600"></div>
                 </Link>
               </div>
             </div>
 
             {/* Trust Footer */}
-            <div className="mt-16 text-center text-[12px] text-gray-400 uppercase tracking-widest font-black">
+            <div className="mt-8 text-center text-[11px] text-gray-400 uppercase tracking-widest font-semibold">
               {t('checkout.trust_footer')}
             </div>
           </div>

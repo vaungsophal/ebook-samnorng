@@ -50,6 +50,7 @@ function ShopContent() {
             rating: Number(book.rating) || 5,
             reviews: Number(book.reviews) || 0,
             details: book.details || '',
+            file_url: book.file_url || '',
           })) || [];
           setProducts(mappedProducts);
         }

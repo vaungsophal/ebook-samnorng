@@ -179,71 +179,14 @@ export default function ProductDetailPage({ params }: PageProps) {
             </div>
 
             {/* Price */}
-            <div className="mb-8 sm:mb-12 flex items-baseline gap-1.5">
+            <div className="mb-8 sm:mb-10 flex items-baseline gap-1.5">
               <span className="text-4xl font-black text-[#111]">
                 ${product.price.toFixed(2)}
               </span>
             </div>
 
-
-            {/* Short Description (Replaces Meta Data) */}
-            <div className="mb-8 sm:mb-10 text-base text-gray-600 leading-relaxed border-b border-dashed border-gray-200 pb-8">
-              {product.description}
-            </div>
-
-            {/* Download Link Section - SIMPLE & PROFESSIONAL */}
-            <div className="mb-10 sm:mb-14">
-              <div className="flex items-center gap-2 mb-4">
-                <ShieldCheck className="w-5 h-5 text-[#248a3d]" />
-                <span className="text-[14px] font-black text-[#444] uppercase tracking-wider">{t('product.verified_source')}</span>
-              </div>
-
-              <a
-                href={product.file_url || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => {
-                  if (!product.file_url) {
-                    e.preventDefault();
-                    alert(t('product.file_unavailable'));
-                  }
-                }}
-                className={`w-full flex items-center justify-between px-8 py-5 rounded-sm shadow-xl transition-all group overflow-hidden relative ${product.file_url ? 'bg-gray-900 text-white hover:bg-black cursor-pointer shadow-2xl transform active:scale-[0.99]' : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-70'}`}
-              >
-                <div className="flex items-center gap-5 relative z-10">
-                  <div className="p-3 bg-white/10 rounded">
-                    <DownloadIcon className="w-6 h-6 group-hover:translate-y-0.5 transition-transform" />
-                  </div>
-                  <div className="text-left">
-                    <div className="font-black text-base tracking-widest uppercase">{t('product.download_now')}</div>
-                    <div className="text-[12px] opacity-80">
-                      {product.file_url ? t('product.click_to_download') : t('product.file_unavailable')}
-                    </div>
-                  </div>
-                </div>
-                <div className="text-[12px] font-black bg-white/10 px-3 py-1 rounded relative z-10">
-                  PDF / ZIP
-                </div>
-
-                {/* Subtle hover effect */}
-                {product.file_url && (
-                  <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                )}
-              </a>
-            </div>
-
-            {/* Full Details */}
-            {product.details && (
-              <div className="mb-10">
-                <h3 className="font-black text-xl mb-4">{t('product.details')}</h3>
-                <div className="text-[#444] text-[16px] leading-relaxed whitespace-pre-wrap">
-                  {product.details}
-                </div>
-              </div>
-            )}
-
-            {/* Quantity & Add to Cart - ALWAYS IN-LINE */}
-            <div className="flex flex-row items-center gap-2 sm:gap-4 pt-4 border-t border-gray-100">
+            {/* Quantity & Add to Cart - MOVED UP */}
+            <div className="flex flex-row items-center gap-2 sm:gap-4 mb-8">
               <div className="flex items-center border border-[#eee] rounded bg-white shadow-sm overflow-hidden h-10 shrink-0">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -271,11 +214,48 @@ export default function ProductDetailPage({ params }: PageProps) {
                 <span className="relative z-10 whitespace-nowrap">
                   {isAdded ? t('product.added') : t('product.add_to_cart')}
                 </span>
-
-                {/* Subtle shine effect on hover */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] pointer-events-none"></div>
               </button>
             </div>
+
+            {/* Short Description */}
+            <div className="mb-10 text-base text-gray-600 leading-relaxed border-b border-dashed border-gray-200 pb-8">
+              {product.description}
+            </div>
+
+            {/* Simplified Download Button */}
+            <div className="mb-10">
+              <a
+                href={product.file_url || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => {
+                  if (!product.file_url) {
+                    e.preventDefault();
+                    alert(t('product.file_unavailable'));
+                  }
+                }}
+                className="w-full bg-[#1a4d2e] text-white py-4 rounded-md font-black text-sm flex items-center justify-center gap-3 hover:bg-[#143d24] transition-all shadow-lg active:scale-[0.98]"
+              >
+                <DownloadIcon className="w-5 h-5" />
+                {t('checkout.access_library')}
+              </a>
+              <p className="text-center text-[10px] text-gray-400 mt-2 font-bold uppercase tracking-widest">
+                {t('product.verified_source')}
+              </p>
+            </div>
+
+            {/* Full Details */}
+            {product.details && (
+              <div className="mb-10">
+                <h3 className="font-black text-xl mb-4">{t('product.details')}</h3>
+                <div className="text-[#444] text-[16px] leading-relaxed whitespace-pre-wrap">
+                  {product.details}
+                </div>
+              </div>
+            )}
+
+
 
             <div className="mt-8 sm:mt-12 pt-6 border-t border-gray-100 uppercase text-[10px] tracking-widest font-bold text-[#bbb]">
               {t('product.product_code')}: <span className="text-[#888]">{id}</span>

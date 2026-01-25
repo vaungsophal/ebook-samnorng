@@ -19,6 +19,7 @@ export function ProductCard({
   category,
   description,
   details,
+  file_url,
 }: ProductCardProps) {
   const { addToCart } = useCart();
   const [isAdded, setIsAdded] = useState(false);
@@ -34,6 +35,7 @@ export function ProductCard({
       category,
       description,
       details,
+      file_url,
     };
     addToCart(product);
     setIsAdded(true);
