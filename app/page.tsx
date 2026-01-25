@@ -7,9 +7,11 @@ import Link from 'next/link';
 import { products, categories } from '@/lib/products';
 import { ArrowRight, BookOpen, Shield, Zap } from 'lucide-react';
 import { BannerSlider } from '@/components/banner-slider';
+import { useLanguage } from '@/context/language-context';
 
 export default function HomePage() {
   const featuredProducts = products.slice(0, 8);
+  const { t } = useLanguage();
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] flex flex-col">
@@ -26,9 +28,9 @@ export default function HomePage() {
                     <Link
                       key={name}
                       href={`/shop?category=${encodeURIComponent(name)}`}
-                      className="flex items-center justify-between px-4 flex-1 text-[13px] text-[#4b5563] border-b border-gray-100 last:border-0 hover:bg-gray-50 hover:text-[#ff4d4d] group transition-colors"
+                      className="flex items-center justify-between px-6 flex-1 text-[15px] sm:text-[16px] text-[#4b5563] border-b border-gray-100 last:border-0 hover:bg-gray-50 hover:text-[#ff4d4d] group transition-colors"
                     >
-                      <span className="font-medium">{name}</span>
+                      <span className="font-bold">{name}</span>
                       <svg className="w-3 h-3 text-gray-300 group-hover:text-[#ff4d4d] transition-colors" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                       </svg>
@@ -50,21 +52,21 @@ export default function HomePage() {
           <section className="py-8 sm:py-16">
             <div className="max-w-7xl mx-auto">
               <div className="w-full relative h-12 flex items-stretch mb-8 overflow-hidden rounded-sm">
-                <div className="bg-[#009661] text-white px-6 flex items-center font-bold text-sm sm:text-base italic tracking-tight" style={{ clipPath: 'polygon(0 0, 95% 0, 100% 100%, 0% 100%)' }}>
-                  FEATURED REPOSITORY
+                <div className="bg-[#009661] text-white px-8 flex items-center font-bold text-base sm:text-lg italic tracking-tight" style={{ clipPath: 'polygon(0 0, 95% 0, 100% 100%, 0% 100%)' }}>
+                  {t('common.featured_repository')}
                 </div>
-                <div className="flex-1 bg-[#ffed4a] flex items-center justify-end px-6 font-black text-sm sm:text-base text-[#1a4d2e] italic tracking-tight" style={{ marginLeft: '-15px', clipPath: 'polygon(0 0, 100% 0, 100% 100%, 5% 100%)' }}>
-                  ONLINE LIBRARY
+                <div className="flex-1 bg-[#ffed4a] flex items-center justify-end px-8 font-black text-base sm:text-lg text-[#1a4d2e] italic tracking-tight" style={{ marginLeft: '-15px', clipPath: 'polygon(0 0, 100% 0, 100% 100%, 5% 100%)' }}>
+                  {t('common.online_library')}
                 </div>
               </div>
               <div className="flex justify-between items-center mb-6">
-                <p className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Latest Engineering Resources</p>
+                <p className="text-sm text-muted-foreground uppercase tracking-widest font-bold">{t('common.latest_resources')}</p>
                 <Link
                   href="/shop"
-                  className="text-[#1a4d2e] hover:underline transition-colors font-bold text-xs sm:text-sm flex items-center gap-2"
+                  className="text-[#1a4d2e] hover:underline transition-colors font-bold text-sm sm:text-base flex items-center gap-2"
                 >
-                  View All Gallery
-                  <ArrowRight className="w-4 h-4" />
+                  {t('common.view_all')}
+                  <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
 

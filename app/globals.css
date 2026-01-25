@@ -75,8 +75,8 @@
 }
 
 @theme inline {
-  --font-sans: 'Geist', 'Geist Fallback';
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --font-sans: var(--font-lato), ui-sans-serif, system-ui, sans-serif;
+  --font-khmer: var(--font-kantumruy), ui-sans-serif, system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -116,13 +116,41 @@
 }
 
 @layer base {
+  html {
+    font-size: 17px;
+  }
+
+  @media (min-width: 768px) {
+    html {
+      font-size: 19px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    html {
+      font-size: 20px;
+    }
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans leading-relaxed;
   }
+}
+
+html[lang="km"],
+html[lang="km"] body,
+html[lang="km"] * {
+  font-family: var(--font-khmer) !important;
+  line-height: 1.6;
+}
+
+html[lang="en"] body {
+  font-family: var(--font-sans) !important;
+  line-height: 1.5;
 }
 
 @layer components {
