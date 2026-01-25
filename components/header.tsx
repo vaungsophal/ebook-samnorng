@@ -160,7 +160,7 @@ export function Header() {
                     href={name === 'All Categories' ? '/shop' : `/shop?category=${encodeURIComponent(name)}`}
                     className={`px-6 py-4 font-bold border-b border-gray-50 last:border-0 hover:bg-gray-50 hover:text-[#ff4d4d] transition-colors whitespace-nowrap ${language === 'km' ? 'text-[15px]' : 'text-[14px]'}`}
                   >
-                    {name === 'All Categories' ? t('common.all_categories') : name}
+                    {t(`categories.${name}`)}
                   </Link>
                 ))}
               </div>
@@ -227,7 +227,7 @@ export function Header() {
                 className={`flex items-center justify-between px-8 py-4 font-black transition-all border-l-4 ${pathname.includes(encodeURIComponent(name)) ? 'border-[#ff4d4d] bg-white text-[#ff4d4d]' : 'border-transparent text-[#4b5563] hover:bg-gray-100'}`}
               >
                 <span className={language === 'km' ? 'text-[16px]' : 'text-[15px]'}>
-                  {name === 'All Categories' ? t('common.all_categories') : name}
+                  {t(`categories.${name}`)}
                 </span>
                 <ChevronDown className="w-5 h-5 opacity-30 -rotate-90 group-hover:rotate-0 transition-transform" />
               </Link>

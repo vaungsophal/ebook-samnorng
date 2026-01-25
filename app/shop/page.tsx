@@ -160,7 +160,7 @@ function ShopContent() {
                       : 'hover:bg-secondary text-foreground font-bold'
                       } ${language === 'km' ? 'text-[16px]' : 'text-[15px]'}`}
                   >
-                    {category === 'All Categories' ? t('common.all_categories') : category}
+                    {category === 'All Categories' ? t('common.all_categories') : t(`categories.${category}`)}
                   </button>
                 ))}
               </div>
@@ -195,7 +195,7 @@ function ShopContent() {
                           : 'hover:bg-secondary text-foreground'
                           } ${language === 'km' ? 'text-[13px]' : 'text-xs'}`}
                       >
-                        {category === 'All Categories' ? t('common.all_categories') : category}
+                        {category === 'All Categories' ? t('common.all_categories') : t(`categories.${category}`)}
                       </button>
                     ))}
                   </div>
@@ -221,7 +221,7 @@ function ShopContent() {
             <div className="flex flex-col gap-3 sm:gap-4 mb-6 sm:mb-8">
               <div>
                 <h1 className={`font-black text-foreground mb-2 break-words ${language === 'km' ? 'text-2xl sm:text-3xl lg:text-4xl' : 'text-3xl sm:text-4xl lg:text-5xl'}`}>
-                  {selectedCategory === 'All Categories' ? t('common.all_books') : selectedCategory}
+                  {selectedCategory === 'All Categories' ? t('common.all_books') : t(`categories.${selectedCategory}`)}
                 </h1>
                 <p className="text-base sm:text-lg text-muted-foreground font-medium">
                   {t('common.showing_results').replace('{count}', filteredAndSortedProducts.length.toString())}

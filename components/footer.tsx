@@ -50,7 +50,7 @@ export default function Footer() {
           <div className="space-y-4 text-[13px] sm:text-[14px] leading-relaxed opacity-90">
             <div>
               <p className="font-semibold">{t('common.footer.phone_label')}</p>
-              <p>0967950480</p>
+              <p>087330027</p>
             </div>
             <div>
               <p className="font-semibold">{t('common.footer.email_label')}</p>

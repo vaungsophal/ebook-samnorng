@@ -102,5 +102,98 @@
         "request_key": "Request Extraction Key",
         "back_to_shop": "Back to Shop Gallery",
         "trust_footer": "Secure Digital Delivery • Professional Engineering Library • 24/7 Support"
+    },
+    "categories": {
+        "All Categories": "All Categories",
+        "Architectural Documentation": "Architectural Documentation",
+        "Architecture English": "Architecture English",
+        "Architecture Student Project": "Architecture Student Project",
+        "Vietnamese Texture Books": "Vietnamese Texture Books",
+        "English Texture Books": "English Texture Books",
+        "M&E Documents": "M&E Documents",
+        "Construction Documents": "Construction Documents",
+        "Construction Economics Document": "Construction Economics Document",
+        "Construction Software": "Construction Software",
+        "Construction spreadsheet": "Construction spreadsheet",
+        "Building Standards": "Building Standards",
+        "Building Materials": "Building Materials",
+        "Traffic Works": "Traffic Works",
+        "Construction Management": "Construction Management",
+        "Foundation Engineering": "Foundation Engineering",
+        "Structural Design": "Structural Design",
+        "Geotechnical": "Geotechnical",
+        "Civil Infrastructure": "Civil Infrastructure",
+        "Transportation": "Transportation",
+        "Environmental": "Environmental"
+    },
+    "payment_instruction": {
+        "breadcrumb_home": "HOME",
+        "breadcrumb_title": "PAYMENT INSTRUCTIONS",
+        "header_title": "Order <span class=\"text-yellow-400\">Process</span>",
+        "header_subtitle": "Follow our professional workflow to access your construction documents quickly.",
+        "steps": {
+            "step1": {
+                "title": "1. Explore & Select",
+                "subtitle": "Browse our extensive library",
+                "description": "Discover the e-books you need for your construction projects. Click on any item to view detailed specifications, pages, and format information.",
+                "alt": "Browsing Ebooks"
+            },
+            "step2": {
+                "title": "2. Add to Cart",
+                "subtitle": "Secure your selection",
+                "description": "Once you found the right technical document, simply click 'ADD TO SHOPPING CART'. You can continue shopping or proceed directly to your cart.",
+                "alt": "Adding to Cart"
+            },
+            "step3": {
+                "title": "3. Secure Payment",
+                "subtitle": "Instant KHQR Transaction",
+                "description": "Proceed to checkout and scan the provided KHQR code with your banking app (ABA, Wing, etc.). It's fast, secure, and encrypted.",
+                "alt": "Scanning QR Code"
+            },
+            "step4": {
+                "title": "4. Receive Access",
+                "subtitle": "Get your unlock code",
+                "description": "After payment, click the 'Submit' button. You'll be redirected to our Telegram chat. Share your receipt and we'll send your unzip password immediately.",
+                "alt": "Telegram Support"
+            }
+        },
+        "details_button": "Details",
+        "delivery_title": "Instant Delivery via <span class=\"text-[#0088cc]\">Telegram</span>",
+        "delivery_description": "Once your payment is submitted, our automated system or support team will provide the <span class=\"font-bold text-red-600\">Unzip Password</span> directly in the chat. All files are hosted on high-speed Google Drive for your convenience.",
+        "secure_drive": "Secure Drive",
+        "encrypted_rar": "Encrypted RAR"
+    },
+    "contact_page": {
+        "breadcrumb_home": "HOME",
+        "breadcrumb_title": "CONTACT US",
+        "title": "Contact Us",
+        "subtitle": "We'd love to hear from you. Let us know how we can help!",
+        "email": "Email",
+        "email_sub": "We reply within 24 hours",
+        "phone": "Phone",
+        "phone_sub": "Mon-Fri, 9AM-5PM EST",
+        "address": "Address",
+        "address_val": "123 Engineering Street\nNew York, NY 10001\nUnited States",
+        "form_title": "Send us a Message",
+        "form_success": "Thank you! Your message has been sent successfully. We'll get back to you soon.",
+        "name_placeholder": "Your Name",
+        "email_placeholder": "Your Email",
+        "subject_placeholder": "Subject",
+        "message_placeholder": "Your Message",
+        "send_button": "Send Message",
+        "faq_title": "Frequently Asked Questions",
+        "faq_q1": "How do I download my e-books?",
+        "faq_a1": "After purchase, you can download your e-books directly from your account dashboard. You'll have lifetime access to all your purchases.",
+        "faq_q2": "What payment methods do you accept?",
+        "faq_a2": "We accept bank transfers, credit cards, debit cards, and digital wallets. All payments are processed securely.",
+        "faq_q3": "Can I get a refund?",
+        "faq_a3": "Yes, we offer a 14-day money-back guarantee on all e-book purchases if you're not satisfied with the content.",
+        "faq_q4": "Are the books available on mobile?",
+        "faq_a4": "Our e-books are compatible with all devices including smartphones, tablets, and computers. Simply use your preferred PDF reader.",
+        "faq_q5": "How often do you add new books?",
+        "faq_a5": "We add new titles to our collection weekly. Subscribe to our newsletter to be notified about new releases.",
+        "ready_title": "Ready to Explore?",
+        "ready_subtitle": "Browse our collection of engineering e-books and start learning today",
+        "browse_button": "Browse E-Books"
     }
 }
