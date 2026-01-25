@@ -30,10 +30,18 @@ export default function EditBookPage({ params }: PageProps) {
     });
 
     useEffect(() => {
-        if (id) {
-            fetchBook();
-        }
-    }, [id]);
+        const checkSessionAndFetch = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                router.push('/login');
+                return;
+            }
+            if (id) {
+                fetchBook();
+            }
+        };
+        checkSessionAndFetch();
+    }, [id, supabase, router]);
 
     const fetchBook = async () => {
         try {

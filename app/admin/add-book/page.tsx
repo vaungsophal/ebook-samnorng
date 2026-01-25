@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import { categories } from '@/lib/products';
@@ -11,6 +11,17 @@ export default function AddBookPage() {
     const router = useRouter();
     const supabase = createClientComponentClient();
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const checkSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                router.push('/login');
+            }
+        };
+        checkSession();
+    }, [supabase, router]);
+
     const [formData, setFormData] = useState({
         title: '',
         description: '',

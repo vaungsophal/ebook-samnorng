@@ -33,7 +33,7 @@ export function Header() {
   return (
     <>
       {/* Top Announcement Bar - Slimmer on Mobile */}
-      <div className="bg-[#002b5c] text-white text-[11px] sm:text-[15px] py-2 sm:py-2.5 font-medium border-b border-white/5">
+      <div className="bg-[#064884] text-white text-[9px] sm:text-[12px] py-0.5 sm:py-1 font-medium border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
           <div className="truncate pr-4 hidden sm:block">
             {t('common.announcement')}
@@ -46,8 +46,8 @@ export function Header() {
                 rel="noopener noreferrer"
                 className="hover:text-yellow-400 transition-colors flex items-center gap-1"
               >
-                <Facebook className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-                <span className="hidden md:inline text-[15px] font-bold">{t('common.facebook')}</span>
+                <Facebook className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                <span className="hidden md:inline text-[12px] font-bold">{t('common.facebook')}</span>
               </a>
               <div className="w-[1px] h-3 bg-white/20"></div>
               <a
@@ -56,8 +56,8 @@ export function Header() {
                 rel="noopener noreferrer"
                 className="hover:text-yellow-400 transition-colors flex items-center gap-1.5"
               >
-                <Send className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-                <span className="hidden md:inline text-[15px] font-bold">{t('common.telegram')}</span>
+                <Send className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                <span className="hidden md:inline text-[12px] font-bold">{t('common.telegram')}</span>
               </a>
             </div>
             <div className="flex items-center gap-3">
@@ -187,69 +187,72 @@ export function Header() {
           </nav>
         </div>
       </div>
-      {/* Mobile Menu Sidebar */}
+      {/* Mobile Menu Overlay - Simple & Professional */}
       <div
-        className={`fixed inset-0 bg-black/50 z-[100] transition-opacity duration-300 lg:hidden ${mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-          }`}
-        onClick={() => setMobileMenuOpen(false)}
-      />
-      <div
-        className={`fixed top-0 left-0 h-full w-[320px] bg-white z-[101] shadow-2xl transform transition-transform duration-500 lg:hidden flex flex-col rounded-r-[32px] overflow-hidden ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+        className={`fixed inset-0 bg-background z-[100] transition-all duration-300 lg:hidden flex flex-col ${mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
           }`}
       >
-        {/* Mobile Sidebar Brand Header */}
-        <div className="p-8 bg-[#002b5c] text-white">
-          <div className="flex justify-between items-start mb-6">
-            <Link href="/" onClick={() => setMobileMenuOpen(false)}>
-              <Image src="/logo.png" alt="Logo" width={180} height={50} className="h-10 w-auto invert brightness-0" />
-            </Link>
-            <button
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full hover:bg-white/20 transition-colors"
-            >
-              <X className="w-5 h-5 text-white" />
-            </button>
-          </div>
-          <div className="space-y-1">
-            <p className="text-[13px] font-black uppercase tracking-widest text-yellow-400">{t('common.categories')}</p>
-            <p className="text-[11px] opacity-60 font-medium">{t('common.announcement')}</p>
-          </div>
+        {/* Mobile Header */}
+        <div className="flex items-center justify-between p-4 border-b border-border bg-card">
+          <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+            <Image src="/logo.png" alt="Logo" width={140} height={40} className="h-8 w-auto object-contain" />
+          </Link>
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-secondary text-foreground hover:bg-muted transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
-        {/* Mobile Sidebar Body: Categories */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar bg-[#f8f9fa]">
-          <div className="flex flex-col py-4">
-            {categories.map((name) => (
+        {/* Mobile Nav Links */}
+        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <nav className="flex flex-col space-y-4">
+            {navLinks.map((link) => (
               <Link
-                key={name}
-                href={name === 'All Categories' ? '/shop' : `/shop?category=${encodeURIComponent(name)}`}
+                key={link.name}
+                href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center justify-between px-8 py-4 font-black transition-all border-l-4 ${pathname.includes(encodeURIComponent(name)) ? 'border-[#ff4d4d] bg-white text-[#ff4d4d]' : 'border-transparent text-[#4b5563] hover:bg-gray-100'}`}
+                className={`text-2xl font-black tracking-tight ${pathname === link.href ? 'text-primary' : 'text-foreground hover:text-primary/70 transition-colors'
+                  }`}
               >
-                <span className={language === 'km' ? 'text-[16px]' : 'text-[15px]'}>
-                  {t(`categories.${name}`)}
-                </span>
-                <ChevronDown className="w-5 h-5 opacity-30 -rotate-90 group-hover:rotate-0 transition-transform" />
+                {link.name}
               </Link>
             ))}
+          </nav>
+
+          <div className="pt-6 border-t border-border">
+            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">{t('common.categories')}</h3>
+            <div className="grid grid-cols-1 gap-3">
+              {categories.map((name) => (
+                <Link
+                  key={name}
+                  href={name === 'All Categories' ? '/shop' : `/shop?category=${encodeURIComponent(name)}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-base font-medium text-foreground hover:text-primary transition-colors flex items-center justify-between"
+                >
+                  <span>{t(`categories.${name}`)}</span>
+                  <ChevronDown className="w-4 h-4 -rotate-90 opacity-40" />
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Mobile Sidebar Footer: Quick Links & Socials */}
-        <div className="p-8 bg-white border-t border-gray-100">
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            <a href="https://t.me/ebooksamnorng" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 p-4 bg-[#f0f9ff] rounded-2xl group transition-all">
-              <Send className="w-6 h-6 text-[#0088cc] group-hover:scale-110 transition-transform" />
-              <span className="text-[10px] font-black uppercase text-[#0088cc]">Telegram</span>
-            </a>
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 p-4 bg-[#f0f7ff] rounded-2xl group transition-all">
-              <Facebook className="w-6 h-6 text-[#3b5998] group-hover:scale-110 transition-transform" />
-              <span className="text-[10px] font-black uppercase text-[#3b5998]">Facebook</span>
-            </a>
-          </div>
-          <div className="flex justify-center">
+        {/* Mobile Footer */}
+        <div className="p-6 bg-card border-t border-border">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex gap-4">
+              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="p-2 bg-secondary rounded-full text-foreground hover:bg-primary hover:text-white transition-colors">
+                <Facebook className="w-5 h-5" />
+              </a>
+              <a href="https://t.me/ebooksamnorng" target="_blank" rel="noopener noreferrer" className="p-2 bg-secondary rounded-full text-foreground hover:bg-primary hover:text-white transition-colors">
+                <Send className="w-5 h-5" />
+              </a>
+            </div>
             <LanguageSwitcher />
           </div>
+          <p className="text-xs text-center text-muted-foreground font-medium">© 2024 EbookSamnorng</p>
         </div>
       </div>
     </>

@@ -67,9 +67,9 @@ export default function PaymentInstructionPage() {
                 <section className="relative py-12 md:py-16 bg-[#064884] overflow-hidden">
                     <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
                     <div className="max-w-5xl mx-auto px-4 relative z-10 text-center uppercase tracking-tight">
-                        <h1 className="text-xl md:text-2xl font-bold text-white mb-2" dangerouslySetInnerHTML={{ __html: t('payment_instruction.header_title') }}>
+                        <h1 className="text-xl md:text-2xl font-black text-white mb-2" dangerouslySetInnerHTML={{ __html: t('payment_instruction.header_title') }}>
                         </h1>
-                        <p className="text-blue-100 text-[11px] md:text-xs font-semibold opacity-80 uppercase tracking-widest">
+                        <p className="text-blue-100 text-[10px] md:text-xs font-semibold opacity-80 uppercase tracking-widest">
                             {t('payment_instruction.header_subtitle')}
                         </p>
                     </div>

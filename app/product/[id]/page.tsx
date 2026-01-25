@@ -151,7 +151,7 @@ export default function ProductDetailPage({ params }: PageProps) {
 
           {/* Middle Column: Product Info (4/12) */}
           <div className="lg:col-span-6 xl:col-span-4 flex flex-col">
-            <nav className="flex flex-wrap items-center gap-2 text-[12px] tracking-[0.05em] text-[#999] uppercase mb-5 sm:mb-8 font-black">
+            <nav className="flex flex-wrap items-center gap-2 text-xs tracking-[0.05em] text-[#999] uppercase mb-5 sm:mb-8 font-black">
               <Link href="/" className="hover:text-primary transition-colors">{t('common.home')}</Link>
               <span className="text-[#ccc]">/</span>
               <Link href="/shop" className="hover:text-primary transition-colors whitespace-nowrap">{t('product.documents')}</Link>
@@ -159,7 +159,7 @@ export default function ProductDetailPage({ params }: PageProps) {
               <span className="text-[#555] truncate max-w-[200px]">{product.title}</span>
             </nav>
 
-            <h1 className={`font-black text-[#222] mb-4 leading-[1.2] tracking-tight ${language === 'km' ? 'text-3xl sm:text-4xl' : 'text-3xl sm:text-[36px]'}`}>
+            <h1 className={`font-black text-[#222] mb-4 leading-[1.2] tracking-tight ${language === 'km' ? 'text-2xl sm:text-3xl' : 'text-2xl sm:text-3xl'}`}>
               {product.title}
             </h1>
 

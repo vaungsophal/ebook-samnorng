@@ -1,6 +1,6 @@
 import React from "react"
 import type { Metadata } from 'next'
-import { Lato, Kantumruy_Pro } from 'next/font/google'
+import { Lato, Noto_Sans_Khmer } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { CartProvider } from '@/context/cart-context'
 import { LanguageProvider } from '@/context/language-context'
@@ -12,9 +12,9 @@ const lato = Lato({
   variable: '--font-lato'
 });
 
-const kantumruy = Kantumruy_Pro({
+const notoSansKhmer = Noto_Sans_Khmer({
   subsets: ["khmer"],
-  variable: '--font-kantumruy'
+  variable: '--font-noto-sans-khmer'
 });
 
 export const metadata: Metadata = {
@@ -33,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${lato.variable} ${kantumruy.variable}`}>
+    <html lang="en" className={`${lato.variable} ${notoSansKhmer.variable}`}>
       <body className="antialiased font-sans">
         <LanguageProvider>
           <CartProvider>

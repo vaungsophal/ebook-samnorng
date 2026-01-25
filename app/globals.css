@@ -76,7 +76,7 @@
 
 @theme inline {
   --font-sans: var(--font-lato), ui-sans-serif, system-ui, sans-serif;
-  --font-khmer: var(--font-kantumruy), ui-sans-serif, system-ui, sans-serif;
+  --font-khmer: var(--font-noto-sans-khmer), ui-sans-serif, system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -116,28 +116,48 @@
 }
 
 @layer base {
-  html {
-    font-size: 17px;
-  }
-
-  @media (min-width: 768px) {
-    html {
-      font-size: 19px;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    html {
-      font-size: 20px;
-    }
-  }
-
   * {
     @apply border-border outline-ring/50;
   }
 
   body {
-    @apply bg-background text-foreground font-sans leading-relaxed;
+    @apply bg-background text-foreground font-sans leading-relaxed text-sm;
+  }
+
+  /* Enforce font size consistency on form elements */
+  input,
+  textarea,
+  select,
+  button {
+    @apply text-sm font-sans;
+  }
+
+  h1 {
+    @apply text-2xl font-bold tracking-tight;
+  }
+
+  h2 {
+    @apply text-xl font-semibold tracking-tight;
+  }
+
+  h3 {
+    @apply text-lg font-semibold tracking-tight;
+  }
+
+  h4 {
+    @apply text-base font-semibold tracking-tight;
+  }
+
+  h5 {
+    @apply text-sm font-semibold tracking-tight;
+  }
+
+  h6 {
+    @apply text-xs font-semibold tracking-tight;
+  }
+
+  small {
+    @apply text-xs leading-none;
   }
 }
 

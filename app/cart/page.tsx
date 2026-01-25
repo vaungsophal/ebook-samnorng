@@ -28,7 +28,7 @@ export default function CartPage() {
       {/* Breadcrumb Section */}
       <div className="bg-[#f5f5f5] py-4 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4">
-          <nav className="flex items-center gap-2 text-[13px] font-black tracking-widest uppercase">
+          <nav className="flex items-center gap-2 text-xs font-black tracking-widest uppercase">
             <Link href="/" className="text-gray-500 hover:text-primary transition-colors">{t('common.home')}</Link>
             <span className="text-gray-300">/</span>
             <span className="text-foreground">{t('cart.title')}</span>
@@ -38,7 +38,7 @@ export default function CartPage() {
 
       <div className="flex-1 max-w-7xl mx-auto px-2 sm:px-4 py-8 sm:py-12 w-full">
 
-        <h1 className={`font-black text-foreground mb-10 ${language === 'km' ? 'text-3xl sm:text-4xl' : 'text-4xl sm:text-5xl'}`}>
+        <h1 className={`font-black text-foreground mb-10 ${language === 'km' ? 'text-2xl sm:text-3xl' : 'text-3xl sm:text-4xl'}`}>
           {t('cart.title')}
         </h1>
 

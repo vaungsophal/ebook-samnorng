@@ -60,10 +60,10 @@ export default function ContactPage() {
       <div className="flex-1 max-w-6xl mx-auto px-2 sm:px-4 py-6 sm:py-12 w-full">
 
         {/* Header */}
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+        <h1 className="text-2xl sm:text-3xl font-black text-foreground mb-4 uppercase tracking-tight">
           {t('contact_page.title')}
         </h1>
-        <p className="text-base sm:text-lg text-muted-foreground mb-8 sm:mb-12">
+        <p className="text-sm sm:text-base text-muted-foreground mb-8 sm:mb-12">
           {t('contact_page.subtitle')}
         </p>
 
@@ -72,9 +72,9 @@ export default function ContactPage() {
           {/* Contact Info Cards */}
           <div className="bg-card rounded-lg border border-border p-6 sm:p-8 text-center">
             <div className="flex justify-center mb-4">
-              <Mail className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
+              <Mail className="w-8 h-8 text-primary" />
             </div>
-            <h3 className="font-bold text-lg text-foreground mb-2">{t('contact_page.email')}</h3>
+            <h3 className="font-bold text-base text-foreground mb-2">{t('contact_page.email')}</h3>
             <p className="text-sm text-foreground break-all">
               <a href="mailto:info@ebooksamnorng.com" className="hover:text-primary transition-colors">
                 info@ebooksamnorng.com
@@ -85,9 +85,9 @@ export default function ContactPage() {
 
           <div className="bg-card rounded-lg border border-border p-6 sm:p-8 text-center">
             <div className="flex justify-center mb-4">
-              <Phone className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
+              <Phone className="w-8 h-8 text-primary" />
             </div>
-            <h3 className="font-bold text-lg text-foreground mb-2">{t('contact_page.phone')}</h3>
+            <h3 className="font-bold text-base text-foreground mb-2">{t('contact_page.phone')}</h3>
             <p className="text-sm text-foreground">
               <a href="tel:087330027" className="hover:text-primary transition-colors">
                 087 330 027
@@ -98,9 +98,9 @@ export default function ContactPage() {
 
           <div className="bg-card rounded-lg border border-border p-6 sm:p-8 text-center">
             <div className="flex justify-center mb-4">
-              <MapPin className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
+              <MapPin className="w-8 h-8 text-primary" />
             </div>
-            <h3 className="font-bold text-lg text-foreground mb-2">{t('contact_page.address')}</h3>
+            <h3 className="font-bold text-base text-foreground mb-2">{t('contact_page.address')}</h3>
             <p className="text-sm text-foreground whitespace-pre-line">
               {t('contact_page.address_val')}
             </p>
@@ -111,7 +111,7 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
           {/* Contact Form */}
           <div className="bg-card rounded-lg border border-border p-6 sm:p-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6">{t('contact_page.form_title')}</h2>
+            <h2 className="text-xl sm:text-2xl font-black text-foreground mb-6 uppercase tracking-tight">{t('contact_page.form_title')}</h2>
 
             {submitted && (
               <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-900">

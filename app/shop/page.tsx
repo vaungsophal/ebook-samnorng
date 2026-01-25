@@ -133,12 +133,12 @@ function ShopContent() {
             <span className="text-gray-300">/</span>
             <span className="text-foreground">{t('common.shop')}</span>
           </nav>
-          <Link
+          {/* <Link
             href="/admin/add-book"
             className="text-[12px] font-bold uppercase tracking-wider text-indigo-600 hover:text-indigo-800"
           >
             {t('common.add_book')}
-          </Link>
+          </Link> */}
         </div>
       </div>
 
@@ -220,10 +220,10 @@ function ShopContent() {
             {/* Top Bar */}
             <div className="flex flex-col gap-3 sm:gap-4 mb-6 sm:mb-8">
               <div>
-                <h1 className={`font-black text-foreground mb-2 break-words ${language === 'km' ? 'text-2xl sm:text-3xl lg:text-4xl' : 'text-3xl sm:text-4xl lg:text-5xl'}`}>
+                <h1 className={`font-black text-foreground mb-2 break-words ${language === 'km' ? 'text-2xl sm:text-3xl' : 'text-2xl sm:text-3xl'}`}>
                   {selectedCategory === 'All Categories' ? t('common.all_books') : t(`categories.${selectedCategory}`)}
                 </h1>
-                <p className="text-base sm:text-lg text-muted-foreground font-medium">
+                <p className="text-sm sm:text-base text-muted-foreground font-medium">
                   {t('common.showing_results').replace('{count}', filteredAndSortedProducts.length.toString())}
                 </p>
               </div>

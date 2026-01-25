@@ -30,6 +30,7 @@ export const config = {
          * - favicon.ico (favicon file)
          * - public folder
          */
+        '/admin',
         '/admin/:path*',
     ],
 }
