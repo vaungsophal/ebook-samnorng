@@ -21,28 +21,28 @@ export default function PaymentInstructionPage() {
             title: t('payment_instruction.steps.step1.title'),
             subtitle: t('payment_instruction.steps.step1.subtitle'),
             description: t('payment_instruction.steps.step1.description'),
-            imageUrl: "/browsing_ebooks_1769275211119.png",
+            imageUrl: "/phase1.png",
             alt: t('payment_instruction.steps.step1.alt')
         },
         {
             title: t('payment_instruction.steps.step2.title'),
             subtitle: t('payment_instruction.steps.step2.subtitle'),
             description: t('payment_instruction.steps.step2.description'),
-            imageUrl: "/shopping_cart_action_1769275228017.png",
+            imageUrl: "/phase2.png",
             alt: t('payment_instruction.steps.step2.alt')
         },
         {
             title: t('payment_instruction.steps.step3.title'),
             subtitle: t('payment_instruction.steps.step3.subtitle'),
             description: t('payment_instruction.steps.step3.description'),
-            imageUrl: "https://images.unsplash.com/photo-1556742044-3c52d6e88c02?q=80&w=2070&auto=format&fit=crop",
+            imageUrl: "/phase3.png",
             alt: t('payment_instruction.steps.step3.alt')
         },
         {
             title: t('payment_instruction.steps.step4.title'),
             subtitle: t('payment_instruction.steps.step4.subtitle'),
             description: t('payment_instruction.steps.step4.description'),
-            imageUrl: "https://images.unsplash.com/photo-1520923179289-6abc3bc8570c?q=80&w=1974&auto=format&fit=crop",
+            imageUrl: "/phase4.png",
             alt: t('payment_instruction.steps.step4.alt')
         }
     ];

@@ -8,8 +8,8 @@ export default function Footer() {
   const { t, language } = useLanguage();
 
   return (
-    <footer className="footer-bg text-white w-full py-12 px-6">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12">
+    <footer className="footer-bg text-white w-full py-8 md:py-12 px-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-12">
 
         {/* ABOUT US */}
         <div className="space-y-4">
@@ -81,7 +81,7 @@ export default function Footer() {
 
       </div>
 
-      <div className="max-w-7xl mx-auto border-t border-white/10 mt-16 pt-10 text-center">
+      <div className="max-w-7xl mx-auto border-t border-white/10 mt-8 pt-6 md:mt-16 md:pt-10 text-center">
         <p className="text-[14px] opacity-70 uppercase tracking-widest font-black">
           {t('common.footer.copyright')}
         </p>

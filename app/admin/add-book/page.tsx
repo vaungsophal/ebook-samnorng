@@ -11,12 +11,15 @@ export default function AddBookPage() {
     const router = useRouter();
     const supabase = createClientComponentClient();
     const [loading, setLoading] = useState(false);
+    const [isAuthChecking, setIsAuthChecking] = useState(true);
 
     useEffect(() => {
         const checkSession = async () => {
             const { data: { session } } = await supabase.auth.getSession();
             if (!session) {
                 router.push('/login');
+            } else {
+                setIsAuthChecking(false);
             }
         };
         checkSession();
@@ -71,6 +74,28 @@ export default function AddBookPage() {
             setLoading(false);
         }
     };
+
+    if (isAuthChecking) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex flex-col">
+                <div className="bg-[#e9e9cc] w-full border-b border-gray-200 h-16 sm:h-20 flex items-center justify-center shadow-sm sticky top-0 z-50">
+                    <Link href="/">
+                        <Image
+                            src="/logo.png"
+                            alt="EbookSamnorng Logo"
+                            width={300}
+                            height={75}
+                            className="h-10 w-auto sm:h-12 object-contain"
+                            priority
+                        />
+                    </Link>
+                </div>
+                <div className="flex-1 flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">

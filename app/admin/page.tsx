@@ -14,7 +14,15 @@ export default function AdminDashboard() {
     const supabase = createClientComponentClient();
 
     useEffect(() => {
-        fetchBooks();
+        const checkSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                router.push('/login');
+                return;
+            }
+            fetchBooks();
+        };
+        checkSession();
     }, []);
 
     const fetchBooks = async () => {
