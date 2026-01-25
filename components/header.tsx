@@ -6,143 +6,178 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useCart } from '@/context/cart-context';
+import { useLanguage } from '@/context/language-context';
 import { categories } from '@/lib/products';
+import { LanguageSwitcher } from './language-switcher';
 
 export function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const { items, total } = useCart();
+  const { t, language } = useLanguage();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  const navLinks = [
+    { name: t('common.home'), href: '/' },
+    { name: t('common.shop'), href: '/shop' },
+    { name: t('common.cart'), href: '/cart' },
+    { name: t('common.payment'), href: '/payment-instruction' },
+    { name: t('common.contact'), href: '/contact' },
+  ];
+
   return (
     <>
-      {/* Top Announcement Bar */}
-      <div className="bg-[#002b5c] text-white text-[10px] sm:text-xs py-1.5 font-medium border-b border-white/5">
+      {/* Top Announcement Bar - Slimmer on Mobile */}
+      <div className="bg-[#002b5c] text-white text-[11px] sm:text-[15px] py-2 sm:py-2.5 font-medium border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
-          <div className="truncate">
-            EbookSamnorng.com - Knowledge repository of the construction industry
+          <div className="truncate pr-4 hidden sm:block">
+            {t('common.announcement')}
           </div>
-          <div className="flex items-center gap-3 sm:gap-4 ml-4">
-            <a
-              href="https://www.facebook.com/groups/238173047768987"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-yellow-400 transition-colors flex items-center gap-1"
-            >
-              <Facebook className="w-3.5 h-3.5" />
-              <span className="hidden md:inline text-[10px]">Facebook</span>
-            </a>
-            <div className="w-[1px] h-3 bg-white/20"></div>
-            <a
-              href="https://t.me/yourusername"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-yellow-400 transition-colors flex items-center gap-1"
-            >
-              <Send className="w-3.5 h-3.5" />
-              <span className="hidden md:inline text-[10px]">Telegram</span>
-            </a>
+          <div className="flex items-center justify-between w-full sm:w-auto gap-3">
+            <div className="flex items-center gap-3 ml-0 sm:ml-auto">
+              <a
+                href="https://www.facebook.com/groups/238173047768987"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-yellow-400 transition-colors flex items-center gap-1"
+              >
+                <Facebook className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+                <span className="hidden md:inline text-[15px] font-bold">{t('common.facebook')}</span>
+              </a>
+              <div className="w-[1px] h-3 bg-white/20"></div>
+              <a
+                href="https://t.me/ebooksamnorng"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-yellow-400 transition-colors flex items-center gap-1.5"
+              >
+                <Send className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+                <span className="hidden md:inline text-[15px] font-bold">{t('common.telegram')}</span>
+              </a>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-[1px] h-3 bg-white/20"></div>
+              <LanguageSwitcher />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Main Header Section */}
-      <div className="bg-[#e9e9cc] w-full border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 h-16 sm:h-22 flex items-center justify-between">
-
-          {/* Mobile Menu Button - LEFT */}
+      {/* Main Header Section - Redesigned Mobile Layout */}
+      <div className="bg-[#e9e9cc] w-full border-b border-gray-200 relative">
+        <div className="max-w-7xl mx-auto px-4 h-16 sm:h-28 flex items-center justify-between">
+          {/* Left: Mobile Menu Trigger */}
           <button
-            className="lg:hidden p-2 text-gray-600"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden w-10 h-10 flex items-center justify-center text-gray-700 bg-white/50 rounded-lg shadow-sm border border-black/5"
+            onClick={() => setMobileMenuOpen(true)}
           >
             <Menu className="w-6 h-6" />
           </button>
 
-          {/* Logo - CENTERED on Mobile, LEFT on Desktop */}
+          {/* Center: Logo (Adjusted responsive size) */}
           <Link href="/" className="flex items-center absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0">
             <Image
               src="/logo.png"
               alt="EbookSamnorng Logo"
-              width={300}
-              height={75}
-              className="h-10 w-auto sm:h-16 object-contain"
+              width={350}
+              height={90}
+              className="h-9 w-auto sm:h-20 object-contain"
               priority
             />
           </Link>
 
-          {/* Search Bar - Hidden on Mobile */}
-          <div className="hidden lg:flex flex-1 max-w-xl relative mx-12">
+          {/* Desktop Only: Search Bar */}
+          <div className="hidden lg:flex flex-1 max-w-2xl relative mx-12">
             <input
               type="text"
-              placeholder="Search..."
-              className="w-full px-5 py-2.5 rounded-full border border-gray-300 bg-white shadow-inner focus:outline-none text-sm italic"
+              placeholder={t('common.search')}
+              className="w-full px-6 py-3.5 rounded-full border border-gray-300 bg-white shadow-inner focus:outline-none text-base italic"
             />
-            <Search className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-800" />
+            <Search className="absolute right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-800" />
           </div>
 
-          {/* Cart Section - RIGHT */}
-          <Link href="/cart" className="flex items-center group relative lg:static">
-            <div className="text-right hidden md:block mr-4">
-              <span className="text-[11px] font-bold text-gray-600 uppercase tracking-tighter">
-                SHOPPING CART / {mounted ? `$${total.toFixed(2)}` : '$0.00'}
-              </span>
-            </div>
-            <div className="w-10 h-10 border-2 border-slate-400 rounded-lg flex items-center justify-center relative bg-white/50 group-hover:bg-white transition-colors">
-              <ShoppingCart className="w-5 h-5 text-gray-700" />
-              <span className="absolute -top-1.5 -right-1.5 bg-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-slate-300 shadow-sm leading-none">
-                {mounted ? items.length : '0'}
-              </span>
-            </div>
-          </Link>
+          {/* Right: Mobile Info & Cart */}
+          <div className="flex items-center gap-2">
+            {/* Mobile Search Toggle */}
+            <button
+              onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+              className="lg:hidden w-10 h-10 flex items-center justify-center text-gray-700 bg-white/50 rounded-lg shadow-sm border border-black/5"
+            >
+              {mobileSearchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
+            </button>
+
+            <Link href="/cart" className="flex items-center group">
+              <div className="text-right hidden md:block mr-4">
+                <span className={`text-[14px] font-bold text-gray-600 uppercase tracking-tighter ${language === 'km' ? 'text-[13px]' : ''}`}>
+                  {t('common.cart')} / {mounted ? `$${total.toFixed(2)}` : '$0.00'}
+                </span>
+              </div>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 border-2 border-slate-400 rounded-lg flex items-center justify-center relative bg-white/50 group-hover:bg-white transition-all shadow-sm">
+                <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
+                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] sm:text-[12px] font-black px-1.5 sm:px-2 py-0.5 rounded-full shadow-lg leading-none border-2 border-white">
+                  {mounted ? items.length : '0'}
+                </span>
+              </div>
+            </Link>
+          </div>
+        </div>
+
+        {/* Mobile Search Overlay - Sliding Down */}
+        <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white/80 backdrop-blur-md border-t border-black/5 ${mobileSearchOpen ? 'max-h-20 opacity-100 py-3 px-4' : 'max-h-0 opacity-0'}`}>
+          <div className="relative max-w-lg mx-auto">
+            <input
+              type="text"
+              placeholder={t('common.search')}
+              className="w-full pl-5 pr-12 py-3 bg-white rounded-full border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1a4d2e]/20 text-base italic"
+            />
+            <button className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-[#1a4d2e]">
+              <Search className="w-5 h-5" />
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Navigation Bar (Green/Dark) - Always Visible on Mobile */}
-      <div className="bg-[#1a4d2e] w-full py-2 sm:h-12 sticky top-0 z-50">
+      <div className="bg-[#1a4d2e] w-full py-2 sm:py-3 sm:h-16 sticky top-0 z-50 shadow-md">
         <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center lg:items-stretch lg:justify-start">
 
           {/* Desktop Categories Button */}
           <div className="hidden lg:flex relative group">
-            <button className="bg-[#ff4d4d] h-full text-white font-bold text-[13px] px-8 flex items-center gap-2 hover:bg-[#ff3333] transition-colors uppercase tracking-wider cursor-default">
-              <Menu className="w-4 h-4" />
-              PRODUCT CATEGORIES
+            <button className={`bg-[#ff4d4d] h-full text-white font-bold px-10 flex items-center gap-3 hover:bg-[#ff3333] transition-colors uppercase tracking-wider cursor-default ${language === 'km' ? 'text-[15px]' : 'text-[16px]'}`}>
+              <Menu className="w-5 h-5" />
+              {t('common.categories')}
             </button>
-            <div className="absolute top-full left-0 w-[280px] bg-white text-[#334155] shadow-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top scale-95 group-hover:scale-100 z-50">
-              <div className="flex flex-col py-1 max-h-[70vh] overflow-y-auto no-scrollbar">
+            <div className="absolute top-full left-0 w-[320px] bg-white text-[#334155] shadow-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top scale-95 group-hover:scale-100 z-50">
+              <div className="flex flex-col py-2 max-h-[70vh] overflow-y-auto no-scrollbar">
                 {categories.map((name) => (
                   <Link
                     key={name}
                     href={name === 'All Categories' ? '/shop' : `/shop?category=${encodeURIComponent(name)}`}
-                    className="px-5 py-2.5 text-[11px] font-medium border-b border-gray-50 last:border-0 hover:bg-gray-50 hover:text-[#ff4d4d] transition-colors whitespace-nowrap"
+                    className={`px-6 py-4 font-bold border-b border-gray-50 last:border-0 hover:bg-gray-50 hover:text-[#ff4d4d] transition-colors whitespace-nowrap ${language === 'km' ? 'text-[15px]' : 'text-[14px]'}`}
                   >
-                    {name}
+                    {t(`categories.${name}`)}
                   </Link>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Nav Links - Wrapped/Centered on Mobile */}
-          <nav className="flex flex-wrap items-center justify-center gap-y-2 lg:gap-1 lg:ml-4 sm:flex-nowrap sm:overflow-x-auto no-scrollbar">
-            {[
-              { name: 'HOME', href: '/' },
-              { name: 'SHOP', href: '/shop' },
-              { name: 'SHOPPING CART', href: '/cart' },
-              { name: 'PAYMENT INSTRUCTIONS', href: '/payment-instruction' },
-              { name: 'CONTACT US', href: '/contact' },
-            ].map((link) => {
+          {/* Nav Links - Center/Scroll on Mobile */}
+          <nav className="flex items-center gap-1.5 sm:gap-4 lg:ml-6 overflow-x-auto no-scrollbar w-full lg:w-auto py-1.5 sm:py-0">
+            {navLinks.map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
               return (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`px-4 py-1.5 sm:py-2 rounded-full font-bold text-[10px] sm:text-[11px] tracking-wider transition-all whitespace-nowrap ${isActive
+                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full font-black tracking-wider transition-all whitespace-nowrap shadow-sm hover:scale-105 active:scale-95 ${language === 'km' ? 'text-[14px]' : 'text-[13px] sm:text-[14px]'} ${isActive
                     ? 'bg-[#004b8d] text-white'
-                    : 'text-yellow-400 hover:text-white'
+                    : 'bg-white/5 text-yellow-400 hover:text-white hover:bg-white/10'
                     }`}
                 >
                   {link.name}
@@ -159,53 +194,62 @@ export function Header() {
         onClick={() => setMobileMenuOpen(false)}
       />
       <div
-        className={`fixed top-0 left-0 h-full w-[300px] bg-[#f8f9fa] z-[101] shadow-2xl transform transition-transform duration-300 lg:hidden flex flex-col ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+        className={`fixed top-0 left-0 h-full w-[320px] bg-white z-[101] shadow-2xl transform transition-transform duration-500 lg:hidden flex flex-col rounded-r-[32px] overflow-hidden ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
           }`}
       >
-        {/* Mobile Sidebar Header: Search */}
-        <div className="p-4 border-b border-gray-200 bg-white">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full pl-4 pr-10 py-2 bg-gray-100 rounded border-none text-sm focus:ring-1 focus:ring-primary"
-            />
-            <Search className="absolute right-3 top-2.5 w-4 h-4 text-gray-500" />
+        {/* Mobile Sidebar Brand Header */}
+        <div className="p-8 bg-[#002b5c] text-white">
+          <div className="flex justify-between items-start mb-6">
+            <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+              <Image src="/logo.png" alt="Logo" width={180} height={50} className="h-10 w-auto invert brightness-0" />
+            </Link>
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="absolute -right-12 top-0 p-2 bg-white/20 text-white rounded-full lg:hidden"
+              className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full hover:bg-white/20 transition-colors"
             >
-              <X className="w-6 h-6" />
+              <X className="w-5 h-5 text-white" />
             </button>
+          </div>
+          <div className="space-y-1">
+            <p className="text-[13px] font-black uppercase tracking-widest text-yellow-400">{t('common.categories')}</p>
+            <p className="text-[11px] opacity-60 font-medium">{t('common.announcement')}</p>
           </div>
         </div>
 
-        {/* Mobile Sidebar Categories */}
-        <div className="flex-1 overflow-y-auto no-scrollbar">
-          <div className="flex flex-col">
+        {/* Mobile Sidebar Body: Categories */}
+        <div className="flex-1 overflow-y-auto custom-scrollbar bg-[#f8f9fa]">
+          <div className="flex flex-col py-4">
             {categories.map((name) => (
               <Link
                 key={name}
                 href={name === 'All Categories' ? '/shop' : `/shop?category=${encodeURIComponent(name)}`}
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-between px-5 py-3.5 text-[11px] font-bold text-[#4b5563] border-b border-gray-100 uppercase tracking-tight hover:bg-gray-50 transition-colors"
+                className={`flex items-center justify-between px-8 py-4 font-black transition-all border-l-4 ${pathname.includes(encodeURIComponent(name)) ? 'border-[#ff4d4d] bg-white text-[#ff4d4d]' : 'border-transparent text-[#4b5563] hover:bg-gray-100'}`}
               >
-                <span>{name}</span>
-                <ChevronDown className="w-4 h-4 text-gray-400" />
+                <span className={language === 'km' ? 'text-[16px]' : 'text-[15px]'}>
+                  {t(`categories.${name}`)}
+                </span>
+                <ChevronDown className="w-5 h-5 opacity-30 -rotate-90 group-hover:rotate-0 transition-transform" />
               </Link>
             ))}
-
           </div>
         </div>
 
-        {/* Mobile Sidebar Socials */}
-        <div className="p-5 flex gap-3 bg-white border-t border-gray-100">
-          <a href="#" className="w-8 h-8 flex items-center justify-center bg-[#3b5998] text-white rounded">
-            <Facebook className="w-4 h-4" />
-          </a>
-          <a href="#" className="w-8 h-8 flex items-center justify-center bg-[#cc181e] text-white rounded">
-            <Youtube className="w-4 h-4" />
-          </a>
+        {/* Mobile Sidebar Footer: Quick Links & Socials */}
+        <div className="p-8 bg-white border-t border-gray-100">
+          <div className="grid grid-cols-2 gap-4 mb-8">
+            <a href="https://t.me/ebooksamnorng" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 p-4 bg-[#f0f9ff] rounded-2xl group transition-all">
+              <Send className="w-6 h-6 text-[#0088cc] group-hover:scale-110 transition-transform" />
+              <span className="text-[10px] font-black uppercase text-[#0088cc]">Telegram</span>
+            </a>
+            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 p-4 bg-[#f0f7ff] rounded-2xl group transition-all">
+              <Facebook className="w-6 h-6 text-[#3b5998] group-hover:scale-110 transition-transform" />
+              <span className="text-[10px] font-black uppercase text-[#3b5998]">Facebook</span>
+            </a>
+          </div>
+          <div className="flex justify-center">
+            <LanguageSwitcher />
+          </div>
         </div>
       </div>
     </>

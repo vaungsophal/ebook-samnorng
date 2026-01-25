@@ -48,7 +48,7 @@ export function ProductCard({
           alt={title}
           className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute top-0 right-0 bg-[#b22222] text-white px-2 py-1 text-[10px] font-bold z-10">
+        <div className="absolute top-0 right-0 bg-[#b22222] text-white px-2 py-1 text-[11px] font-bold z-10">
           NEW
         </div>
       </Link>
@@ -56,13 +56,13 @@ export function ProductCard({
       {/* Content */}
       <div className="p-4 flex flex-col items-center text-center flex-grow">
         {/* Category */}
-        <p className="text-[10px] sm:text-[11px] text-[#888] mb-2 uppercase tracking-wider font-bold">
+        <p className="text-[11px] sm:text-[12px] text-[#888] mb-2 uppercase tracking-wider font-bold">
           {category}
         </p>
 
         {/* Title - Clickable */}
         <Link href={`/product/${id}`} className="hover:text-[#2b3a8c] transition-colors mb-2">
-          <h3 className="font-medium text-sm sm:text-[15px] text-[#2b3a8c] line-clamp-3 leading-[1.4] min-h-[63px]">
+          <h3 className="font-black text-[17px] sm:text-[19px] text-[#2b3a8c] line-clamp-3 leading-[1.4] min-h-[75px]">
             {title}
           </h3>
         </Link>
@@ -72,7 +72,7 @@ export function ProductCard({
           {Array.from({ length: 5 }).map((_, i) => (
             <Star
               key={i}
-              className={`w-3.5 h-3.5 ${i < Math.floor(rating)
+              className={`w-4 h-4 ${i < Math.floor(rating)
                 ? 'fill-[#f39c12] text-[#f39c12]'
                 : 'text-gray-200'
                 }`}
@@ -82,7 +82,7 @@ export function ProductCard({
 
         {/* Price */}
         <div className="mt-auto pt-2">
-          <span className="text-base sm:text-lg font-black text-[#111]">
+          <span className="text-xl sm:text-2xl font-black text-[#111]">
             ${price.toFixed(2)}
           </span>
         </div>

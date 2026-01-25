@@ -2,42 +2,41 @@
 
 import Link from 'next/link';
 import { Facebook, Send } from 'lucide-react';
+import { useLanguage } from '@/context/language-context';
 
 export default function Footer() {
+  const { t, language } = useLanguage();
+
   return (
     <footer className="footer-bg text-white w-full py-12 px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12">
 
         {/* ABOUT US */}
         <div className="space-y-4">
-          <h3 className="font-bold text-sm tracking-widest uppercase relative pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-10 after:h-[1px] after:bg-white/30">
-            ABOUT US
+          <h3 className={`font-bold tracking-widest uppercase relative pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-10 after:h-[1px] after:bg-white/30 ${language === 'km' ? 'text-lg' : 'text-base'}`}>
+            {t('common.footer.about_title')}
           </h3>
-          <div className="space-y-4 text-[12px] leading-relaxed opacity-90">
-            <p>EbookSamnorng.com – No. 1 website for construction documents.</p>
-            <p>
-              EbookSamnorng.com is a place to buy, sell, exchange and share design and construction documents.
-            </p>
-            <p>
-              Specializing in providing digital products in the field of construction: books, documents, software, spreadsheets, forms, images, videos...
-            </p>
+          <div className="space-y-4 text-[13px] sm:text-[14px] leading-relaxed opacity-90">
+            <p>{t('common.footer.about_p1')}</p>
+            <p>{t('common.footer.about_p2')}</p>
+            <p>{t('common.footer.about_p3')}</p>
           </div>
         </div>
 
         {/* CUSTOMER SUPPORT */}
         <div className="space-y-4">
-          <h3 className="font-bold text-sm tracking-widest uppercase relative pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-10 after:h-[1px] after:bg-white/30">
-            CUSTOMER SUPPORT
+          <h3 className={`font-bold tracking-widest uppercase relative pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-10 after:h-[1px] after:bg-white/30 ${language === 'km' ? 'text-lg' : 'text-base'}`}>
+            {t('common.footer.support_title')}
           </h3>
-          <ul className="space-y-4 text-[12px] opacity-90">
+          <ul className="space-y-4 text-[13px] sm:text-[14px] opacity-90">
             <li>
               <Link href="/checkout" className="hover:text-yellow-400 transition-colors block">
-                Payment Instructions
+                {t('common.footer.payment_instr')}
               </Link>
             </li>
             <li>
               <Link href="#" className="hover:text-yellow-400 transition-colors block">
-                Instructions for listing products for sale
+                {t('common.footer.listing_instr')}
               </Link>
             </li>
           </ul>
@@ -45,16 +44,16 @@ export default function Footer() {
 
         {/* CONTACT INFORMATION */}
         <div className="space-y-4">
-          <h3 className="font-bold text-sm tracking-widest uppercase relative pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-10 after:h-[1px] after:bg-white/30">
-            CONTACT INFORMATION
+          <h3 className={`font-bold tracking-widest uppercase relative pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-10 after:h-[1px] after:bg-white/30 ${language === 'km' ? 'text-lg' : 'text-base'}`}>
+            {t('common.footer.contact_title')}
           </h3>
-          <div className="space-y-4 text-[12px] leading-relaxed opacity-90">
+          <div className="space-y-4 text-[13px] sm:text-[14px] leading-relaxed opacity-90">
             <div>
-              <p className="font-semibold">Phone Number (Zalo):</p>
-              <p>0967950480</p>
+              <p className="font-semibold">{t('common.footer.phone_label')}</p>
+              <p>087330027</p>
             </div>
             <div>
-              <p className="font-semibold">Email:</p>
+              <p className="font-semibold">{t('common.footer.email_label')}</p>
               <p>ebookbiino@gmail.com</p>
             </div>
             <div className="pt-2 flex gap-4">
@@ -82,9 +81,9 @@ export default function Footer() {
 
       </div>
 
-      <div className="max-w-7xl mx-auto border-t border-white/10 mt-12 pt-8 text-center">
-        <p className="text-[11px] opacity-50 uppercase tracking-widest">
-          Copyright © 2024 EbookSamnorng. All rights reserved.
+      <div className="max-w-7xl mx-auto border-t border-white/10 mt-16 pt-10 text-center">
+        <p className="text-[14px] opacity-70 uppercase tracking-widest font-black">
+          {t('common.footer.copyright')}
         </p>
       </div>
     </footer>

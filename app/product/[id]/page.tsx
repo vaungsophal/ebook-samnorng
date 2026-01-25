@@ -13,6 +13,7 @@ import { supabase } from '@/utils/supabase/client';
 // removing 'products' import from lib/products if not needed, or keep for type
 import { products as staticProducts } from '@/lib/products';
 import { useCart } from '@/context/cart-context';
+import { useLanguage } from '@/context/language-context';
 import { use, useState, useEffect } from 'react';
 
 interface PageProps {
@@ -24,6 +25,7 @@ interface PageProps {
 export default function ProductDetailPage({ params }: PageProps) {
   const { id } = use(params);
   const { addToCart } = useCart();
+  const { t, language } = useLanguage();
   const [product, setProduct] = useState<any>(null);
   const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -149,16 +151,15 @@ export default function ProductDetailPage({ params }: PageProps) {
 
           {/* Middle Column: Product Info (4/12) */}
           <div className="lg:col-span-6 xl:col-span-4 flex flex-col">
-            {/* Breadcrumb */}
-            <nav className="flex flex-wrap items-center gap-1.5 text-[10px] tracking-[0.05em] text-[#999] uppercase mb-4 sm:mb-6 font-semibold">
-              <Link href="/" className="hover:text-primary transition-colors">HOME</Link>
+            <nav className="flex flex-wrap items-center gap-2 text-[12px] tracking-[0.05em] text-[#999] uppercase mb-5 sm:mb-8 font-black">
+              <Link href="/" className="hover:text-primary transition-colors">{t('common.home')}</Link>
               <span className="text-[#ccc]">/</span>
-              <Link href="/shop" className="hover:text-primary transition-colors whitespace-nowrap">DOCUMENTS</Link>
+              <Link href="/shop" className="hover:text-primary transition-colors whitespace-nowrap">{t('product.documents')}</Link>
               <span className="text-[#ccc]">/</span>
-              <span className="text-[#555] truncate max-w-[150px]">{product.title}</span>
+              <span className="text-[#555] truncate max-w-[200px]">{product.title}</span>
             </nav>
 
-            <h1 className="text-2xl sm:text-[28px] font-bold text-[#222] mb-3 leading-[1.2] tracking-tight">
+            <h1 className={`font-black text-[#222] mb-4 leading-[1.2] tracking-tight ${language === 'km' ? 'text-3xl sm:text-4xl' : 'text-3xl sm:text-[36px]'}`}>
               {product.title}
             </h1>
 
@@ -178,8 +179,8 @@ export default function ProductDetailPage({ params }: PageProps) {
             </div>
 
             {/* Price */}
-            <div className="mb-6 sm:mb-8 flex items-baseline gap-1.5">
-              <span className="text-3xl font-bold text-[#111]">
+            <div className="mb-8 sm:mb-12 flex items-baseline gap-1.5">
+              <span className="text-4xl font-black text-[#111]">
                 ${product.price.toFixed(2)}
               </span>
             </div>
@@ -191,10 +192,10 @@ export default function ProductDetailPage({ params }: PageProps) {
             </div>
 
             {/* Download Link Section - SIMPLE & PROFESSIONAL */}
-            <div className="mb-8 sm:mb-10">
-              <div className="flex items-center gap-2 mb-3">
-                <ShieldCheck className="w-4 h-4 text-[#248a3d]" />
-                <span className="text-[12px] font-bold text-[#444] uppercase tracking-wider">Verified Source</span>
+            <div className="mb-10 sm:mb-14">
+              <div className="flex items-center gap-2 mb-4">
+                <ShieldCheck className="w-5 h-5 text-[#248a3d]" />
+                <span className="text-[14px] font-black text-[#444] uppercase tracking-wider">{t('product.verified_source')}</span>
               </div>
 
               <a
@@ -204,23 +205,23 @@ export default function ProductDetailPage({ params }: PageProps) {
                 onClick={(e) => {
                   if (!product.file_url) {
                     e.preventDefault();
-                    alert("No file available for download.");
+                    alert(t('product.file_unavailable'));
                   }
                 }}
-                className={`w-full flex items-center justify-between px-6 py-4 rounded-sm shadow-lg transition-all group overflow-hidden relative ${product.file_url ? 'bg-gray-900 text-white hover:bg-black cursor-pointer shadow-xl transform active:scale-[0.99]' : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-70'}`}
+                className={`w-full flex items-center justify-between px-8 py-5 rounded-sm shadow-xl transition-all group overflow-hidden relative ${product.file_url ? 'bg-gray-900 text-white hover:bg-black cursor-pointer shadow-2xl transform active:scale-[0.99]' : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-70'}`}
               >
-                <div className="flex items-center gap-4 relative z-10">
-                  <div className="p-2 bg-white/10 rounded">
-                    <DownloadIcon className="w-5 h-5 group-hover:translate-y-0.5 transition-transform" />
+                <div className="flex items-center gap-5 relative z-10">
+                  <div className="p-3 bg-white/10 rounded">
+                    <DownloadIcon className="w-6 h-6 group-hover:translate-y-0.5 transition-transform" />
                   </div>
                   <div className="text-left">
-                    <div className="font-bold text-sm tracking-widest uppercase">Download Now</div>
-                    <div className="text-[10px] opacity-80">
-                      {product.file_url ? "Click to download file directly" : "File download unavailable"}
+                    <div className="font-black text-base tracking-widest uppercase">{t('product.download_now')}</div>
+                    <div className="text-[12px] opacity-80">
+                      {product.file_url ? t('product.click_to_download') : t('product.file_unavailable')}
                     </div>
                   </div>
                 </div>
-                <div className="text-[10px] font-bold bg-white/10 px-2 py-1 rounded relative z-10">
+                <div className="text-[12px] font-black bg-white/10 px-3 py-1 rounded relative z-10">
                   PDF / ZIP
                 </div>
 
@@ -233,9 +234,9 @@ export default function ProductDetailPage({ params }: PageProps) {
 
             {/* Full Details */}
             {product.details && (
-              <div className="mb-8">
-                <h3 className="font-bold text-lg mb-3">Details</h3>
-                <div className="text-[#444] text-[14px] leading-relaxed whitespace-pre-wrap">
+              <div className="mb-10">
+                <h3 className="font-black text-xl mb-4">{t('product.details')}</h3>
+                <div className="text-[#444] text-[16px] leading-relaxed whitespace-pre-wrap">
                   {product.details}
                 </div>
               </div>
@@ -261,14 +262,14 @@ export default function ProductDetailPage({ params }: PageProps) {
 
               <button
                 onClick={handleAddToCart}
-                className={`flex-1 h-10 rounded-sm text-white font-bold text-[10px] sm:text-[11px] tracking-[0.05em] transition-all shadow-lg active:scale-[0.98] flex items-center justify-center gap-1.5 uppercase relative overflow-hidden group ${isAdded
+                className={`flex-1 h-12 rounded-sm text-white font-black text-[13px] sm:text-[14px] tracking-[0.05em] transition-all shadow-xl active:scale-[0.98] flex items-center justify-center gap-2 uppercase relative overflow-hidden group ${isAdded
                   ? 'bg-[#27ae60] shadow-green-500/10'
                   : 'bg-[#c0392b] hover:bg-[#a93226] shadow-red-500/10'
                   }`}
               >
-                {!isAdded && <ShoppingCart className="w-3.5 h-3.5" />}
+                {!isAdded && <ShoppingCart className="w-5 h-5" />}
                 <span className="relative z-10 whitespace-nowrap">
-                  {isAdded ? 'ADDED' : 'ADD TO CART'}
+                  {isAdded ? t('product.added') : t('product.add_to_cart')}
                 </span>
 
                 {/* Subtle shine effect on hover */}
@@ -277,7 +278,7 @@ export default function ProductDetailPage({ params }: PageProps) {
             </div>
 
             <div className="mt-8 sm:mt-12 pt-6 border-t border-gray-100 uppercase text-[10px] tracking-widest font-bold text-[#bbb]">
-              PRODUCT CODE: <span className="text-[#888]">{id}</span>
+              {t('product.product_code')}: <span className="text-[#888]">{id}</span>
             </div>
           </div>
 
@@ -287,7 +288,7 @@ export default function ProductDetailPage({ params }: PageProps) {
             <div className="bg-white border border-[#eee] rounded-lg overflow-hidden shadow-sm lg:max-w-md xl:max-w-none mx-auto">
               <div className="bg-[#e63946] px-5 py-3 text-center">
                 <h3 className="font-bold text-[13px] tracking-wider text-white uppercase">
-                  PAYMENT VIA KHQR
+                  {t('product.payment_khqr')}
                 </h3>
               </div>
               <div className="p-5 flex flex-col items-center">
@@ -302,7 +303,7 @@ export default function ProductDetailPage({ params }: PageProps) {
                 </div>
                 <div className="text-center space-y-4">
                   <div className="space-y-2">
-                    <p className="text-[10px] font-black text-[#222] uppercase tracking-wider">Account: VAUNG SOPHAL</p>
+                    <p className="text-[11px] font-black text-[#222] uppercase tracking-wider">{t('product.account')}</p>
                     <a
                       href="https://pay.ababank.com/oRF8/mox4etnp"
                       target="_blank"
@@ -312,11 +313,11 @@ export default function ProductDetailPage({ params }: PageProps) {
                       <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
                       </svg>
-                      PAY WITH ABA BANK
+                      {t('product.pay_aba')}
                     </a>
                   </div>
                   <p className="text-[10px] text-[#888] leading-relaxed italic max-w-[240px] mx-auto">
-                    Scan the QR code or click the button above to pay securely via ABA Bank.
+                    {t('product.scan_qr')}
                   </p>
                 </div>
               </div>
@@ -329,7 +330,7 @@ export default function ProductDetailPage({ params }: PageProps) {
         {relatedProducts.length > 0 && (
           <div className="mt-16 sm:mt-24">
             <div className="flex items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
-              <h2 className="text-xl sm:text-2xl font-black text-[#111] tracking-tight uppercase">SIMILAR PRODUCTS</h2>
+              <h2 className="text-xl sm:text-2xl font-black text-[#111] tracking-tight uppercase">{t('product.similar_products')}</h2>
               <div className="flex-1 h-[2px] bg-[#f0f0f0] relative">
                 <div className="absolute left-0 top-0 h-full w-16 sm:w-24 bg-red-600"></div>
               </div>

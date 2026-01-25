@@ -8,7 +8,10 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Mail, Phone, MapPin } from 'lucide-react';
 
+import { useLanguage } from '@/context/language-context';
+
 export default function ContactPage() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -47,9 +50,9 @@ export default function ContactPage() {
       <div className="bg-[#f5f5f5] py-3 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4">
           <nav className="flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase">
-            <Link href="/" className="text-gray-500 hover:text-primary transition-colors">HOME</Link>
+            <Link href="/" className="text-gray-500 hover:text-primary transition-colors">{t('contact_page.breadcrumb_home')}</Link>
             <span className="text-gray-300">/</span>
-            <span className="text-foreground">CONTACT US</span>
+            <span className="text-foreground">{t('contact_page.breadcrumb_title')}</span>
           </nav>
         </div>
       </div>
@@ -58,10 +61,10 @@ export default function ContactPage() {
 
         {/* Header */}
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
-          Contact Us
+          {t('contact_page.title')}
         </h1>
         <p className="text-base sm:text-lg text-muted-foreground mb-8 sm:mb-12">
-          We&apos;d love to hear from you. Let us know how we can help!
+          {t('contact_page.subtitle')}
         </p>
 
         {/* Contact Grid */}
@@ -71,37 +74,35 @@ export default function ContactPage() {
             <div className="flex justify-center mb-4">
               <Mail className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
             </div>
-            <h3 className="font-bold text-lg text-foreground mb-2">Email</h3>
+            <h3 className="font-bold text-lg text-foreground mb-2">{t('contact_page.email')}</h3>
             <p className="text-sm text-foreground break-all">
               <a href="mailto:info@ebooksamnorng.com" className="hover:text-primary transition-colors">
                 info@ebooksamnorng.com
               </a>
             </p>
-            <p className="text-xs text-muted-foreground mt-2">We reply within 24 hours</p>
+            <p className="text-xs text-muted-foreground mt-2">{t('contact_page.email_sub')}</p>
           </div>
 
           <div className="bg-card rounded-lg border border-border p-6 sm:p-8 text-center">
             <div className="flex justify-center mb-4">
               <Phone className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
             </div>
-            <h3 className="font-bold text-lg text-foreground mb-2">Phone</h3>
+            <h3 className="font-bold text-lg text-foreground mb-2">{t('contact_page.phone')}</h3>
             <p className="text-sm text-foreground">
-              <a href="tel:+15550000000" className="hover:text-primary transition-colors">
-                +1 (555) 000-0000
+              <a href="tel:087330027" className="hover:text-primary transition-colors">
+                087 330 027
               </a>
             </p>
-            <p className="text-xs text-muted-foreground mt-2">Mon-Fri, 9AM-5PM EST</p>
+            <p className="text-xs text-muted-foreground mt-2">{t('contact_page.phone_sub')}</p>
           </div>
 
           <div className="bg-card rounded-lg border border-border p-6 sm:p-8 text-center">
             <div className="flex justify-center mb-4">
               <MapPin className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
             </div>
-            <h3 className="font-bold text-lg text-foreground mb-2">Address</h3>
-            <p className="text-sm text-foreground">
-              123 Engineering Street<br />
-              New York, NY 10001<br />
-              United States
+            <h3 className="font-bold text-lg text-foreground mb-2">{t('contact_page.address')}</h3>
+            <p className="text-sm text-foreground whitespace-pre-line">
+              {t('contact_page.address_val')}
             </p>
           </div>
         </div>
@@ -110,11 +111,11 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
           {/* Contact Form */}
           <div className="bg-card rounded-lg border border-border p-6 sm:p-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6">Send us a Message</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6">{t('contact_page.form_title')}</h2>
 
             {submitted && (
               <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-900">
-                <p className="text-sm font-medium">Thank you! Your message has been sent successfully. We&apos;ll get back to you soon.</p>
+                <p className="text-sm font-medium">{t('contact_page.form_success')}</p>
               </div>
             )}
 
@@ -122,7 +123,7 @@ export default function ContactPage() {
               <input
                 type="text"
                 name="name"
-                placeholder="Your Name"
+                placeholder={t('contact_page.name_placeholder')}
                 value={formData.name}
                 onChange={handleInputChange}
                 required
@@ -132,7 +133,7 @@ export default function ContactPage() {
               <input
                 type="email"
                 name="email"
-                placeholder="Your Email"
+                placeholder={t('contact_page.email_placeholder')}
                 value={formData.email}
                 onChange={handleInputChange}
                 required
@@ -142,7 +143,7 @@ export default function ContactPage() {
               <input
                 type="text"
                 name="subject"
-                placeholder="Subject"
+                placeholder={t('contact_page.subject_placeholder')}
                 value={formData.subject}
                 onChange={handleInputChange}
                 required
@@ -151,7 +152,7 @@ export default function ContactPage() {
 
               <textarea
                 name="message"
-                placeholder="Your Message"
+                placeholder={t('contact_page.message_placeholder')}
                 value={formData.message}
                 onChange={handleInputChange}
                 required
@@ -163,58 +164,58 @@ export default function ContactPage() {
                 type="submit"
                 className="w-full px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold text-sm sm:text-base"
               >
-                Send Message
+                {t('contact_page.send_button')}
               </button>
             </form>
           </div>
 
           {/* FAQ */}
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6">Frequently Asked Questions</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6">{t('contact_page.faq_title')}</h2>
 
             <div className="space-y-4">
               <details className="bg-card rounded-lg border border-border p-4 sm:p-6 cursor-pointer group">
                 <summary className="font-semibold text-foreground group-open:text-primary transition-colors">
-                  How do I download my e-books?
+                  {t('contact_page.faq_q1')}
                 </summary>
                 <p className="text-sm text-foreground mt-3 leading-relaxed">
-                  After purchase, you can download your e-books directly from your account dashboard. You&apos;ll have lifetime access to all your purchases.
+                  {t('contact_page.faq_a1')}
                 </p>
               </details>
 
               <details className="bg-card rounded-lg border border-border p-4 sm:p-6 cursor-pointer group">
                 <summary className="font-semibold text-foreground group-open:text-primary transition-colors">
-                  What payment methods do you accept?
+                  {t('contact_page.faq_q2')}
                 </summary>
                 <p className="text-sm text-foreground mt-3 leading-relaxed">
-                  We accept bank transfers, credit cards, debit cards, and digital wallets. All payments are processed securely.
+                  {t('contact_page.faq_a2')}
                 </p>
               </details>
 
               <details className="bg-card rounded-lg border border-border p-4 sm:p-6 cursor-pointer group">
                 <summary className="font-semibold text-foreground group-open:text-primary transition-colors">
-                  Can I get a refund?
+                  {t('contact_page.faq_q3')}
                 </summary>
                 <p className="text-sm text-foreground mt-3 leading-relaxed">
-                  Yes, we offer a 14-day money-back guarantee on all e-book purchases if you&apos;re not satisfied with the content.
+                  {t('contact_page.faq_a3')}
                 </p>
               </details>
 
               <details className="bg-card rounded-lg border border-border p-4 sm:p-6 cursor-pointer group">
                 <summary className="font-semibold text-foreground group-open:text-primary transition-colors">
-                  Are the books available on mobile?
+                  {t('contact_page.faq_q4')}
                 </summary>
                 <p className="text-sm text-foreground mt-3 leading-relaxed">
-                  Our e-books are compatible with all devices including smartphones, tablets, and computers. Simply use your preferred PDF reader.
+                  {t('contact_page.faq_a4')}
                 </p>
               </details>
 
               <details className="bg-card rounded-lg border border-border p-4 sm:p-6 cursor-pointer group">
                 <summary className="font-semibold text-foreground group-open:text-primary transition-colors">
-                  How often do you add new books?
+                  {t('contact_page.faq_q5')}
                 </summary>
                 <p className="text-sm text-foreground mt-3 leading-relaxed">
-                  We add new titles to our collection weekly. Subscribe to our newsletter to be notified about new releases.
+                  {t('contact_page.faq_a5')}
                 </p>
               </details>
             </div>
@@ -223,15 +224,15 @@ export default function ContactPage() {
 
         {/* CTA */}
         <div className="mt-12 sm:mt-16 bg-primary text-primary-foreground rounded-lg border border-primary/20 p-6 sm:p-8 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-3">Ready to Explore?</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-3">{t('contact_page.ready_title')}</h2>
           <p className="mb-6 text-sm sm:text-base opacity-90">
-            Browse our collection of engineering e-books and start learning today
+            {t('contact_page.ready_subtitle')}
           </p>
           <Link
             href="/shop"
             className="inline-block px-8 py-3 bg-accent text-accent-foreground rounded-lg hover:opacity-90 transition-opacity font-semibold"
           >
-            Browse E-Books
+            {t('contact_page.browse_button')}
           </Link>
         </div>
       </div>

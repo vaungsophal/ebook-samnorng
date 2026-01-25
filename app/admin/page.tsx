@@ -1,18 +1,17 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/utils/supabase/client';
-import { categories } from '@/lib/products';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Pencil, Trash2, Plus, ArrowLeft } from 'lucide-react';
+import { Pencil, Trash2, Plus, LogOut } from 'lucide-react';
 import Image from 'next/image';
 
 export default function AdminDashboard() {
     const router = useRouter();
     const [books, setBooks] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const supabase = createClientComponentClient();
 
     useEffect(() => {
         fetchBooks();
@@ -53,10 +52,16 @@ export default function AdminDashboard() {
         }
     };
 
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        router.push('/login');
+        router.refresh();
+    };
+
     return (
         <div className="min-h-screen bg-gray-50 font-sans">
             {/* Simple Admin Header */}
-            <div className="bg-[#e9e9cc] w-full border-b border-gray-200 h-16 sm:h-20 flex items-center justify-center">
+            <div className="bg-[#e9e9cc] w-full border-b border-gray-200 h-16 sm:h-20 flex items-center justify-between px-4 sm:px-8">
                 <Link href="/">
                     <Image
                         src="/logo.png"
@@ -67,6 +72,15 @@ export default function AdminDashboard() {
                         priority
                     />
                 </Link>
+                <div className="flex items-center gap-4">
+                    <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-2 text-gray-700 hover:text-red-600 transition-colors font-medium text-sm"
+                    >
+                        <LogOut className="w-4 h-4" />
+                        Logout
+                    </button>
+                </div>
             </div>
             <div className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center mb-8">
@@ -75,7 +89,7 @@ export default function AdminDashboard() {
                         <p className="mt-2 text-gray-600">Manage your books library.</p>
                     </div>
                     <Link
-                        href="/admin-b7e3f1c9-a0d2-4b5e-8f6a-9c3d2e1b0a4f/add-book"
+                        href="/admin/add-book"
                         className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm"
                     >
                         <Plus className="w-5 h-5" />
@@ -86,7 +100,6 @@ export default function AdminDashboard() {
                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
-                            {/* ... (table header remains same) ... */}
                             <thead className="bg-gray-50">
                                 <tr>
                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -145,7 +158,7 @@ export default function AdminDashboard() {
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div className="flex items-center justify-end gap-3">
                                                     <Link
-                                                        href={`/admin-b7e3f1c9-a0d2-4b5e-8f6a-9c3d2e1b0a4f/edit/${book.id}`}
+                                                        href={`/admin/edit/${book.id}`}
                                                         className="text-indigo-600 hover:text-indigo-900 transition-colors"
                                                     >
                                                         <Pencil className="w-5 h-5" />
