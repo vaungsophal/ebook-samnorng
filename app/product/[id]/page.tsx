@@ -285,7 +285,7 @@ export default function ProductDetailPage({ params }: PageProps) {
                   <div className="space-y-2">
                     <p className="text-[11px] font-black text-[#222] uppercase tracking-wider">{t('product.account')}</p>
                     <a
-                      href="https://pay.ababank.com/oRF8/mox4etnp"
+                      href="https://pay.ababank.com/oRF8/4qgylds2"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 bg-[#005a8c] text-white px-5 py-2.5 rounded-full text-[11px] font-bold hover:bg-[#004b75] transition-all shadow-sm active:scale-95"

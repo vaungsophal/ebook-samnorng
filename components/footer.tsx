@@ -30,7 +30,7 @@ export default function Footer() {
           </h3>
           <ul className="space-y-4 text-[13px] sm:text-[14px] opacity-90">
             <li>
-              <Link href="/checkout" className="hover:text-yellow-400 transition-colors block">
+              <Link href="/payment-instruction" className="hover:text-yellow-400 transition-colors block">
                 {t('common.footer.payment_instr')}
               </Link>
             </li>
@@ -54,7 +54,7 @@ export default function Footer() {
             </div>
             <div>
               <p className="font-semibold">{t('common.footer.email_label')}</p>
-              <p>ebookbiino@gmail.com</p>
+              <p>ebooksomnorng@gmail.com</p>
             </div>
             <div className="pt-2 flex gap-4">
               <a
@@ -67,7 +67,7 @@ export default function Footer() {
                 <Facebook className="w-5 h-5" />
               </a>
               <a
-                href="https://t.me/yourusername" // Replace with actual telegram link if available
+                href="https://t.me/SORIYA_VAUNG" // Updated telegram link
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 flex items-center justify-center bg-[#0088cc] text-white rounded-full hover:bg-white hover:text-[#0088cc] transition-all transform hover:scale-110 shadow-lg"

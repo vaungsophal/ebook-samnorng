@@ -76,8 +76,8 @@ export default function ContactPage() {
             </div>
             <h3 className="font-bold text-base text-foreground mb-2">{t('contact_page.email')}</h3>
             <p className="text-sm text-foreground break-all">
-              <a href="mailto:info@ebooksamnorng.com" className="hover:text-primary transition-colors">
-                info@ebooksamnorng.com
+              <a href="mailto:ebooksomnorng@gmail.com" className="hover:text-primary transition-colors">
+                ebooksomnorng@gmail.com
               </a>
             </p>
             <p className="text-xs text-muted-foreground mt-2">{t('contact_page.email_sub')}</p>

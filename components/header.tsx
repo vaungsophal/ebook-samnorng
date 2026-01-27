@@ -51,7 +51,7 @@ export function Header() {
               </a>
               <div className="w-[1px] h-3 bg-white/20"></div>
               <a
-                href="https://t.me/ebooksamnorng"
+                href="https://t.me/SORIYA_VAUNG"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-yellow-400 transition-colors flex items-center gap-1.5"
@@ -246,7 +246,7 @@ export function Header() {
               <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="p-2 bg-secondary rounded-full text-foreground hover:bg-primary hover:text-white transition-colors">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="https://t.me/ebooksamnorng" target="_blank" rel="noopener noreferrer" className="p-2 bg-secondary rounded-full text-foreground hover:bg-primary hover:text-white transition-colors">
+              <a href="https://t.me/SORIYA_VAUNG" target="_blank" rel="noopener noreferrer" className="p-2 bg-secondary rounded-full text-foreground hover:bg-primary hover:text-white transition-colors">
                 <Send className="w-5 h-5" />
               </a>
             </div>

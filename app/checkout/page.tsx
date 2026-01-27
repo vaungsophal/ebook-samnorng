@@ -164,7 +164,7 @@ export default function CheckoutPage() {
     doc.setTextColor(60);
     doc.text('Please send this receipt PDF to our Telegram support to receive', 18, instructionY + 16);
     doc.text('your unzip password/access key immediately.', 18, instructionY + 22);
-    doc.text('Telegram: @ebooksamnorng', 18, instructionY + 28); // Placeholder telegram
+    doc.text('Telegram: @SORIYA_VAUNG', 18, instructionY + 28); // Updated telegram
 
     // Footer
     doc.setFontSize(8);
@@ -288,7 +288,7 @@ export default function CheckoutPage() {
                                 {t('checkout.access_library')}
                               </a>
                               <a
-                                href={`https://t.me/ebooksamnorng?text=Hello, I just purchased: ${item.title} (ID: ${item.id}). Here is my receipt. Please provide the unzip password.`}
+                                href={`https://t.me/SORIYA_VAUNG?text=Hello, I just purchased: ${item.title} (ID: ${item.id}). Here is my receipt. Please provide the unzip password.`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="w-full bg-[#0088cc] text-white py-3 rounded-md font-black text-sm flex items-center justify-center gap-2 hover:bg-[#0077b5] transition-all shadow-md active:scale-[0.98]"
@@ -436,7 +436,7 @@ export default function CheckoutPage() {
                           <div className="flex flex-col sm:flex-row sm:items-center gap-3 items-center">
                             <p className="text-lg font-black text-gray-900">VAUNG SOPHAL</p>
                             <a
-                              href="https://pay.ababank.com/oRF8/mox4etnp"
+                              href="https://pay.ababank.com/oRF8/4qgylds2"
                               target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-2 bg-[#005a8c] text-white px-4 py-2 rounded-lg text-[10px] font-black hover:bg-[#004b75] transition-all shadow-md active:scale-95"
