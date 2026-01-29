@@ -99,9 +99,9 @@ export function Header() {
             <Image
               src="/logo.png"
               alt="EbookSomnorng Logo"
-              width={350}
-              height={90}
-              className="h-7 w-auto sm:h-10 object-contain"
+              width={400}
+              height={100}
+              className="h-9 w-auto sm:h-13 object-contain"
               priority
             />
           </Link>
@@ -238,7 +238,7 @@ export function Header() {
         {/* Mobile Header */}
         <div className="flex items-center justify-between p-4 border-b border-border bg-card">
           <Link href="/" onClick={() => setMobileMenuOpen(false)}>
-            <Image src="/logo.png" alt="Logo" width={140} height={40} className="h-8 w-auto object-contain" />
+            <Image src="/logo.png" alt="Logo" width={180} height={50} className="h-10 w-auto object-contain" />
           </Link>
           <button
             onClick={() => setMobileMenuOpen(false)}
