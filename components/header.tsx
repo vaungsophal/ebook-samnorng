@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Search, ShoppingCart, Menu, X, Facebook, Youtube, ChevronDown, Mail, User, Send } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useCart } from '@/context/cart-context';
 import { useLanguage } from '@/context/language-context';
 import { categories } from '@/lib/products';
@@ -12,8 +12,10 @@ import { LanguageSwitcher } from './language-switcher';
 
 export function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const { items, total } = useCart();
   const { t, language } = useLanguage();
   const [mounted, setMounted] = useState(false);
@@ -21,6 +23,14 @@ export function Header() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/shop?q=${encodeURIComponent(searchQuery.trim())}`);
+      setMobileSearchOpen(false);
+    }
+  };
 
   const navLinks = [
     { name: t('common.home'), href: '/' },
@@ -92,14 +102,18 @@ export function Header() {
           </Link>
 
           {/* Desktop Only: Search Bar */}
-          <div className="hidden lg:flex flex-1 max-w-2xl relative mx-12">
+          <form onSubmit={handleSearch} className="hidden lg:flex flex-1 max-w-2xl relative mx-12">
             <input
               type="text"
               placeholder={t('common.search')}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full px-6 py-3.5 rounded-full border border-gray-300 bg-white shadow-inner focus:outline-none text-base italic"
             />
-            <Search className="absolute right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-800" />
-          </div>
+            <button type="submit" className="absolute right-6 top-1/2 -translate-y-1/2">
+              <Search className="w-5 h-5 text-gray-800 hover:text-primary transition-colors" />
+            </button>
+          </form>
 
           {/* Right: Mobile Info & Cart */}
           <div className="flex items-center gap-2">
@@ -129,16 +143,18 @@ export function Header() {
 
         {/* Mobile Search Overlay - Sliding Down */}
         <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white/80 backdrop-blur-md border-t border-black/5 ${mobileSearchOpen ? 'max-h-20 opacity-100 py-3 px-4' : 'max-h-0 opacity-0'}`}>
-          <div className="relative max-w-lg mx-auto">
+          <form onSubmit={handleSearch} className="relative max-w-lg mx-auto">
             <input
               type="text"
               placeholder={t('common.search')}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-5 pr-12 py-3 bg-white rounded-full border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1a4d2e]/20 text-base italic"
             />
-            <button className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-[#1a4d2e]">
+            <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-[#1a4d2e]">
               <Search className="w-5 h-5" />
             </button>
-          </div>
+          </form>
         </div>
       </div>
 

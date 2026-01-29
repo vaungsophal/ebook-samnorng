@@ -17,15 +17,23 @@ function ShopContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const categoryParam = searchParams.get('category');
+  const qParam = searchParams.get('q');
   const { t, language } = useLanguage();
 
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [sortBy, setSortBy] = useState('latest');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(qParam || '');
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+
+  // Update search query if URL param changes
+  useEffect(() => {
+    if (qParam !== null) {
+      setSearchQuery(qParam);
+    }
+  }, [qParam]);
 
 
   // Fetch products from Supabase
