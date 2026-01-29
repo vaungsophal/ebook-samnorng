@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     siteName: 'EbookSomnorng',
     images: [
       {
-        url: '/logo.png',
+        url: 'https://www.ebooksomnorng.com/favicon.png',
         width: 1200,
         height: 630,
         alt: 'EbookSomnorng Logo',
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'EbookSomnorng - Civil Engineering E-book Store',
     description: 'Premium e-books and professional documents for civil engineers and construction professionals.',
-    images: ['/logo.png'],
+    images: ['https://www.ebooksomnorng.com/favicon.png'],
   },
   icons: {
     icon: '/favicon.png',
@@ -81,7 +81,7 @@ export default function RootLayout({
               "@type": "Store",
               "name": "EbookSomnorng",
               "url": "https://www.ebooksomnorng.com",
-              "logo": "https://www.ebooksomnorng.com/logo.png",
+              "logo": "https://www.ebooksomnorng.com/favicon.png",
               "description": "Premium e-book store for civil engineers and construction professionals in Cambodia.",
               "address": {
                 "@type": "PostalAddress",
@@ -94,6 +94,22 @@ export default function RootLayout({
                 "telephone": "+855-87330027",
                 "contactType": "customer service"
               },
+              "sameAs": [
+                "https://www.facebook.com/groups/1157562836264568/?ref=share&mibextid=NSMWBT",
+                "https://t.me/SORIYA_VAUNG"
+              ]
+            })
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "EbookSomnorng",
+              "url": "https://www.ebooksomnorng.com",
+              "logo": "https://www.ebooksomnorng.com/favicon.png",
               "sameAs": [
                 "https://www.facebook.com/groups/1157562836264568/?ref=share&mibextid=NSMWBT",
                 "https://t.me/SORIYA_VAUNG"
