@@ -30,6 +30,7 @@ export default function EditBookPage({ params }: PageProps) {
         imageUrl2: '',
         imageUrl3: '',
         fileUrl: '',
+        unzipPassword: '',
     });
 
     useEffect(() => {
@@ -68,6 +69,7 @@ export default function EditBookPage({ params }: PageProps) {
                     imageUrl2: data.image_url2 || '',
                     imageUrl3: data.image_url3 || '',
                     fileUrl: data.file_url || '',
+                    unzipPassword: data.unzip_password || '',
                 });
             }
         } catch (error) {
@@ -96,6 +98,7 @@ export default function EditBookPage({ params }: PageProps) {
                     image_url2: formData.imageUrl2 || null,
                     image_url3: formData.imageUrl3 || null,
                     file_url: formData.fileUrl,
+                    unzip_password: formData.unzipPassword || null,
                 })
                 .eq('id', id);
 
@@ -281,16 +284,30 @@ export default function EditBookPage({ params }: PageProps) {
                             </div>
                         </div>
 
-                        {/* Digital File */}
+                        {/* Public Access Link */}
                         <div className="pt-4 border-t border-gray-100">
-                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Digital File Link</label>
+                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Public Preview Link</label>
                             <input
                                 type="url"
                                 required
-                                placeholder="https://drive.google.com/..."
+                                placeholder="Public link for user preview"
                                 className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded focus:ring-1 focus:ring-[#1a4d2e] focus:border-[#1a4d2e] outline-none transition-all text-sm"
                                 value={formData.fileUrl}
                                 onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
+                            />
+                        </div>
+
+                        <div className="pt-4 border-t border-gray-100">
+                            <label className="block text-xs font-bold text-[#b22222] uppercase tracking-widest mb-2 flex items-center gap-2">
+                                <div className="w-2 h-2 rounded-full bg-[#b22222]"></div>
+                                Unzip Password (Admin Only)
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="Enter ZIP password for management"
+                                className="w-full px-4 py-2.5 bg-red-50/30 border border-red-100 rounded focus:ring-1 focus:ring-[#b22222] focus:border-[#b22222] outline-none transition-all text-sm"
+                                value={formData.unzipPassword}
+                                onChange={(e) => setFormData({ ...formData, unzipPassword: e.target.value })}
                             />
                         </div>
 

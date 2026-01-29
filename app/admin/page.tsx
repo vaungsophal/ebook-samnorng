@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Pencil, Trash2, Plus, LogOut, BookOpen, Layers, Search, ExternalLink, ChevronRight } from 'lucide-react';
+import { Pencil, Trash2, Plus, LogOut, BookOpen, Layers, Search, ExternalLink, ChevronRight, Eye, EyeOff, Copy, Check } from 'lucide-react';
 import Image from 'next/image';
 
 export default function AdminDashboard() {
@@ -12,7 +12,10 @@ export default function AdminDashboard() {
     const [books, setBooks] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
+    const [searchType, setSearchType] = useState<'title' | 'id'>('title');
     const [filterCategory, setFilterCategory] = useState('All');
+    const [visiblePasswords, setVisiblePasswords] = useState<Record<string, boolean>>({});
+    const [copiedId, setCopiedId] = useState<string | null>(null);
     const supabase = createClientComponentClient();
 
     useEffect(() => {
@@ -68,8 +71,17 @@ export default function AdminDashboard() {
     };
 
     const filteredBooks = books.filter(book => {
-        const matchesSearch = (book.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            book.category?.toLowerCase().includes(searchQuery.toLowerCase()));
+        const query = searchQuery.toLowerCase();
+        let matchesSearch = true;
+
+        if (query) {
+            if (searchType === 'title') {
+                matchesSearch = book.title?.toLowerCase().includes(query);
+            } else {
+                matchesSearch = book.id?.toString().includes(query);
+            }
+        }
+
         const matchesCategory = filterCategory === 'All' || book.category === filterCategory;
         return matchesSearch && matchesCategory;
     });
@@ -153,31 +165,46 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Filters Row */}
-                <div className="bg-white p-4 border border-gray-200 rounded shadow-sm mb-6 flex flex-col lg:flex-row gap-4">
-                    <div className="relative flex-1">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        <input
-                            type="text"
-                            placeholder="Search by title..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded text-sm focus:outline-none focus:ring-1 focus:ring-[#1a4d2e] transition-all"
-                        />
-                    </div>
-                    <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-xs font-semibold text-gray-400 uppercase mr-2">Filter by Category:</span>
-                        {uniqueCategories.map(cat => (
-                            <button
-                                key={cat}
-                                onClick={() => setFilterCategory(cat)}
-                                className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${filterCategory === cat
-                                    ? 'bg-[#1a4d2e] text-white'
-                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                                    }`}
+                <div className="bg-white p-5 border border-gray-200 rounded shadow-sm mb-6 flex flex-col xl:flex-row gap-5">
+                    {/* Search Section */}
+                    <div className="flex-1 flex flex-col sm:flex-row gap-3">
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs font-semibold text-gray-400 uppercase whitespace-nowrap">Search By:</span>
+                            <select
+                                value={searchType}
+                                onChange={(e) => setSearchType(e.target.value as 'title' | 'id')}
+                                className="bg-gray-50 border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#1a4d2e] font-medium"
                             >
-                                {cat}
-                            </button>
-                        ))}
+                                <option value="title">Book Title</option>
+                                <option value="id">Book ID</option>
+                            </select>
+                        </div>
+                        <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder={searchType === 'title' ? "Search by title..." : "Search by 5-digit ID..."}
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded text-sm focus:outline-none focus:ring-1 focus:ring-[#1a4d2e] transition-all"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Filter Section */}
+                    <div className="flex items-center gap-3 border-t xl:border-t-0 xl:border-l border-gray-100 pt-5 xl:pt-0 xl:pl-5">
+                        <span className="text-xs font-semibold text-gray-400 uppercase whitespace-nowrap">Show Category:</span>
+                        <select
+                            value={filterCategory}
+                            onChange={(e) => setFilterCategory(e.target.value)}
+                            className="bg-gray-50 border border-gray-200 rounded px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#1a4d2e] min-w-[200px] font-medium"
+                        >
+                            {uniqueCategories.map(cat => (
+                                <option key={cat} value={cat}>
+                                    {cat === 'All' ? 'All Categories' : cat}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </div>
 
@@ -190,6 +217,7 @@ export default function AdminDashboard() {
                                     <th className="px-6 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider">Product</th>
                                     <th className="px-6 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider">Category</th>
                                     <th className="px-6 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider">Price</th>
+                                    <th className="px-6 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider">Zip Code</th>
                                     <th className="px-6 py-3 text-right text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Actions</th>
                                 </tr>
                             </thead>
@@ -236,6 +264,40 @@ export default function AdminDashboard() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <span className="text-sm font-bold text-gray-900">${book.price}</span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="relative group flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-2 py-1.5 rounded min-w-[120px]">
+                                                        <code className={`text-xs font-black ${visiblePasswords[book.id] ? 'text-[#b22222]' : 'text-gray-300'}`}>
+                                                            {visiblePasswords[book.id] ? (book.unzip_password || '---') : '••••••••'}
+                                                        </code>
+
+                                                        <div className="flex items-center gap-1 ml-auto">
+                                                            <button
+                                                                onClick={() => setVisiblePasswords(prev => ({ ...prev, [book.id]: !prev[book.id] }))}
+                                                                className="p-1 hover:bg-gray-200 rounded text-gray-500 transition-colors"
+                                                                title={visiblePasswords[book.id] ? "Hide" : "Show"}
+                                                            >
+                                                                {visiblePasswords[book.id] ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                                                            </button>
+
+                                                            <button
+                                                                onClick={() => {
+                                                                    if (book.unzip_password) {
+                                                                        navigator.clipboard.writeText(book.unzip_password);
+                                                                        setCopiedId(book.id);
+                                                                        setTimeout(() => setCopiedId(null), 2000);
+                                                                    }
+                                                                }}
+                                                                className="p-1 hover:bg-gray-200 rounded text-gray-400 hover:text-[#1a4d2e] transition-colors"
+                                                                title="Copy Password"
+                                                                disabled={!book.unzip_password}
+                                                            >
+                                                                {copiedId === book.id ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5" />}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td className="px-6 py-4 text-right whitespace-nowrap">
                                                 <div className="flex items-center justify-end gap-2">

@@ -12,7 +12,9 @@ create table public.books (
   image_url text, -- Stores the link to the cover image
   image_url2 text, -- Stores the link to the second image
   image_url3 text, -- Stores the link to the third image
-  file_url text,  -- Stores the link to the PDF/EPUB/ZIP file
+  file_url text,  -- Stores the public preview/access link
+  admin_zip_link text, -- PRIVATE: Stores the Google Drive link to the real ZIP
+  unzip_password text, -- PRIVATE: Stores the password for the ZIP
   rating numeric default 5,
   reviews integer default 0
 );
