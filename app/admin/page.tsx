@@ -222,7 +222,7 @@ export default function AdminDashboard() {
                                                     <div className="min-w-0">
                                                         <div className="text-sm font-semibold text-gray-900 truncate max-w-[200px] sm:max-w-xs">{book.title}</div>
                                                         <div className="text-xs text-gray-500 flex items-center gap-2 mt-0.5">
-                                                            ID: {book.id.substring(0, 8)}
+                                                            ID: {book.id}
                                                             {book.file_url && <span className="bg-blue-100 text-blue-700 px-1 py-0.5 rounded-[2px] text-[9px] font-bold uppercase tracking-tight">Digital Link</span>}
                                                         </div>
                                                     </div>
