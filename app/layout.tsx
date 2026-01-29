@@ -66,6 +66,7 @@ export const metadata: Metadata = {
 }
 
 import { Toaster } from 'sonner'
+import { ScrollToTop } from '@/components/scroll-to-top'
 
 export default function RootLayout({
   children,
@@ -125,6 +126,7 @@ export default function RootLayout({
             <div className="language-font-wrapper">
               {children}
             </div>
+            <ScrollToTop />
           </CartProvider>
         </LanguageProvider>
         <Analytics />

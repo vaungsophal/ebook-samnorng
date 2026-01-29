@@ -12,6 +12,7 @@
         "online_library": "ONLINE LIBRARY",
         "latest_resources": "Latest Engineering Resources",
         "view_all": "View All Gallery",
+        "view_all_products": "View All Products",
         "announcement": "EbookSomnorng.com - Knowledge repository of the construction industry",
         "facebook": "Facebook",
         "telegram": "Telegram",
@@ -37,7 +38,7 @@
             "payment_instr": "Payment Instructions",
             "listing_instr": "Instructions for listing products for sale",
             "contact_title": "CONTACT INFORMATION",
-            "phone_label": "Phone Number (Zalo):",
+            "phone_label": "Phone Number (KH):",
             "email_label": "Email:",
             "copyright": "Copyright © 2024 EbookSomnorng. All rights reserved."
         }

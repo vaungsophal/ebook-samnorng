@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCart } from '@/context/cart-context';
 import { useLanguage } from '@/context/language-context';
-import { categories } from '@/lib/products';
+import { categories, categoryStructure } from '@/lib/products';
 import { LanguageSwitcher } from './language-switcher';
 
 export function Header() {
@@ -19,10 +19,15 @@ export function Header() {
   const { items, total } = useCart();
   const { t, language } = useLanguage();
   const [mounted, setMounted] = useState(false);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const toggleCategory = (categoryName: string) => {
+    setExpandedCategory(expandedCategory === categoryName ? null : categoryName);
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,14 +47,14 @@ export function Header() {
 
   return (
     <>
-      {/* Top Announcement Bar - Slimmer on Mobile */}
-      <div className="bg-[#064884] text-white text-[9px] sm:text-[12px] py-0.5 sm:py-1 font-medium border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
-          <div className="truncate pr-4 hidden sm:block">
+      {/* Top Announcement Bar - Absolute Minimum Height */}
+      <div className="bg-[#064884] text-white text-[10px] sm:text-[13px] py-0 font-medium border-b border-white/5 h-6 sm:h-8 flex items-center">
+        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center w-full">
+          <div className="truncate pr-4 text-[10px] sm:text-[13px] font-semibold">
             {t('common.announcement')}
           </div>
-          <div className="flex items-center justify-between w-full sm:w-auto gap-3">
-            <div className="flex items-center gap-3 ml-0 sm:ml-auto">
+          <div className="flex items-center gap-2 sm:gap-4 ml-auto">
+            <div className="flex items-center gap-2 sm:gap-3">
               <a
                 href="https://www.facebook.com/groups/1157562836264568/"
                 target="_blank"
@@ -80,7 +85,7 @@ export function Header() {
 
       {/* Main Header Section - Redesigned Mobile Layout */}
       <div className="bg-[#e9e9cc] w-full border-b border-gray-200 relative">
-        <div className="max-w-7xl mx-auto px-4 h-14 sm:h-20 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 h-12 sm:h-16 flex items-center justify-between">
           {/* Left: Mobile Menu Trigger */}
           <button
             className="lg:hidden w-10 h-10 flex items-center justify-center text-gray-700 bg-white/50 rounded-lg shadow-sm border border-black/5"
@@ -96,22 +101,22 @@ export function Header() {
               alt="EbookSomnorng Logo"
               width={350}
               height={90}
-              className="h-8 w-auto sm:h-14 object-contain"
+              className="h-7 w-auto sm:h-10 object-contain"
               priority
             />
           </Link>
 
           {/* Desktop Only: Search Bar */}
-          <form onSubmit={handleSearch} className="hidden lg:flex flex-1 max-w-2xl relative mx-12">
+          <form onSubmit={handleSearch} className="hidden lg:flex flex-1 max-w-md relative mx-12">
             <input
               type="text"
               placeholder={t('common.search')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-6 py-3.5 rounded-full border border-gray-300 bg-white shadow-inner focus:outline-none text-base italic"
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white shadow-inner focus:outline-none text-sm italic"
             />
-            <button type="submit" className="absolute right-6 top-1/2 -translate-y-1/2">
-              <Search className="w-5 h-5 text-gray-800 hover:text-primary transition-colors" />
+            <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2">
+              <Search className="w-4 h-4 text-gray-800 hover:text-primary transition-colors" />
             </button>
           </form>
 
@@ -149,7 +154,7 @@ export function Header() {
               placeholder={t('common.search')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-5 pr-12 py-3 bg-white rounded-full border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1a4d2e]/20 text-base italic"
+              className="w-full pl-5 pr-12 py-2 bg-white rounded-lg border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1a4d2e]/20 text-sm italic"
             />
             <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-[#1a4d2e]">
               <Search className="w-5 h-5" />
@@ -159,8 +164,8 @@ export function Header() {
       </div>
 
       {/* Navigation Bar (Green/Dark) - Always Visible on Mobile */}
-      <div className="bg-[#1a4d2e] w-full py-2 sm:py-3 sm:h-16 sticky top-0 z-50 shadow-md">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center lg:items-stretch lg:justify-start">
+      <div className="bg-[#1a4d2e] w-full py-1 sm:py-1.5 sm:h-12 sticky top-0 z-50 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center lg:items-stretch lg:justify-start h-full">
 
           {/* Desktop Categories Button */}
           <div className="hidden lg:flex relative group">
@@ -168,16 +173,38 @@ export function Header() {
               <Menu className="w-5 h-5" />
               {t('common.categories')}
             </button>
-            <div className="absolute top-full left-0 w-[320px] bg-white text-[#334155] shadow-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top scale-95 group-hover:scale-100 z-50">
-              <div className="flex flex-col py-2 max-h-[70vh] overflow-y-auto no-scrollbar">
-                {categories.map((name) => (
-                  <Link
-                    key={name}
-                    href={name === 'All Categories' ? '/shop' : `/shop?category=${encodeURIComponent(name)}`}
-                    className={`px-6 py-4 font-bold border-b border-gray-50 last:border-0 hover:bg-gray-50 hover:text-[#ff4d4d] transition-colors whitespace-nowrap ${language === 'km' ? 'text-[15px]' : 'text-[14px]'}`}
-                  >
-                    {t(`categories.${name}`)}
-                  </Link>
+            <div className="absolute top-full left-0 w-[350px] bg-white text-[#334155] shadow-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top scale-95 group-hover:scale-100 z-50 overflow-hidden rounded-b-xl">
+              <div className="flex flex-col py-2 max-h-[75vh] overflow-y-auto no-scrollbar">
+                {/* All Categories Link */}
+                <Link
+                  href="/shop"
+                  className={`px-6 py-3 font-black border-b border-gray-100 hover:bg-gray-50 hover:text-[#ff4d4d] transition-colors uppercase tracking-widest ${language === 'km' ? 'text-[14px]' : 'text-[13px]'}`}
+                >
+                  {t('common.all_categories')}
+                </Link>
+
+                {categoryStructure.map((category) => (
+                  <div key={category.name} className="flex flex-col">
+                    {/* Main Category Header */}
+                    <Link
+                      href={`/shop?category=${encodeURIComponent(category.name)}`}
+                      className={`px-6 py-2 bg-gray-50/50 font-bold hover:bg-gray-100 hover:text-[#ff4d4d] transition-colors uppercase tracking-tight ${language === 'km' ? 'text-[13px]' : 'text-[12px]'}`}
+                    >
+                      {t(`categories.${category.name}`)}
+                    </Link>
+                    {/* Subcategories */}
+                    <div className="flex flex-col pb-2">
+                      {category.subcategories.map((sub) => (
+                        <Link
+                          key={sub}
+                          href={`/shop?category=${encodeURIComponent(sub)}`}
+                          className={`px-10 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-primary transition-colors ${language === 'km' ? 'text-[12px]' : 'text-[11px]'}`}
+                        >
+                          • {t(`categories.${sub}`)}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
@@ -191,7 +218,7 @@ export function Header() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full font-black tracking-wider transition-all whitespace-nowrap shadow-sm hover:scale-105 active:scale-95 ${language === 'km' ? 'text-[14px]' : 'text-[13px] sm:text-[14px]'} ${isActive
+                  className={`px-4 sm:px-6 py-1 sm:py-1.5 rounded-full font-black tracking-wider transition-all whitespace-nowrap shadow-sm hover:scale-105 active:scale-95 ${language === 'km' ? 'text-[14px]' : 'text-[13px] sm:text-[14px]'} ${isActive
                     ? 'bg-[#004b8d] text-white'
                     : 'bg-white/5 text-yellow-400 hover:text-white hover:bg-white/10'
                     }`}
@@ -239,17 +266,61 @@ export function Header() {
 
           <div className="pt-6 border-t border-border">
             <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">{t('common.categories')}</h3>
-            <div className="grid grid-cols-1 gap-3">
-              {categories.map((name) => (
-                <Link
-                  key={name}
-                  href={name === 'All Categories' ? '/shop' : `/shop?category=${encodeURIComponent(name)}`}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-medium text-foreground hover:text-primary transition-colors flex items-center justify-between"
-                >
-                  <span>{t(`categories.${name}`)}</span>
-                  <ChevronDown className="w-4 h-4 -rotate-90 opacity-40" />
-                </Link>
+            <div className="flex flex-col space-y-1">
+              {/* All Categories Link */}
+              <Link
+                href="/shop"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-base font-bold text-foreground hover:text-primary transition-colors py-2 flex items-center justify-between"
+              >
+                <span>{t('common.all_categories')}</span>
+                <ChevronDown className="w-4 h-4 -rotate-90 opacity-40" />
+              </Link>
+
+              {categoryStructure.map((category) => (
+                <div key={category.name} className="flex flex-col border-b border-border/10 last:border-0">
+                  <div
+                    className="flex items-center justify-between py-3 cursor-pointer group"
+                    onClick={() => toggleCategory(category.name)}
+                  >
+                    <span className="text-base font-bold text-foreground group-hover:text-primary transition-colors flex-1">
+                      {t(`categories.${category.name}`)}
+                    </span>
+                    <div className="p-1 hover:bg-muted rounded-md transition-colors">
+                      <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${expandedCategory === category.name ? 'rotate-180' : ''}`} />
+                    </div>
+                  </div>
+
+                  {/* Subcategories */}
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${expandedCategory === category.name ? 'max-h-[500px] opacity-100 pb-3' : 'max-h-0 opacity-0'
+                      }`}
+                  >
+                    <div className="flex flex-col pl-4 border-l-2 border-primary/20 space-y-2">
+                      {/* View All for this category */}
+                      <Link
+                        href={`/shop?category=${encodeURIComponent(category.name)}`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="text-sm font-bold text-primary hover:underline transition-colors py-1 flex items-center gap-2"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                        {t('common.view_all_products')}
+                      </Link>
+
+                      {category.subcategories.map((sub) => (
+                        <Link
+                          key={sub}
+                          href={`/shop?category=${encodeURIComponent(sub)}`}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-1 flex items-center gap-2"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary/30" />
+                          {t(`categories.${sub}`)}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
