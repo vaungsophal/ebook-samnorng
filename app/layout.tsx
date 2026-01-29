@@ -18,7 +18,7 @@ const kantumruyPro = Kantumruy_Pro({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://ebooksomnorng.com'),
+  metadataBase: new URL('https://www.ebooksomnorng.com'),
   title: {
     default: 'EbookSomnorng - Civil Engineering E-book Store',
     template: '%s | EbookSomnorng'
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'EbookSomnorng - Civil Engineering E-book Store',
     description: 'Premium e-books and professional documents for civil engineers and construction professionals.',
-    url: 'https://ebooksomnorng.com',
+    url: 'https://www.ebooksomnorng.com',
     siteName: 'EbookSomnorng',
     images: [
       {
@@ -80,8 +80,8 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Store",
               "name": "EbookSomnorng",
-              "url": "https://ebooksomnorng.com",
-              "logo": "https://ebooksomnorng.com/logo.png",
+              "url": "https://www.ebooksomnorng.com",
+              "logo": "https://www.ebooksomnorng.com/logo.png",
               "description": "Premium e-book store for civil engineers and construction professionals in Cambodia.",
               "address": {
                 "@type": "PostalAddress",
