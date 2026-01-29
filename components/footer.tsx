@@ -58,7 +58,7 @@ export default function Footer() {
             </div>
             <div className="pt-2 flex gap-4">
               <a
-                href="https://www.facebook.com/groups/238173047768987"
+                href="https://www.facebook.com/groups/1157562836264568/?ref=share&mibextid=NSMWBT"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 flex items-center justify-center bg-[#3b5998] text-white rounded-full hover:bg-white hover:text-[#3b5998] transition-all transform hover:scale-110 shadow-lg"
