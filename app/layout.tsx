@@ -98,7 +98,7 @@ export default function RootLayout({
                 "contactType": "customer service"
               },
               "sameAs": [
-                "https://www.facebook.com/groups/1157562836264568/?ref=share&mibextid=NSMWBT",
+                "https://www.facebook.com/groups/1157562836264568/",
                 "https://t.me/SORIYA_VAUNG"
               ]
             })
@@ -114,7 +114,7 @@ export default function RootLayout({
               "url": "https://www.ebooksomnorng.com",
               "logo": "https://www.ebooksomnorng.com/favicon.png",
               "sameAs": [
-                "https://www.facebook.com/groups/1157562836264568/?ref=share&mibextid=NSMWBT",
+                "https://www.facebook.com/groups/1157562836264568/",
                 "https://t.me/SORIYA_VAUNG"
               ]
             })

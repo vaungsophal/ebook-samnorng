@@ -51,7 +51,7 @@ export function Header() {
           <div className="flex items-center justify-between w-full sm:w-auto gap-3">
             <div className="flex items-center gap-3 ml-0 sm:ml-auto">
               <a
-                href="https://www.facebook.com/groups/1157562836264568/?ref=share&mibextid=NSMWBT"
+                href="https://www.facebook.com/groups/1157562836264568/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-yellow-400 transition-colors flex items-center gap-1"
