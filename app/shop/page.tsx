@@ -55,6 +55,7 @@ function ShopContent() {
             title: book.title,
             description: book.description || '',
             category: book.category || 'Uncategorized',
+            main_category: book.main_category || '',
             price: Number(book.price) || 0,
             image: book.image_url || '/placeholder.svg',
             rating: Number(book.rating) || 5,
@@ -103,7 +104,11 @@ function ShopContent() {
       const mainCategory = categoryStructure.find(cat => cat.name === selectedCategory);
       if (mainCategory) {
         // Filter by any subcategory in this main category
-        filtered = filtered.filter(p => mainCategory.subcategories.includes(p.category));
+        filtered = filtered.filter(p =>
+          p.main_category === mainCategory.name ||
+          p.category === mainCategory.name ||
+          mainCategory.subcategories.includes(p.category)
+        );
       } else {
         // Filter by specific subcategory
         filtered = filtered.filter(p => p.category === selectedCategory);
@@ -203,39 +208,53 @@ function ShopContent() {
                       {t('common.all_categories')}
                     </button>
 
-                    {categoryStructure.map((category) => (
-                      <div key={category.name} className="space-y-1">
-                        <button
-                          onClick={() => setExpandedCategory(expandedCategory === category.name ? null : category.name)}
-                          className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-secondary text-foreground text-xs transition-colors font-bold uppercase tracking-wide"
-                        >
-                          <span className={expandedCategory === category.name ? 'text-primary' : ''}>
-                            {t(`categories.${category.name}`)}
-                          </span>
-                          <ChevronDown
-                            className={`w-4 h-4 transition-transform ${expandedCategory === category.name ? 'rotate-180 text-primary' : ''
-                              }`}
-                          />
-                        </button>
-
-                        {expandedCategory === category.name && (
-                          <div className="ml-3 border-l-2 border-primary/20 pl-2 space-y-1">
-                            {category.subcategories.map((sub) => (
+                    {categoryStructure.map((category) => {
+                      const isSelected = selectedCategory === category.name;
+                      const isExpanded = expandedCategory === category.name;
+                      return (
+                        <div key={category.name} className="space-y-1">
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => handleCategoryChange(category.name)}
+                              className={`flex-1 text-left px-3 py-2 rounded-lg transition-colors font-bold uppercase tracking-wide text-xs ${isSelected ? 'bg-primary/10 text-primary' : 'hover:bg-secondary text-foreground'
+                                }`}
+                            >
+                              <span className={isSelected || isExpanded ? 'text-primary' : ''}>
+                                {t(`categories.${category.name}`)}
+                              </span>
+                            </button>
+                            {category.subcategories && (
                               <button
-                                key={sub}
-                                onClick={() => handleCategoryChange(sub)}
-                                className={`w-full text-left px-3 py-2 rounded-lg transition-colors font-bold uppercase tracking-tight text-[10px] ${selectedCategory === sub
-                                  ? 'bg-primary/10 text-primary'
-                                  : 'text-muted-foreground hover:bg-secondary hover:text-primary'
+                                onClick={() => setExpandedCategory(isExpanded ? null : category.name)}
+                                className={`p-2 hover:bg-secondary rounded-lg transition-colors ${isExpanded ? 'text-primary' : 'text-muted-foreground'
                                   }`}
                               >
-                                {t(`categories.${sub}`)}
+                                <ChevronDown
+                                  className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                                />
                               </button>
-                            ))}
+                            )}
                           </div>
-                        )}
-                      </div>
-                    ))}
+
+                          {isExpanded && (
+                            <div className="ml-3 border-l-2 border-primary/20 pl-2 space-y-1">
+                              {category.subcategories.map((sub) => (
+                                <button
+                                  key={sub}
+                                  onClick={() => handleCategoryChange(sub)}
+                                  className={`w-full text-left px-3 py-2 rounded-lg transition-colors font-bold uppercase tracking-tight text-[10px] ${selectedCategory === sub
+                                    ? 'bg-primary/10 text-primary'
+                                    : 'text-muted-foreground hover:bg-secondary hover:text-primary'
+                                    }`}
+                                >
+                                  {t(`categories.${sub}`)}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}

@@ -33,16 +33,23 @@ export default function HomePage() {
                   {categoryStructure.map((category) => (
                     <div key={category.name} className="border-b border-gray-100 last:border-0">
                       {/* Main Category Header */}
-                      <button
-                        onClick={() => setExpandedCategory(expandedCategory === category.name ? null : category.name)}
-                        className="w-full flex items-center justify-between px-4 py-2.5 text-[14px] sm:text-[15px] text-[#4b5563] hover:bg-gray-50 transition-colors group"
-                      >
-                        <span className="font-bold text-left">{t(`categories.${category.name}`)}</span>
-                        <ChevronDown
-                          className={`w-3.5 h-3.5 text-gray-400 group-hover:text-[#ff4d4d] transition-all flex-shrink-0 ml-2 ${expandedCategory === category.name ? 'rotate-180' : ''
-                            }`}
-                        />
-                      </button>
+                      <div className="flex items-center">
+                        <Link
+                          href={`/shop?category=${encodeURIComponent(category.name)}`}
+                          className="flex-1 px-4 py-2.5 text-[14px] sm:text-[15px] text-[#4b5563] hover:bg-gray-50 transition-colors font-bold text-left hover:text-[#ff4d4d]"
+                        >
+                          {t(`categories.${category.name}`)}
+                        </Link>
+                        <button
+                          onClick={() => setExpandedCategory(expandedCategory === category.name ? null : category.name)}
+                          className="px-4 py-2.5 text-gray-400 hover:text-[#ff4d4d] transition-colors"
+                        >
+                          <ChevronDown
+                            className={`w-3.5 h-3.5 transition-all flex-shrink-0 ${expandedCategory === category.name ? 'rotate-180' : ''
+                              }`}
+                          />
+                        </button>
+                      </div>
 
                       {/* Subcategories */}
                       {expandedCategory === category.name && (
