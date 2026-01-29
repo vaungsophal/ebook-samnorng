@@ -19,8 +19,9 @@ const kantumruyPro = Kantumruy_Pro({
 
 export const metadata: Metadata = {
   title: 'EbookSomnorng - Civil Engineering E-book Store',
-  description: 'Premium e-books for civil engineers and construction professionals',
-  generator: 'v0.app',
+  description: 'EbookSomnorng (អេប៊ុកសំណង់) - The #1 premium e-book store for civil engineers and construction professionals. Discover somnorng ebook, architectural documents, and engineering resources.',
+  keywords: ['EbookSomnorng', 'Somnorng Ebook', 'Ebook Somnorng', 'ebook sormnorng', 'sormnorng ebook', 'Civil Engineering Ebooks', 'Construction Documents', 'អេប៊ុកសំណង់'],
+  generator: 'PoDev',
   icons: {
     icon: '/favicon.png',
     apple: '/favicon.png',
