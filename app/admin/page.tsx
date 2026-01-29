@@ -171,8 +171,8 @@ export default function AdminDashboard() {
                                 key={cat}
                                 onClick={() => setFilterCategory(cat)}
                                 className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${filterCategory === cat
-                                        ? 'bg-[#1a4d2e] text-white'
-                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                    ? 'bg-[#1a4d2e] text-white'
+                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                     }`}
                             >
                                 {cat}
@@ -265,7 +265,7 @@ export default function AdminDashboard() {
             </main>
 
             <footer className="py-6 px-8 border-t border-gray-200 bg-white text-center">
-                <p className="text-xs text-gray-400">&copy; {new Date().getFullYear()} EbookSamnorng Administration Panel. All rights reserved.</p>
+                <p className="text-xs text-gray-400">&copy; {new Date().getFullYear()} EbookSomnorng Administration Panel. All rights reserved.</p>
             </footer>
         </div>
     );

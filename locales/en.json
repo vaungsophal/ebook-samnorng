@@ -12,7 +12,7 @@
         "online_library": "ONLINE LIBRARY",
         "latest_resources": "Latest Engineering Resources",
         "view_all": "View All Gallery",
-        "announcement": "EbookSamnorng.com - Knowledge repository of the construction industry",
+        "announcement": "EbookSomnorng.com - Knowledge repository of the construction industry",
         "facebook": "Facebook",
         "telegram": "Telegram",
         "categories_title": "Categories",
@@ -30,8 +30,8 @@
         "add_book": "+ Add Book",
         "footer": {
             "about_title": "ABOUT US",
-            "about_p1": "EbookSamnorng.com – No. 1 website for construction documents.",
-            "about_p2": "EbookSamnorng.com is a place to buy, sell, exchange and share design and construction documents.",
+            "about_p1": "EbookSomnorng.com – No. 1 website for construction documents.",
+            "about_p2": "EbookSomnorng.com is a place to buy, sell, exchange and share design and construction documents.",
             "about_p3": "Specializing in providing digital products in the field of construction: books, documents, software, spreadsheets, forms, images, videos...",
             "support_title": "CUSTOMER SUPPORT",
             "payment_instr": "Payment Instructions",
@@ -39,7 +39,7 @@
             "contact_title": "CONTACT INFORMATION",
             "phone_label": "Phone Number (Zalo):",
             "email_label": "Email:",
-            "copyright": "Copyright © 2024 EbookSamnorng. All rights reserved."
+            "copyright": "Copyright © 2024 EbookSomnorng. All rights reserved."
         }
     },
     "product": {

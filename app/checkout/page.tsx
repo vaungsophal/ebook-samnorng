@@ -77,7 +77,7 @@ export default function CheckoutPage() {
     // Header
     doc.setFontSize(22);
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.text('EbookSamnorng Receipt', 14, 20);
+    doc.text('EbookSomnorng Receipt', 14, 20);
 
     doc.setFontSize(10);
     doc.setTextColor(100);
@@ -169,9 +169,9 @@ export default function CheckoutPage() {
     // Footer
     doc.setFontSize(8);
     doc.setTextColor(150);
-    doc.text('Thank you for choosing EbookSamnorng!', 105, 285, { align: 'center' });
+    doc.text('Thank you for choosing EbookSomnorng!', 105, 285, { align: 'center' });
 
-    doc.save(`Receipt_EbookSamnorng_${formData.phone}.pdf`);
+    doc.save(`Receipt_EbookSomnorng_${formData.phone}.pdf`);
   };
 
   if (orderPlaced) {

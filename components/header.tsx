@@ -83,7 +83,7 @@ export function Header() {
           <Link href="/" className="flex items-center absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0">
             <Image
               src="/logo.png"
-              alt="EbookSamnorng Logo"
+              alt="EbookSomnorng Logo"
               width={350}
               height={90}
               className="h-9 w-auto sm:h-20 object-contain"
@@ -252,7 +252,7 @@ export function Header() {
             </div>
             <LanguageSwitcher />
           </div>
-          <p className="text-xs text-center text-muted-foreground font-medium">© 2024 EbookSamnorng</p>
+          <p className="text-xs text-center text-muted-foreground font-medium">© 2024 EbookSomnorng</p>
         </div>
       </div>
     </>

@@ -18,7 +18,7 @@ const kantumruyPro = Kantumruy_Pro({
 });
 
 export const metadata: Metadata = {
-  title: 'EbookSamnorng - Civil Engineering E-book Store',
+  title: 'EbookSomnorng - Civil Engineering E-book Store',
   description: 'Premium e-books for civil engineers and construction professionals',
   generator: 'v0.app',
   icons: {

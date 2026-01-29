@@ -324,7 +324,7 @@ export default function EditBookPage({ params }: PageProps) {
             </main>
 
             <footer className="py-6 px-8 text-center">
-                <p className="text-xs text-gray-400">&copy; {new Date().getFullYear()} EbookSamnorng Administration Panel.</p>
+                <p className="text-xs text-gray-400">&copy; {new Date().getFullYear()} EbookSomnorng Administration Panel.</p>
             </footer>
         </div>
     );
