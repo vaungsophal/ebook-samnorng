@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { categoryStructure } from '@/lib/products';
 import Link from 'next/link';
 import { ArrowLeft, Save, Pencil } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface PageProps {
     params: Promise<{
@@ -74,7 +75,7 @@ export default function EditBookPage({ params }: PageProps) {
             }
         } catch (error) {
             console.error('Error fetching book:', error);
-            alert('Error fetching book details');
+            toast.error('Error fetching book details');
         } finally {
             setLoading(false);
         }
@@ -104,11 +105,18 @@ export default function EditBookPage({ params }: PageProps) {
 
             if (updateError) throw updateError;
 
-            alert('Book updated successfully!');
-            router.push('/admin');
+            toast.success('Book updated successfully!', {
+                description: 'Changes have been saved successfully.',
+            });
+
+            setTimeout(() => {
+                router.push('/admin');
+            }, 2000);
         } catch (error: any) {
             console.error('Error updating book:', error);
-            alert('Error updating book: ' + error.message);
+            toast.error('Error updating book', {
+                description: error.message
+            });
         } finally {
             setSaving(false);
         }

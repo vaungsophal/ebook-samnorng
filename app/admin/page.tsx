@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Pencil, Trash2, Plus, LogOut, BookOpen, Layers, Search, ExternalLink, ChevronRight, Eye, EyeOff, Copy, Check, Filter } from 'lucide-react';
 import Image from 'next/image';
 import { categoryStructure } from '@/lib/products';
+import { toast } from 'sonner';
 
 export default function AdminDashboard() {
     const router = useRouter();
@@ -59,10 +60,12 @@ export default function AdminDashboard() {
             if (error) throw error;
 
             setBooks(books.filter(book => book.id !== id));
-            alert('Book deleted successfully');
+            toast.success('Book deleted successfully');
         } catch (error: any) {
             console.error('Error deleting book:', error);
-            alert('Error deleting book: ' + error.message);
+            toast.error('Error deleting book', {
+                description: error.message
+            });
         }
     };
 

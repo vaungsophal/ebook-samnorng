@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { categoryStructure } from '@/lib/products';
 import Link from 'next/link';
 import { ArrowLeft, Save, Plus } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function AddBookPage() {
     const router = useRouter();
@@ -66,11 +67,19 @@ export default function AddBookPage() {
 
             if (insertError) throw insertError;
 
-            alert('Book added successfully!');
-            router.push('/admin');
+            toast.success('Book added successfully!', {
+                description: 'The new entry has been saved to the database.',
+            });
+
+            // Small delay to let the toast be seen
+            setTimeout(() => {
+                router.push('/admin');
+            }, 2000);
         } catch (error: any) {
             console.error('Error adding book:', error);
-            alert('Error adding book: ' + error.message);
+            toast.error('Error adding book', {
+                description: error.message
+            });
         } finally {
             setLoading(false);
         }

@@ -65,6 +65,8 @@ export const metadata: Metadata = {
   },
 }
 
+import { Toaster } from 'sonner'
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -73,6 +75,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${lato.variable} ${kantumruyPro.variable}`}>
       <body className="antialiased font-sans">
+        <Toaster position="top-center" richColors />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
