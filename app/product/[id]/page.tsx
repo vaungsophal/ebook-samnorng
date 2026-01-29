@@ -3,18 +3,16 @@
 import { Header } from '@/components/header';
 import Footer from '@/components/footer';
 import { ProductCard } from '@/components/product-card';
-import { Star, ShoppingCart, ChevronLeft, X, Download as DownloadIcon, ShieldCheck } from 'lucide-react';
+import { Star, ShoppingCart, X, Download as DownloadIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
 import { supabase } from '@/utils/supabase/client';
-
-// ... (imports remain the same, ensure to keep others)
-// removing 'products' import from lib/products if not needed, or keep for type
 import { products as staticProducts } from '@/lib/products';
 import { useCart } from '@/context/cart-context';
 import { useLanguage } from '@/context/language-context';
-import { use, useState, useEffect } from 'react';
+import { use, useState, useEffect, useCallback } from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
 
 interface PageProps {
   params: Promise<{
@@ -32,6 +30,24 @@ export default function ProductDetailPage({ params }: PageProps) {
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
   const [showLightbox, setShowLightbox] = useState(false);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+
+  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setActiveImageIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi, setActiveImageIndex]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
+  }, [emblaApi, onSelect]);
 
   useEffect(() => {
     async function fetchData() {
@@ -53,17 +69,21 @@ export default function ProductDetailPage({ params }: PageProps) {
         // Fallback to static products if not found in DB (optional, for backward compatibility)
         if (!currentProduct) {
           currentProduct = staticProducts.find((p: any) => p.id === id);
-        } else {
-          // Map DB fields to app fields
-          currentProduct = {
-            ...currentProduct,
-            image: currentProduct.image_url || '/placeholder.svg'
-          };
         }
 
-        setProduct(currentProduct);
-
         if (currentProduct) {
+          const images = [
+            currentProduct.image_url,
+            currentProduct.image_url2,
+            currentProduct.image_url3
+          ].filter(Boolean);
+
+          setProduct({
+            ...currentProduct,
+            images: images.length > 0 ? images : ['/placeholder.svg'],
+            image: currentProduct.image_url || '/placeholder.svg'
+          });
+
           // Fetch related products (same category, exclude current)
           const { data: relatedData } = await supabase
             .from('books')
@@ -125,22 +145,71 @@ export default function ProductDetailPage({ params }: PageProps) {
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10 w-full font-sans">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
 
-          {/* Left Column: Product Image (5/12) */}
+          {/* Left Column: Product Image Slider (5/12) */}
           <div className="lg:col-span-6 xl:col-span-5">
-            <div className="border border-[#eee] relative bg-white shadow-sm rounded-sm overflow-hidden">
-              <div
-                className="w-full bg-white text-center flex items-center justify-center cursor-zoom-in"
-                onClick={() => setShowLightbox(true)}
-              >
-                <img
-                  src={product.image || "/placeholder.svg"}
-                  alt={product.title}
-                  className="w-full h-auto object-cover"
-                />
+            <div className="relative group">
+              <div className="border border-[#eee] bg-white shadow-sm rounded-sm overflow-hidden embla" ref={emblaRef}>
+                <div className="embla__container flex">
+                  {product.images.map((img: string, index: number) => (
+                    <div key={index} className="embla__slide flex-[0_0_100%] min-w-0">
+                      <div
+                        className="w-full bg-white text-center flex items-center justify-center cursor-zoom-in aspect-[3/4]"
+                        onClick={() => setShowLightbox(true)}
+                      >
+                        <img
+                          src={img}
+                          alt={`${product.title} - Image ${index + 1}`}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Slider Controls */}
+                {product.images.length > 1 && (
+                  <>
+                    <button
+                      onClick={scrollPrev}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white/80 border border-gray-100 rounded-full text-gray-800 hover:bg-white transition-all shadow-md z-10 opacity-0 group-hover:opacity-100"
+                    >
+                      <ChevronLeft className="w-6 h-6" />
+                    </button>
+                    <button
+                      onClick={scrollNext}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white/80 border border-gray-100 rounded-full text-gray-800 hover:bg-white transition-all shadow-md z-10 opacity-0 group-hover:opacity-100"
+                    >
+                      <ChevronRight className="w-6 h-6" />
+                    </button>
+                  </>
+                )}
               </div>
+
+              {/* Thumbnails / Indicators */}
+              {product.images.length > 1 && (
+                <div className="flex justify-start gap-4 mt-4 overflow-x-auto pb-2 scrollbar-hide">
+                  {product.images.map((img: string, index: number) => (
+                    <button
+                      key={index}
+                      onClick={() => emblaApi && emblaApi.scrollTo(index)}
+                      className={`relative w-20 aspect-[3/4] rounded border-2 transition-all flex-shrink-0 overflow-hidden ${activeImageIndex === index
+                        ? 'border-primary ring-2 ring-primary/20'
+                        : 'border-gray-200 hover:border-gray-400'
+                        }`}
+                    >
+                      <img
+                        src={img}
+                        alt={`Thumbnail ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+
               <button
                 onClick={() => setShowLightbox(true)}
-                className="absolute bottom-4 left-4 w-10 h-10 flex items-center justify-center bg-white border border-gray-100 rounded-full text-gray-400 hover:text-[#c0392b] transition-all hover:scale-110 shadow-sm"
+                className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center bg-white/80 backdrop-blur-sm border border-gray-100 rounded-full text-gray-500 hover:text-[#c0392b] transition-all hover:scale-110 shadow-sm z-10"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
@@ -181,7 +250,7 @@ export default function ProductDetailPage({ params }: PageProps) {
             {/* Price */}
             <div className="mb-8 sm:mb-10 flex items-baseline gap-1.5">
               <span className="text-4xl font-black text-[#111]">
-                ${product.price.toFixed(2)}
+                ${product.price ? product.price.toFixed(2) : '0.00'}
               </span>
             </div>
 
@@ -339,13 +408,28 @@ export default function ProductDetailPage({ params }: PageProps) {
             <X className="w-10 h-10" />
           </button>
 
-          <div className="max-w-full max-h-full relative flex items-center justify-center">
+          <div className="max-w-full max-h-full relative flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
             <img
-              src={product.image || "/placeholder.svg"}
+              src={product.images[activeImageIndex]}
               alt={product.title}
               className="max-w-full max-h-[90vh] object-contain shadow-2xl animate-in zoom-in-95 duration-300"
-              onClick={(e) => e.stopPropagation()}
             />
+            {product.images.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => { e.stopPropagation(); emblaApi?.scrollPrev(); }}
+                  className="absolute -left-16 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors hidden md:block"
+                >
+                  <ChevronLeft className="w-12 h-12" />
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); emblaApi?.scrollNext(); }}
+                  className="absolute -right-16 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors hidden md:block"
+                >
+                  <ChevronRight className="w-12 h-12" />
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}

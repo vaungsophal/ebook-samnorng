@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Pencil, Trash2, Plus, LogOut, BookOpen, Layers, Search, ExternalLink } from 'lucide-react';
+import { Pencil, Trash2, Plus, LogOut, BookOpen, Layers, Search, ExternalLink, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 
 export default function AdminDashboard() {
@@ -68,94 +68,111 @@ export default function AdminDashboard() {
     };
 
     const filteredBooks = books.filter(book => {
-        const matchesSearch = book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            book.category.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesSearch = (book.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            book.category?.toLowerCase().includes(searchQuery.toLowerCase()));
         const matchesCategory = filterCategory === 'All' || book.category === filterCategory;
         return matchesSearch && matchesCategory;
     });
 
-    const uniqueCategories = ['All', ...Array.from(new Set(books.map(b => b.category)))];
+    const uniqueCategories = ['All', ...Array.from(new Set(books.map(b => b.category).filter(Boolean)))];
 
     return (
-        <div className="min-h-screen bg-gray-50 font-sans">
-            {/* Simple Admin Header */}
-            <div className="bg-[#1a4d2e] w-full h-16 sm:h-20 flex items-center justify-between px-4 sm:px-8 shadow-md">
-                <Link href="/">
-                    <div className="bg-white p-2 rounded">
-                        <Image
-                            src="/logo.png"
-                            alt="EbookSamnorng Logo"
-                            width={150}
-                            height={40}
-                            className="h-8 w-auto object-contain"
-                            priority
-                        />
+        <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
+            {/* Professional Header */}
+            <header className="bg-[#1a4d2e] text-white shadow-sm h-16 flex items-center justify-between px-6 sticky top-0 z-50">
+                <div className="flex items-center gap-4">
+                    <Link href="/" className="flex items-center gap-2">
+                        <div className="bg-white p-1.5 rounded">
+                            <Image src="/logo.png" alt="Logo" width={100} height={28} className="h-6 w-auto object-contain" />
+                        </div>
+                        <span className="text-lg font-semibold tracking-tight hidden sm:inline-block ml-2 border-l border-white/20 pl-4">Admin Console</span>
+                    </Link>
+                </div>
+
+                <div className="flex items-center gap-4">
+                    <div className="text-xs text-white/60 hidden md:block">
+                        Signed in as <span className="text-white font-medium">Administrator</span>
                     </div>
-                </Link>
-                <div className="flex items-center gap-6">
-                    <span className="text-white/70 text-sm hidden sm:block">Admin Session</span>
                     <button
                         onClick={handleLogout}
-                        className="flex items-center gap-2 text-white hover:text-red-300 transition-colors font-bold text-sm bg-white/10 px-4 py-2 rounded-lg"
+                        className="flex items-center gap-2 px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 transition-colors text-sm font-medium"
                     >
                         <LogOut className="w-4 h-4" />
-                        Logout
+                        Sign Out
                     </button>
                 </div>
-            </div>
+            </header>
 
-            <div className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-                {/* Dashboard Stats */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-5">
-                        <div className="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center text-green-600">
-                            <BookOpen className="w-7 h-7" />
+            <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-8">
+                {/* Page Title & Add Button */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                    <div>
+                        <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
+                        <p className="text-sm text-gray-500">Manage your ebook collection and categories</p>
+                    </div>
+                    <Link
+                        href="/admin/add-book"
+                        className="inline-flex items-center justify-center gap-2 bg-[#1a4d2e] text-white px-4 py-2.5 rounded shadow-sm hover:bg-[#143d24] transition-colors font-semibold"
+                    >
+                        <Plus className="w-5 h-5" />
+                        Add New Book
+                    </Link>
+                </div>
+
+                {/* Statistics Simplified */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <div className="bg-white p-5 rounded border border-gray-200 shadow-sm flex items-center gap-4">
+                        <div className="w-12 h-12 bg-green-50 text-green-700 flex items-center justify-center rounded">
+                            <BookOpen className="w-6 h-6" />
                         </div>
                         <div>
-                            <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Total Books</p>
-                            <h3 className="text-3xl font-black text-gray-900">{books.length}</h3>
+                            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Total Books</span>
+                            <div className="text-3xl font-bold text-gray-900">{books.length}</div>
                         </div>
                     </div>
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-5">
-                        <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
-                            <Layers className="w-7 h-7" />
+                    <div className="bg-white p-5 rounded border border-gray-200 shadow-sm flex items-center gap-4">
+                        <div className="w-12 h-12 bg-blue-50 text-blue-700 flex items-center justify-center rounded">
+                            <Layers className="w-6 h-6" />
                         </div>
                         <div>
-                            <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Categories</p>
-                            <h3 className="text-3xl font-black text-gray-900">{uniqueCategories.length - 1}</h3>
+                            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Total Categories</span>
+                            <div className="text-3xl font-bold text-gray-900">{uniqueCategories.length - 1}</div>
                         </div>
                     </div>
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between col-span-1 sm:col-span-2 lg:col-span-1">
-                        <Link
-                            href="/admin/add-book"
-                            className="w-full flex items-center justify-center gap-2 bg-[#1a4d2e] text-white px-6 py-4 rounded-xl hover:bg-[#143d24] transition-all shadow-lg shadow-green-900/10 font-black text-lg"
-                        >
-                            <Plus className="w-6 h-6" />
-                            Add New Book
-                        </Link>
+                    <div className="bg-white p-5 rounded border border-gray-200 shadow-sm flex items-center gap-4">
+                        <div className="w-12 h-12 bg-amber-50 text-amber-700 flex items-center justify-center rounded">
+                            <ExternalLink className="w-6 h-6" />
+                        </div>
+                        <div>
+                            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Live Site</span>
+                            <Link href="/" target="_blank" className="text-sm font-semibold text-[#1a4d2e] flex items-center gap-1 hover:underline mt-1">
+                                View Storefront <ChevronRight className="w-3.5 h-3.5" />
+                            </Link>
+                        </div>
                     </div>
                 </div>
 
-                {/* Filters & Search */}
-                <div className="flex flex-col md:flex-row gap-4 mb-8 items-center justify-between">
-                    <div className="relative w-full md:w-96">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                {/* Filters Row */}
+                <div className="bg-white p-4 border border-gray-200 rounded shadow-sm mb-6 flex flex-col lg:flex-row gap-4">
+                    <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                         <input
                             type="text"
-                            placeholder="Search by title or category..."
+                            placeholder="Search by title..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500/20 bg-white shadow-sm font-medium"
+                            className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded text-sm focus:outline-none focus:ring-1 focus:ring-[#1a4d2e] transition-all"
                         />
                     </div>
-                    <div className="flex items-center gap-3 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 custom-scrollbar">
-                        {uniqueCategories.slice(0, 5).map(cat => (
+                    <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-xs font-semibold text-gray-400 uppercase mr-2">Filter by Category:</span>
+                        {uniqueCategories.map(cat => (
                             <button
                                 key={cat}
                                 onClick={() => setFilterCategory(cat)}
-                                className={`px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all ${filterCategory === cat
-                                    ? 'bg-[#1a4d2e] text-white shadow-md'
-                                    : 'bg-white text-gray-600 border border-gray-200 hover:border-green-500'
+                                className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${filterCategory === cat
+                                        ? 'bg-[#1a4d2e] text-white'
+                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                     }`}
                             >
                                 {cat}
@@ -164,92 +181,74 @@ export default function AdminDashboard() {
                     </div>
                 </div>
 
-                {/* Books Table */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                {/* Table Section */}
+                <div className="bg-white border border-gray-200 rounded shadow-sm overflow-hidden">
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
+                        <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="bg-gray-50/50">
-                                    <th className="px-6 py-4 text-left text-xs font-black text-gray-400 uppercase tracking-widest">Product Info</th>
-                                    <th className="px-6 py-4 text-left text-xs font-black text-gray-400 uppercase tracking-widest">Main Category</th>
-                                    <th className="px-6 py-4 text-left text-xs font-black text-gray-400 uppercase tracking-widest">Subcategory</th>
-                                    <th className="px-6 py-4 text-left text-xs font-black text-gray-400 uppercase tracking-widest">Price</th>
-                                    <th className="px-6 py-4 text-right text-xs font-black text-gray-400 uppercase tracking-widest">Actions</th>
+                                <tr className="bg-gray-50 border-b border-gray-200">
+                                    <th className="px-6 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider">Product</th>
+                                    <th className="px-6 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider">Category</th>
+                                    <th className="px-6 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider">Price</th>
+                                    <th className="px-6 py-3 text-right text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Actions</th>
                                 </tr>
                             </thead>
-
-                            <tbody className="divide-y divide-gray-100 bg-white">
+                            <tbody className="divide-y divide-gray-200">
                                 {loading ? (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-20 text-center">
-                                            <div className="flex flex-col items-center gap-3">
-                                                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-green-600"></div>
-                                                <p className="text-gray-400 font-bold">Loading your library...</p>
-                                            </div>
+                                        <td colSpan={4} className="px-6 py-12 text-center">
+                                            <div className="inline-block animate-spin rounded-full h-5 w-5 border-2 border-gray-300 border-t-[#1a4d2e]"></div>
+                                            <span className="ml-3 text-sm text-gray-500">Loading books...</span>
                                         </td>
                                     </tr>
                                 ) : filteredBooks.length === 0 ? (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-20 text-center text-gray-400 font-bold italic">
-                                            No books found matching your criteria.
+                                        <td colSpan={4} className="px-6 py-12 text-center text-sm text-gray-500">
+                                            No books found matching your current filters.
                                         </td>
                                     </tr>
                                 ) : (
                                     filteredBooks.map((book) => (
-                                        <tr key={book.id} className="hover:bg-gray-50/50 transition-colors group">
+                                        <tr key={book.id} className="hover:bg-gray-50 transition-colors">
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center gap-4">
-                                                    <div className="h-16 w-12 flex-shrink-0 relative rounded-lg overflow-hidden bg-gray-100 shadow-sm border border-gray-100">
+                                                    <div className="h-12 w-10 flex-shrink-0 bg-gray-100 border border-gray-200 rounded overflow-hidden">
                                                         {book.image_url ? (
-                                                            <img className="h-full w-full object-cover" src={book.image_url} alt="" />
+                                                            <img src={book.image_url} alt="" className="h-full w-full object-cover" />
                                                         ) : (
-                                                            <div className="h-full w-full flex items-center justify-center text-[10px] text-gray-400 font-black">NO IMAGE</div>
+                                                            <div className="h-full w-full flex items-center justify-center text-[8px] text-gray-400 font-bold uppercase">No Image</div>
                                                         )}
                                                     </div>
-                                                    <div className="max-w-xs sm:max-w-md">
-                                                        <div className="text-sm font-black text-gray-900 truncate">{book.title}</div>
-                                                        <div className="text-[11px] text-gray-400 truncate mt-1 flex items-center gap-2">
-                                                            ID: {book.id.substring(0, 8)}...
-                                                            {book.file_url && <span className="bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded text-[9px] font-black uppercase">Has Link</span>}
+                                                    <div className="min-w-0">
+                                                        <div className="text-sm font-semibold text-gray-900 truncate max-w-[200px] sm:max-w-xs">{book.title}</div>
+                                                        <div className="text-xs text-gray-500 flex items-center gap-2 mt-0.5">
+                                                            ID: {book.id.substring(0, 8)}
+                                                            {book.file_url && <span className="bg-blue-100 text-blue-700 px-1 py-0.5 rounded-[2px] text-[9px] font-bold uppercase tracking-tight">Digital Link</span>}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="px-6 py-4">
-                                                <span className="px-3 py-1 text-[11px] font-black rounded-full bg-purple-50 text-purple-700 uppercase tracking-wider">
-                                                    {book.main_category || 'N/A'}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <span className="px-3 py-1 text-[11px] font-black rounded-full bg-green-50 text-green-700 uppercase tracking-wider">
-                                                    {book.category}
-                                                </span>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="flex flex-col">
+                                                    <span className="text-xs font-semibold text-gray-700 uppercase tracking-tight">{book.main_category || 'N/A'}</span>
+                                                    <span className="text-[10px] text-gray-500 uppercase">{book.category}</span>
+                                                </div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm font-black text-gray-900">${book.price}</div>
+                                                <span className="text-sm font-bold text-gray-900">${book.price}</span>
                                             </td>
-
-                                            <td className="px-6 py-4 text-right">
-                                                <div className="flex items-center justify-end gap-1">
-                                                    <Link
-                                                        href={`/product/${book.id}`}
-                                                        target="_blank"
-                                                        className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-all"
-                                                        title="View Live"
-                                                    >
-                                                        <ExternalLink className="w-4 h-4" />
-                                                    </Link>
+                                            <td className="px-6 py-4 text-right whitespace-nowrap">
+                                                <div className="flex items-center justify-end gap-2">
                                                     <Link
                                                         href={`/admin/edit/${book.id}`}
-                                                        className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 text-gray-600 hover:bg-[#1a4d2e] hover:text-white rounded-lg transition-all font-black text-[11px] uppercase tracking-wider"
-                                                        title="Edit Details"
+                                                        className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded border border-transparent hover:border-blue-100 transition-all"
+                                                        title="Edit"
                                                     >
-                                                        <Pencil className="w-3.5 h-3.5" />
-                                                        Edit
+                                                        <Pencil className="w-4 h-4" />
                                                     </Link>
                                                     <button
                                                         onClick={() => handleDelete(book.id)}
-                                                        className="p-2 text-gray-300 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all ml-1"
+                                                        className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded border border-transparent hover:border-red-100 transition-all"
                                                         title="Delete"
                                                     >
                                                         <Trash2 className="w-4 h-4" />
@@ -263,7 +262,11 @@ export default function AdminDashboard() {
                         </table>
                     </div>
                 </div>
-            </div>
+            </main>
+
+            <footer className="py-6 px-8 border-t border-gray-200 bg-white text-center">
+                <p className="text-xs text-gray-400">&copy; {new Date().getFullYear()} EbookSamnorng Administration Panel. All rights reserved.</p>
+            </footer>
         </div>
     );
 }

@@ -10,6 +10,8 @@ create table public.books (
   price numeric default 0,
   details text,
   image_url text, -- Stores the link to the cover image
+  image_url2 text, -- Stores the link to the second image
+  image_url3 text, -- Stores the link to the third image
   file_url text,  -- Stores the link to the PDF/EPUB/ZIP file
   rating numeric default 5,
   reviews integer default 0
