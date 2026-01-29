@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Pencil, Trash2, Plus, LogOut, BookOpen, Layers, Search, ExternalLink, ChevronRight, Eye, EyeOff, Copy, Check } from 'lucide-react';
+import { Pencil, Trash2, Plus, LogOut, BookOpen, Layers, Search, ExternalLink, ChevronRight, Eye, EyeOff, Copy, Check, Filter } from 'lucide-react';
 import Image from 'next/image';
+import { categoryStructure } from '@/lib/products';
 
 export default function AdminDashboard() {
     const router = useRouter();
@@ -13,7 +14,8 @@ export default function AdminDashboard() {
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [searchType, setSearchType] = useState<'title' | 'id'>('title');
-    const [filterCategory, setFilterCategory] = useState('All');
+    const [filterMainCategory, setFilterMainCategory] = useState('All');
+    const [filterSubCategory, setFilterSubCategory] = useState('All');
     const [visiblePasswords, setVisiblePasswords] = useState<Record<string, boolean>>({});
     const [copiedId, setCopiedId] = useState<string | null>(null);
     const supabase = createClientComponentClient();
@@ -82,11 +84,16 @@ export default function AdminDashboard() {
             }
         }
 
-        const matchesCategory = filterCategory === 'All' || book.category === filterCategory;
-        return matchesSearch && matchesCategory;
+        const matchesMain = filterMainCategory === 'All' || book.main_category === filterMainCategory;
+        const matchesSub = filterSubCategory === 'All' || book.category === filterSubCategory;
+
+        return matchesSearch && matchesMain && matchesSub;
     });
 
-    const uniqueCategories = ['All', ...Array.from(new Set(books.map(b => b.category).filter(Boolean)))];
+    const relevantSubCategories = filterMainCategory === 'All'
+        ? Array.from(new Set(categoryStructure.flatMap(c => c.subcategories)))
+        : categoryStructure.find(c => c.name === filterMainCategory)?.subcategories || [];
+
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
@@ -148,7 +155,7 @@ export default function AdminDashboard() {
                         </div>
                         <div>
                             <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Total Categories</span>
-                            <div className="text-3xl font-bold text-gray-900">{uniqueCategories.length - 1}</div>
+                            <div className="text-3xl font-bold text-gray-900">{categoryStructure.length}</div>
                         </div>
                     </div>
                     <div className="bg-white p-5 rounded border border-gray-200 shadow-sm flex items-center gap-4">
@@ -192,19 +199,38 @@ export default function AdminDashboard() {
                     </div>
 
                     {/* Filter Section */}
-                    <div className="flex items-center gap-3 border-t xl:border-t-0 xl:border-l border-gray-100 pt-5 xl:pt-0 xl:pl-5">
-                        <span className="text-xs font-semibold text-gray-400 uppercase whitespace-nowrap">Show Category:</span>
-                        <select
-                            value={filterCategory}
-                            onChange={(e) => setFilterCategory(e.target.value)}
-                            className="bg-gray-50 border border-gray-200 rounded px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#1a4d2e] min-w-[200px] font-medium"
-                        >
-                            {uniqueCategories.map(cat => (
-                                <option key={cat} value={cat}>
-                                    {cat === 'All' ? 'All Categories' : cat}
-                                </option>
-                            ))}
-                        </select>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 border-t xl:border-t-0 xl:border-l border-gray-100 pt-5 xl:pt-0 xl:pl-5">
+                        <div className="flex items-center gap-2">
+                            <Filter className="w-4 h-4 text-gray-400" />
+                            <span className="text-[10px] font-bold text-gray-400 uppercase whitespace-nowrap">Filter By:</span>
+                        </div>
+
+                        <div className="flex flex-col md:flex-row gap-3 w-full">
+                            <select
+                                value={filterMainCategory}
+                                onChange={(e) => {
+                                    setFilterMainCategory(e.target.value);
+                                    setFilterSubCategory('All');
+                                }}
+                                className="bg-gray-50 border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#1a4d2e] min-w-[180px] font-medium"
+                            >
+                                <option value="All">All Categories</option>
+                                {categoryStructure.map(cat => (
+                                    <option key={cat.name} value={cat.name}>{cat.name}</option>
+                                ))}
+                            </select>
+
+                            <select
+                                value={filterSubCategory}
+                                onChange={(e) => setFilterSubCategory(e.target.value)}
+                                className="bg-gray-50 border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#1a4d2e] min-w-[180px] font-medium"
+                            >
+                                <option value="All">All Subcategories</option>
+                                {relevantSubCategories.map(sub => (
+                                    <option key={sub} value={sub}>{sub}</option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
                 </div>
 
