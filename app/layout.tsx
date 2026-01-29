@@ -18,10 +18,47 @@ const kantumruyPro = Kantumruy_Pro({
 });
 
 export const metadata: Metadata = {
-  title: 'EbookSomnorng - Civil Engineering E-book Store',
-  description: 'EbookSomnorng (អេប៊ុកសំណង់) - The #1 premium e-book store for civil engineers and construction professionals. Discover somnorng ebook, architectural documents, and engineering resources.',
+  metadataBase: new URL('https://ebooksomnorng.com'),
+  title: {
+    default: 'EbookSomnorng - Civil Engineering E-book Store',
+    template: '%s | EbookSomnorng'
+  },
+  description: 'EbookSomnorng (អេប៊ុកសំណង់) - The #1 premium e-book store for civil engineers and construction professionals. Discover architecture drawings, structural documents, and engineering spreadsheets.',
   keywords: ['EbookSomnorng', 'Somnorng Ebook', 'Ebook Somnorng', 'ebook sormnorng', 'sormnorng ebook', 'Civil Engineering Ebooks', 'Construction Documents', 'អេប៊ុកសំណង់'],
   generator: 'PoDev',
+  authors: [{ name: 'EbookSomnorng Team' }],
+  creator: 'EbookSomnorng',
+  publisher: 'EbookSomnorng',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'EbookSomnorng - Civil Engineering E-book Store',
+    description: 'Premium e-books and professional documents for civil engineers and construction professionals.',
+    url: 'https://ebooksomnorng.com',
+    siteName: 'EbookSomnorng',
+    images: [
+      {
+        url: '/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'EbookSomnorng Logo',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'EbookSomnorng - Civil Engineering E-book Store',
+    description: 'Premium e-books and professional documents for civil engineers and construction professionals.',
+    images: ['/logo.png'],
+  },
   icons: {
     icon: '/favicon.png',
     apple: '/favicon.png',
@@ -36,6 +73,34 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${lato.variable} ${kantumruyPro.variable}`}>
       <body className="antialiased font-sans">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Store",
+              "name": "EbookSomnorng",
+              "url": "https://ebooksomnorng.com",
+              "logo": "https://ebooksomnorng.com/logo.png",
+              "description": "Premium e-book store for civil engineers and construction professionals in Cambodia.",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Toul Kork",
+                "addressLocality": "Phnom Penh",
+                "addressCountry": "KH"
+              },
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+855-87330027",
+                "contactType": "customer service"
+              },
+              "sameAs": [
+                "https://www.facebook.com/groups/1157562836264568/?ref=share&mibextid=NSMWBT",
+                "https://t.me/SORIYA_VAUNG"
+              ]
+            })
+          }}
+        />
         <LanguageProvider>
           <CartProvider>
             <div className="language-font-wrapper">
