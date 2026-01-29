@@ -1,7 +1,7 @@
 
 -- 1. Create the 'books' table
 create table public.books (
-  id uuid default gen_random_uuid() primary key,
+  id integer primary key default floor(random() * 90000 + 10000),
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
   title text not null,
   description text,

@@ -287,20 +287,32 @@ export default function CheckoutPage() {
                                 <Download className="w-4 h-4" />
                                 {t('checkout.access_library')}
                               </a>
-                              <a
-                                href={`https://t.me/SORIYA_VAUNG?text=Hello, I just purchased: ${item.title} (ID: ${item.id}). Here is my receipt. Please provide the unzip password.`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-full bg-[#0088cc] text-white py-3 rounded-md font-black text-sm flex items-center justify-center gap-2 hover:bg-[#0077b5] transition-all shadow-md active:scale-[0.98]"
-                              >
-                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.52-1.4.51-.46-.01-1.35-.26-2.01-.48-.81-.27-1.46-.42-1.4-.88.03-.24.37-.48 1.02-.73 3.98-1.73 6.64-2.88 7.99-3.45 3.8-1.59 4.59-1.86 5.1-.14z" />
-                                </svg>
-                                Request Unzip Pass
-                              </a>
                             </div>
                           </div>
                         ))}
+                      </div>
+
+                      {/* Combined Contact Button */}
+                      <div className="mt-10 pt-10 border-t border-gray-100">
+                        <a
+                          href={`https://t.me/SORIYA_VAUNG?text=${encodeURIComponent(`Hello bong, I have successfully paid for the following e-books:
+${cartSnapshot.map((item, i) => `${i + 1}. ${item.title} (ID: ${item.id})`).join('\n')}
+
+Please provide the unzip passwords.
+
+${formData.firstName} ${formData.lastName} | ${formData.phone}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full bg-[#0088cc] text-white py-4 rounded-xl font-black text-base flex flex-col items-center justify-center gap-1 hover:bg-[#0077b5] transition-all shadow-xl active:scale-[0.98] border-b-4 border-[#006699]"
+                        >
+                          <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.52-1.4.51-.46-.01-1.35-.26-2.01-.48-.81-.27-1.46-.42-1.4-.88.03-.24.37-.48 1.02-.73 3.98-1.73 6.64-2.88 7.99-3.45 3.8-1.59 4.59-1.86 5.1-.14z" />
+                            </svg>
+                            <span>GET ALL PASSWORDS VIA TELEGRAM</span>
+                          </div>
+                          <span className="text-[10px] opacity-80 font-medium tracking-wider">SECURE DIGITAL DELIVERY</span>
+                        </a>
                       </div>
                     </div>
                   </div>
