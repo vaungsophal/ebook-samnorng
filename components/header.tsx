@@ -14,7 +14,6 @@ export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { items, total } = useCart();
   const { t, language } = useLanguage();
@@ -33,7 +32,6 @@ export function Header() {
     e.preventDefault();
     if (searchQuery.trim()) {
       router.push(`/shop?q=${encodeURIComponent(searchQuery.trim())}`);
-      setMobileSearchOpen(false);
     }
   };
 
@@ -122,13 +120,6 @@ export function Header() {
 
           {/* Right: Mobile Info & Cart */}
           <div className="flex items-center gap-2">
-            {/* Mobile Search Toggle */}
-            <button
-              onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
-              className="lg:hidden w-10 h-10 flex items-center justify-center text-gray-700 bg-white/50 rounded-lg shadow-sm border border-black/5"
-            >
-              {mobileSearchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
-            </button>
 
             <Link href="/cart" className="flex items-center group">
               <div className="text-right hidden md:block mr-4">
@@ -146,21 +137,6 @@ export function Header() {
           </div>
         </div>
 
-        {/* Mobile Search Overlay - Sliding Down */}
-        <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white/80 backdrop-blur-md border-t border-black/5 ${mobileSearchOpen ? 'max-h-20 opacity-100 py-3 px-4' : 'max-h-0 opacity-0'}`}>
-          <form onSubmit={handleSearch} className="relative max-w-lg mx-auto">
-            <input
-              type="text"
-              placeholder={t('common.search')}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-5 pr-12 py-2 bg-white rounded-lg border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1a4d2e]/20 text-sm italic"
-            />
-            <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-[#1a4d2e]">
-              <Search className="w-5 h-5" />
-            </button>
-          </form>
-        </div>
       </div>
 
       {/* Navigation Bar (Green/Dark) - Always Visible on Mobile */}
