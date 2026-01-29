@@ -4,14 +4,17 @@ import { Header } from '@/components/header';
 import { ProductCard } from '@/components/product-card';
 import Footer from '@/components/footer';
 import Link from 'next/link';
-import { products, categories } from '@/lib/products';
-import { ArrowRight, BookOpen, Shield, Zap } from 'lucide-react';
+import { products, categories, categoryStructure } from '@/lib/products';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 import { BannerSlider } from '@/components/banner-slider';
 import { useLanguage } from '@/context/language-context';
+import { useState } from 'react';
 
 export default function HomePage() {
   const featuredProducts = products.slice(0, 8);
   const { t } = useLanguage();
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] flex flex-col">
@@ -21,24 +24,49 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
             {/* Left Sidebar: Product Categories - Always Visible on Home */}
-            <div className="hidden lg:block lg:col-span-3 h-full">
-              <div className="bg-white border border-gray-200 shadow-sm overflow-hidden h-full flex flex-col">
-                <div className="flex flex-col h-full">
-                  {categories.filter(c => c !== 'All Categories').map((name) => (
-                    <Link
-                      key={name}
-                      href={`/shop?category=${encodeURIComponent(name)}`}
-                      className="flex items-center justify-between px-6 flex-1 text-[15px] sm:text-[16px] text-[#4b5563] border-b border-gray-100 last:border-0 hover:bg-gray-50 hover:text-[#ff4d4d] group transition-colors"
-                    >
-                      <span className="font-bold">{name}</span>
-                      <svg className="w-3 h-3 text-gray-300 group-hover:text-[#ff4d4d] transition-colors" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </Link>
+            <div className="hidden lg:block lg:col-span-3">
+              <div className="bg-white border border-gray-200 shadow-sm overflow-hidden h-[300px] sm:h-[450px] lg:h-[536px] rounded flex flex-col">
+
+
+                <div className="flex flex-col overflow-y-auto h-full">
+
+                  {categoryStructure.map((category) => (
+                    <div key={category.name} className="border-b border-gray-100 last:border-0">
+                      {/* Main Category Header */}
+                      <button
+                        onClick={() => setExpandedCategory(expandedCategory === category.name ? null : category.name)}
+                        className="w-full flex items-center justify-between px-4 py-2.5 text-[14px] sm:text-[15px] text-[#4b5563] hover:bg-gray-50 transition-colors group"
+                      >
+                        <span className="font-bold text-left">{t(`categories.${category.name}`)}</span>
+                        <ChevronDown
+                          className={`w-3.5 h-3.5 text-gray-400 group-hover:text-[#ff4d4d] transition-all flex-shrink-0 ml-2 ${expandedCategory === category.name ? 'rotate-180' : ''
+                            }`}
+                        />
+                      </button>
+
+                      {/* Subcategories */}
+                      {expandedCategory === category.name && (
+                        <div className="bg-gray-50 border-t border-gray-100">
+                          {category.subcategories.map((sub) => (
+                            <Link
+                              key={sub}
+                              href={`/shop?category=${encodeURIComponent(sub)}`}
+                              className="flex items-center justify-between px-6 py-2 text-[13px] sm:text-[14px] text-[#6b7280] hover:bg-white hover:text-[#ff4d4d] transition-colors border-b border-gray-100 last:border-0 group"
+                            >
+                              <span className="font-medium">{t(`categories.${sub}`)}</span>
+                              <svg className="w-2.5 h-2.5 text-gray-300 group-hover:text-[#ff4d4d] transition-colors flex-shrink-0 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                              </svg>
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
             </div>
+
 
             {/* Right Content: Banner Slider */}
             <div className="lg:col-span-9 overflow-hidden">

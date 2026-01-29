@@ -8,81 +8,40 @@ interface Category {
   subcategories?: string[];
 }
 
-const categories: Category[] = [
-  {
-    name: 'Structural Analysis',
-    subcategories: [
-      'Steel Structures',
-      'Concrete Design',
-      'Foundation Design',
-      'Seismic Design'
-    ]
-  },
-  {
-    name: 'Construction Management',
-    subcategories: [
-      'Project Management',
-      'Cost Estimation',
-      'Scheduling',
-      'Safety Management'
-    ]
-  },
-  {
-    name: 'Building Materials',
-    subcategories: [
-      'Concrete Technology',
-      'Steel Materials',
-      'Building Stones',
-      'Timber'
-    ]
-  },
-  {
-    name: 'Geotechnical Engineering',
-    subcategories: [
-      'Soil Mechanics',
-      'Foundation Analysis',
-      'Earth Dams',
-      'Slope Stability'
-    ]
-  },
-  {
-    name: 'Transportation',
-    subcategories: [
-      'Highway Design',
-      'Bridge Engineering',
-      'Railway Engineering',
-      'Airport Design'
-    ]
-  },
-  {
-    name: 'Water Resources',
-    subcategories: [
-      'Hydraulics',
-      'Water Supply',
-      'Irrigation Systems',
-      'Drainage'
-    ]
-  },
-  {
-    name: 'Standards & Codes',
-    subcategories: [
-      'Building Codes',
-      'Design Standards',
-      'Safety Regulations',
-      'Environmental Guidelines'
-    ]
-  }
-];
+import { categoryStructure } from '@/lib/products';
+import { useLanguage } from '@/context/language-context';
+import Link from 'next/link';
 
-export function Sidebar() {
-  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+export function Sidebar({ selectedCategory }: { selectedCategory?: string }) {
+  const { t, language } = useLanguage();
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(() => {
+    // Auto-expand if a subcategory within this category is selected
+    if (selectedCategory) {
+      const parent = categoryStructure.find(cat => cat.subcategories.includes(selectedCategory));
+      return parent ? parent.name : null;
+    }
+    return null;
+  });
 
   return (
     <aside className="w-full lg:w-64 bg-card border border-border lg:border-r rounded-lg lg:rounded-lg">
       <div className="p-3 sm:p-4">
-        <h2 className="font-bold text-base sm:text-lg mb-3 sm:mb-4 text-foreground uppercase tracking-wide">Categories</h2>
+        <h3 className="font-black text-sm sm:text-base mb-3 sm:mb-4 text-foreground uppercase tracking-widest border-b border-border pb-2">
+          {t('common.categories_title')}
+        </h3>
         <div className="space-y-1">
-          {categories.map((category) => (
+          {/* All Categories Link */}
+          <Link
+            href="/shop"
+            className={`w-full flex items-center px-3 py-2 rounded-lg hover:bg-secondary transition-colors font-bold uppercase tracking-wider mb-1 ${!selectedCategory || selectedCategory === 'All Categories'
+                ? 'bg-primary text-primary-foreground text-xs sm:text-sm'
+                : 'text-foreground text-xs sm:text-sm'
+              }`}
+          >
+            {t('common.all_categories')}
+          </Link>
+
+          {categoryStructure.map((category) => (
             <div key={category.name}>
               <button
                 onClick={() =>
@@ -90,33 +49,38 @@ export function Sidebar() {
                     expandedCategory === category.name ? null : category.name
                   )
                 }
-                className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-secondary text-foreground text-xs sm:text-sm transition-colors active:bg-primary/20"
+                className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-secondary text-foreground text-xs sm:text-sm transition-colors active:bg-primary/20 group"
               >
-                <span className="font-medium truncate">{category.name}</span>
+                <span className={`font-bold truncate text-left ${expandedCategory === category.name ? 'text-primary' : ''}`}>
+                  {t(`categories.${category.name}`)}
+                </span>
                 {category.subcategories && (
                   <ChevronDown
-                    className={`w-4 h-4 flex-shrink-0 ml-2 transition-transform ${
-                      expandedCategory === category.name ? 'rotate-180' : ''
-                    }`}
+                    className={`w-4 h-4 flex-shrink-0 ml-2 transition-transform ${expandedCategory === category.name ? 'rotate-180 text-primary' : 'text-muted-foreground'
+                      }`}
                   />
                 )}
               </button>
 
               {expandedCategory === category.name && category.subcategories && (
-                <div className="ml-2 space-y-1 mt-1 pl-2 border-l-2 border-primary/30">
+                <div className="ml-3 space-y-1 mt-1 pl-3 border-l-2 border-primary/20">
                   {category.subcategories.map((sub) => (
-                    <a
+                    <Link
                       key={sub}
-                      href="#"
-                      className="block px-3 py-2 text-xs sm:text-sm text-primary hover:text-primary/80 hover:bg-secondary rounded transition-colors truncate"
+                      href={`/shop?category=${encodeURIComponent(sub)}`}
+                      className={`block px-3 py-2 text-[11px] sm:text-xs transition-colors truncate font-bold uppercase tracking-tight rounded ${selectedCategory === sub
+                          ? 'bg-primary/10 text-primary'
+                          : 'text-muted-foreground hover:text-primary hover:bg-secondary'
+                        }`}
                     >
-                      {sub}
-                    </a>
+                      {t(`categories.${sub}`)}
+                    </Link>
                   ))}
                 </div>
               )}
             </div>
           ))}
+
         </div>
       </div>
     </aside>

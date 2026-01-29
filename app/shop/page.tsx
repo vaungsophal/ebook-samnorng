@@ -6,14 +6,14 @@ import { Header } from '@/components/header';
 import { Sidebar } from '@/components/sidebar';
 import { ProductCard } from '@/components/product-card';
 import { ChevronDown, Search } from 'lucide-react';
-import { products, categories as allCategories } from '@/lib/products';
+import { products, categories as allCategories, categoryStructure } from '@/lib/products';
 import Footer from '@/components/footer';
 import Link from 'next/link';
 import { supabase } from '@/utils/supabase/client';
 import { useLanguage } from '@/context/language-context';
 
-
 function ShopContent() {
+
   const searchParams = useSearchParams();
   const router = useRouter();
   const categoryParam = searchParams.get('category');
@@ -25,6 +25,8 @@ function ShopContent() {
   const [sortBy, setSortBy] = useState('latest');
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+
 
   // Fetch products from Supabase
   useEffect(() => {
@@ -65,12 +67,15 @@ function ShopContent() {
   }, []);
 
   useEffect(() => {
-    if (categoryParam && allCategories.includes(categoryParam)) {
+    const isSub = allCategories.includes(categoryParam || '');
+    const isMain = categoryStructure.some(cat => cat.name === categoryParam);
+    if (categoryParam && (isSub || isMain)) {
       setSelectedCategory(categoryParam);
     } else {
       setSelectedCategory('All Categories');
     }
   }, [categoryParam]);
+
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
@@ -87,8 +92,16 @@ function ShopContent() {
 
     // Filter by category
     if (selectedCategory !== 'All Categories') {
-      filtered = filtered.filter(p => p.category === selectedCategory);
+      const mainCategory = categoryStructure.find(cat => cat.name === selectedCategory);
+      if (mainCategory) {
+        // Filter by any subcategory in this main category
+        filtered = filtered.filter(p => mainCategory.subcategories.includes(p.category));
+      } else {
+        // Filter by specific subcategory
+        filtered = filtered.filter(p => p.category === selectedCategory);
+      }
     }
+
 
     // Filter by search query
     if (searchQuery) {
@@ -149,23 +162,7 @@ function ShopContent() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6">
           {/* Sidebar - Hidden on mobile */}
           <div className="hidden lg:block lg:col-span-1">
-            <div className="bg-card border border-border rounded-lg p-3 sm:p-4">
-              <h2 className="font-bold text-base sm:text-lg mb-3 sm:mb-4 text-foreground uppercase tracking-wide">{t('common.categories_title')}</h2>
-              <div className="space-y-1">
-                {allCategories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => handleCategoryChange(category)}
-                    className={`w-full text-left px-4 py-3 rounded-lg transition-all ${selectedCategory === category
-                      ? 'bg-primary text-primary-foreground font-black shadow-md scale-[1.02]'
-                      : 'hover:bg-secondary text-foreground font-bold'
-                      } ${language === 'km' ? 'text-[16px]' : 'text-[15px]'}`}
-                  >
-                    {category === 'All Categories' ? t('common.all_categories') : t(`categories.${category}`)}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <Sidebar selectedCategory={selectedCategory} />
           </div>
 
           {/* Products Section */}
@@ -187,21 +184,54 @@ function ShopContent() {
                 <div className="mb-4 max-h-96 overflow-y-auto bg-card border border-border rounded-lg p-3">
                   <h2 className="font-bold text-sm mb-3 text-foreground uppercase tracking-wide">{t('common.categories_title')}</h2>
                   <div className="space-y-1">
-                    {allCategories.map((category) => (
-                      <button
-                        key={category}
-                        onClick={() => handleCategoryChange(category)}
-                        className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${selectedCategory === category
-                          ? 'bg-primary text-primary-foreground font-semibold'
-                          : 'hover:bg-secondary text-foreground'
-                          } ${language === 'km' ? 'text-[13px]' : 'text-xs'}`}
-                      >
-                        {category === 'All Categories' ? t('common.all_categories') : t(`categories.${category}`)}
-                      </button>
+                    {/* All Categories Link */}
+                    <button
+                      onClick={() => handleCategoryChange('All Categories')}
+                      className={`w-full text-left px-3 py-2 rounded-lg transition-colors font-bold uppercase tracking-wider mb-1 ${selectedCategory === 'All Categories'
+                        ? 'bg-primary text-primary-foreground text-xs'
+                        : 'hover:bg-secondary text-foreground text-xs'
+                        }`}
+                    >
+                      {t('common.all_categories')}
+                    </button>
+
+                    {categoryStructure.map((category) => (
+                      <div key={category.name} className="space-y-1">
+                        <button
+                          onClick={() => setExpandedCategory(expandedCategory === category.name ? null : category.name)}
+                          className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-secondary text-foreground text-xs transition-colors font-bold uppercase tracking-wide"
+                        >
+                          <span className={expandedCategory === category.name ? 'text-primary' : ''}>
+                            {t(`categories.${category.name}`)}
+                          </span>
+                          <ChevronDown
+                            className={`w-4 h-4 transition-transform ${expandedCategory === category.name ? 'rotate-180 text-primary' : ''
+                              }`}
+                          />
+                        </button>
+
+                        {expandedCategory === category.name && (
+                          <div className="ml-3 border-l-2 border-primary/20 pl-2 space-y-1">
+                            {category.subcategories.map((sub) => (
+                              <button
+                                key={sub}
+                                onClick={() => handleCategoryChange(sub)}
+                                className={`w-full text-left px-3 py-2 rounded-lg transition-colors font-bold uppercase tracking-tight text-[10px] ${selectedCategory === sub
+                                  ? 'bg-primary/10 text-primary'
+                                  : 'text-muted-foreground hover:bg-secondary hover:text-primary'
+                                  }`}
+                              >
+                                {t(`categories.${sub}`)}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     ))}
                   </div>
                 </div>
               )}
+
             </div>
 
             {/* Search Bar */}

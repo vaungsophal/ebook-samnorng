@@ -5,7 +5,8 @@ create table public.books (
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
   title text not null,
   description text,
-  category text,
+  main_category text, -- Main category (e.g., "Architectural Documents")
+  category text,       -- Subcategory (e.g., "Architectural Document", "Code Standard")
   price numeric default 0,
   details text,
   image_url text, -- Stores the link to the cover image
@@ -25,3 +26,14 @@ create policy "Public Read Access" on public.books
 -- WARNING: In a real production app with users, you'd restrict this to admins only.
 create policy "Public Insert Access" on public.books
   for insert with check (true);
+
+-- 5. Policy: Allow EVERYONE to UPDATE books (For your Admin Page)
+create policy "Public Update Access" on public.books
+  for update using (true);
+
+-- 6. Policy: Allow EVERYONE to DELETE books (For your Admin Page)
+create policy "Public Delete Access" on public.books
+  for delete using (true);
+
+-- 7. If you already have the books table, run this to add the main_category column:
+-- ALTER TABLE public.books ADD COLUMN IF NOT EXISTS main_category text;

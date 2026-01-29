@@ -146,19 +146,64 @@ export const products: Product[] = [
   },
 ];
 
+export interface Category {
+  name: string;
+  subcategories: string[];
+}
+
+export const categoryStructure: Category[] = [
+  {
+    name: 'Architectural Documents',
+    subcategories: ['Architectural Document', 'Code Standard']
+  },
+  {
+    name: 'BIM Documents',
+    subcategories: ['BIM document', 'Revit Family', 'Revit sample project']
+  },
+  {
+    name: 'Building Standard',
+    subcategories: ['BS code', 'Eurocode', 'Singapore Code', 'ACI code', 'ASTM code']
+  },
+  {
+    name: 'Construction Documents',
+    subcategories: ['Method Statement drawing', 'Method Statement theory']
+  },
+  {
+    name: 'Construction Law',
+    subcategories: ['Fidic Books', 'Khmer Law']
+  },
+  {
+    name: 'MEP Documents',
+    subcategories: ['Code Standard', 'Spreadsheet']
+  },
+  {
+    name: 'Project Management',
+    subcategories: ['PMBOK']
+  },
+  {
+    name: 'Project Reference',
+    subcategories: ['Residential Building', 'Tall Building']
+  },
+  {
+    name: 'Structural Documents',
+    subcategories: ['Glass design', 'Post tension', 'Reinforced concrete', 'Steel Structure', 'Structural Foundation']
+  },
+  {
+    name: 'Structural Spreadsheets',
+    subcategories: ['Glass', 'Post tension', 'Reinforced concrete', 'Steel Structure', 'Structural Foundation', 'Tall Building']
+  },
+  {
+    name: 'Motivation Book',
+    subcategories: ['Motivation Book']
+  },
+  {
+    name: 'Business Book',
+    subcategories: ['Business Book']
+  }
+];
+
 export const categories = [
   'All Categories',
-  'Architectural Documentation',
-  'Architecture English',
-  'Architecture Student Project',
-  'Vietnamese Texture Books',
-  'English Texture Books',
-  'M&E Documents',
-  'Construction Documents',
-  'Construction Economics Document',
-  'Construction Software',
-  'Construction spreadsheet',
-  'Building Standards',
-  'Building Materials',
-  'Traffic Works',
+  ...Array.from(new Set(categoryStructure.flatMap(cat => cat.subcategories)))
 ];
+

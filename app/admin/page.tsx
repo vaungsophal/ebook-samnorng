@@ -171,15 +171,17 @@ export default function AdminDashboard() {
                             <thead>
                                 <tr className="bg-gray-50/50">
                                     <th className="px-6 py-4 text-left text-xs font-black text-gray-400 uppercase tracking-widest">Product Info</th>
-                                    <th className="px-6 py-4 text-left text-xs font-black text-gray-400 uppercase tracking-widest">Category</th>
+                                    <th className="px-6 py-4 text-left text-xs font-black text-gray-400 uppercase tracking-widest">Main Category</th>
+                                    <th className="px-6 py-4 text-left text-xs font-black text-gray-400 uppercase tracking-widest">Subcategory</th>
                                     <th className="px-6 py-4 text-left text-xs font-black text-gray-400 uppercase tracking-widest">Price</th>
                                     <th className="px-6 py-4 text-right text-xs font-black text-gray-400 uppercase tracking-widest">Actions</th>
                                 </tr>
                             </thead>
+
                             <tbody className="divide-y divide-gray-100 bg-white">
                                 {loading ? (
                                     <tr>
-                                        <td colSpan={4} className="px-6 py-20 text-center">
+                                        <td colSpan={5} className="px-6 py-20 text-center">
                                             <div className="flex flex-col items-center gap-3">
                                                 <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-green-600"></div>
                                                 <p className="text-gray-400 font-bold">Loading your library...</p>
@@ -188,7 +190,7 @@ export default function AdminDashboard() {
                                     </tr>
                                 ) : filteredBooks.length === 0 ? (
                                     <tr>
-                                        <td colSpan={4} className="px-6 py-20 text-center text-gray-400 font-bold italic">
+                                        <td colSpan={5} className="px-6 py-20 text-center text-gray-400 font-bold italic">
                                             No books found matching your criteria.
                                         </td>
                                     </tr>
@@ -214,6 +216,11 @@ export default function AdminDashboard() {
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4">
+                                                <span className="px-3 py-1 text-[11px] font-black rounded-full bg-purple-50 text-purple-700 uppercase tracking-wider">
+                                                    {book.main_category || 'N/A'}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4">
                                                 <span className="px-3 py-1 text-[11px] font-black rounded-full bg-green-50 text-green-700 uppercase tracking-wider">
                                                     {book.category}
                                                 </span>
@@ -221,6 +228,7 @@ export default function AdminDashboard() {
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="text-sm font-black text-gray-900">${book.price}</div>
                                             </td>
+
                                             <td className="px-6 py-4 text-right">
                                                 <div className="flex items-center justify-end gap-1">
                                                     <Link

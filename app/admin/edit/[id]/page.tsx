@@ -3,7 +3,8 @@
 import { useState, useEffect, use } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
-import { categories } from '@/lib/products';
+import { categories, categoryStructure } from '@/lib/products';
+
 import Link from 'next/link';
 import { ArrowLeft, Save, X, Image as ImageIcon, Link as LinkIcon, DollarSign, Tag, FileText, Info, Eye } from 'lucide-react';
 
@@ -22,7 +23,8 @@ export default function EditBookPage({ params }: PageProps) {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        category: categories[1],
+        mainCategory: categoryStructure[0].name,
+        category: categoryStructure[0].subcategories[0],
         price: '',
         details: '',
         imageUrl: '',
@@ -57,7 +59,8 @@ export default function EditBookPage({ params }: PageProps) {
                 setFormData({
                     title: data.title || '',
                     description: data.description || '',
-                    category: data.category || categories[1],
+                    mainCategory: data.main_category || categoryStructure[0].name,
+                    category: data.category || categoryStructure[0].subcategories[0],
                     price: data.price ? data.price.toString() : '',
                     details: data.details || '',
                     imageUrl: data.image_url || '',
@@ -82,6 +85,7 @@ export default function EditBookPage({ params }: PageProps) {
                 .update({
                     title: formData.title,
                     description: formData.description,
+                    main_category: formData.mainCategory,
                     category: formData.category,
                     price: parseFloat(formData.price) || 0,
                     details: formData.details,
@@ -174,18 +178,45 @@ export default function EditBookPage({ params }: PageProps) {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-[11px] font-black text-gray-400 uppercase tracking-widest mb-2">Category</label>
+                                        <label className="block text-[11px] font-black text-gray-400 uppercase tracking-widest mb-2">Main Category</label>
                                         <div className="relative group">
-                                            <Tag className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 group-focus-within:text-green-600 transition-colors" />
+                                            <Tag className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 group-focus-within:text-green-600 transition-colors z-10" />
+                                            <select
+                                                className="w-full pl-12 pr-10 py-3.5 bg-white border border-gray-200 rounded-xl focus:ring-4 focus:ring-green-500/5 focus:border-green-600 outline-none transition-all font-black text-[13px] text-gray-800 appearance-none shadow-sm uppercase tracking-wide"
+                                                value={formData.mainCategory}
+                                                onChange={(e) => {
+                                                    const selectedMain = e.target.value;
+                                                    const selectedCategoryObj = categoryStructure.find(c => c.name === selectedMain);
+                                                    setFormData({
+                                                        ...formData,
+                                                        mainCategory: selectedMain,
+                                                        category: selectedCategoryObj?.subcategories[0] || ''
+                                                    });
+                                                }}
+                                            >
+                                                {categoryStructure.map((cat) => (
+                                                    <option key={cat.name} value={cat.name}>{cat.name}</option>
+                                                ))}
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-[11px] font-black text-gray-400 uppercase tracking-widest mb-2">Subcategory</label>
+                                        <div className="relative group">
+                                            <Tag className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 group-focus-within:text-green-600 transition-colors z-10" />
                                             <select
                                                 className="w-full pl-12 pr-10 py-3.5 bg-white border border-gray-200 rounded-xl focus:ring-4 focus:ring-green-500/5 focus:border-green-600 outline-none transition-all font-black text-[13px] text-gray-800 appearance-none shadow-sm uppercase tracking-wide"
                                                 value={formData.category}
                                                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                                             >
-                                                {categories.map((cat) => (
-                                                    <option key={cat} value={cat}>{cat}</option>
-                                                ))}
+                                                {categoryStructure
+                                                    .find(c => c.name === formData.mainCategory)
+                                                    ?.subcategories.map((sub) => (
+                                                        <option key={sub} value={sub}>{sub}</option>
+                                                    ))}
                                             </select>
+
                                         </div>
                                     </div>
                                     <div>
