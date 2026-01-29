@@ -279,16 +279,24 @@ export function Header() {
 
               {categoryStructure.map((category) => (
                 <div key={category.name} className="flex flex-col border-b border-border/10 last:border-0">
-                  <div
-                    className="flex items-center justify-between py-3 cursor-pointer group"
-                    onClick={() => toggleCategory(category.name)}
-                  >
-                    <span className="text-base font-bold text-foreground group-hover:text-primary transition-colors flex-1">
+                  <div className="flex items-center justify-between py-2 group">
+                    <Link
+                      href={`/shop?category=${encodeURIComponent(category.name)}`}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="text-base font-bold text-foreground hover:text-primary transition-colors flex-1 py-1"
+                    >
                       {t(`categories.${category.name}`)}
-                    </span>
-                    <div className="p-1 hover:bg-muted rounded-md transition-colors">
+                    </Link>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        toggleCategory(category.name);
+                      }}
+                      className="p-2 hover:bg-muted rounded-md transition-colors"
+                    >
                       <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${expandedCategory === category.name ? 'rotate-180' : ''}`} />
-                    </div>
+                    </button>
                   </div>
 
                   {/* Subcategories */}
@@ -297,16 +305,6 @@ export function Header() {
                       }`}
                   >
                     <div className="flex flex-col pl-4 border-l-2 border-primary/20 space-y-2">
-                      {/* View All for this category */}
-                      <Link
-                        href={`/shop?category=${encodeURIComponent(category.name)}`}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="text-sm font-bold text-primary hover:underline transition-colors py-1 flex items-center gap-2"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                        {t('common.view_all_products')}
-                      </Link>
-
                       {category.subcategories.map((sub) => (
                         <Link
                           key={sub}
