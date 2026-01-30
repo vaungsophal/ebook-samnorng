@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: '%s | EbookSomnorng'
   },
   description: 'EbookSomnorng (អេប៊ុកសំណង់) - The #1 premium e-book store for civil engineers and construction professionals. Discover architecture drawings, structural documents, and engineering spreadsheets.',
-  keywords: ['EbookSomnorng', 'Somnorng Ebook', 'Ebook Somnorng', 'ebook sormnorng', 'sormnorng ebook', 'Civil Engineering Ebooks', 'Construction Documents', 'អេប៊ុកសំណង់'],
+  keywords: ['EbookSomnorng', 'Somnorng Ebook', 'Ebook Somnorng', 'somnorng', 'somnang ebook', 'somnong ebook', 'somnoang book', 'somnong', 'samnang', 'samnorng', 'samnorng ebook', 'somnorng book', 'ebook samnorng', 'ebook somnong', 'ebook samnang', 'ebook somnang', 'ebook sormnorng', 'sormnorng ebook', 'Civil Engineering Ebooks', 'Construction Documents', 'អេប៊ុកសំណង់', 'សៀវភៅសំណង់'],
   generator: 'PoDev',
   authors: [{ name: 'EbookSomnorng Team' }],
   creator: 'EbookSomnorng',
@@ -90,9 +90,10 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Store",
               "name": "EbookSomnorng",
+              "alternateName": ["Somnorng Ebook", "Somnorng", "Somnong", "Samnang", "Samnorng", "Somnang"],
               "url": "https://www.ebooksomnorng.com",
               "logo": "https://www.ebooksomnorng.com/logo.png",
-              "description": "Premium e-book store for civil engineers and construction professionals in Cambodia.",
+              "description": "Premium e-book store for civil engineers and construction professionals in Cambodia (អេប៊ុកសំណង់).",
               "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "Toul Kork",
@@ -118,6 +119,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Organization",
               "name": "EbookSomnorng",
+              "alternateName": ["Somnorng Ebook", "Somnorng", "Somnong", "Samnang", "Samnorng", "Somnang"],
               "url": "https://www.ebooksomnorng.com",
               "logo": "https://www.ebooksomnorng.com/logo.png",
               "sameAs": [
