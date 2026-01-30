@@ -1,0 +1,21 @@
+{
+    "name": "EbookSomnorng",
+    "short_name": "EbookSomnorng",
+    "description": "Premium e-book store for civil engineers and construction professionals.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "icons": [
+        {
+            "src": "/favicon.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

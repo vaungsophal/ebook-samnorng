@@ -70,10 +70,12 @@ export const metadata: Metadata = {
     ],
     shortcut: '/favicon.png',
   },
+  manifest: '/manifest.json',
 }
 
 import { Toaster } from 'sonner'
 import { ScrollToTop } from '@/components/scroll-to-top'
+import { InstallPWA } from '@/components/install-pwa'
 
 export default function RootLayout({
   children,
@@ -132,6 +134,7 @@ export default function RootLayout({
         />
         <LanguageProvider>
           <CartProvider>
+            <InstallPWA />
             <div className="language-font-wrapper">
               {children}
             </div>
