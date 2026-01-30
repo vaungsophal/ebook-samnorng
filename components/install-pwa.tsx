@@ -52,6 +52,11 @@ export function InstallPWA() {
     }, []);
 
     const showInstallToast = (promptEvent: any) => {
+        // Only show on the homepage
+        if (window.location.pathname !== '/') {
+            return;
+        }
+
         toast.custom((id) => (
             <div className="bg-white border-2 border-[#064884]/10 shadow-2xl rounded-2xl p-4 flex items-center gap-4 max-w-sm w-full animate-in fade-in slide-in-from-top-4 duration-500">
                 <div className="flex-shrink-0 w-12 h-12 bg-[#064884]/5 rounded-xl flex items-center justify-center p-1 border border-[#064884]/10">
@@ -83,7 +88,9 @@ export function InstallPWA() {
                         {t('pwa.install_button')}
                     </button>
                     <button
-                        onClick={() => toast.dismiss(id)}
+                        onClick={() => {
+                            toast.dismiss(id);
+                        }}
                         className="text-[11px] text-gray-400 hover:text-gray-600 font-bold text-center underline decoration-dotted underline-offset-2"
                     >
                         Not now
