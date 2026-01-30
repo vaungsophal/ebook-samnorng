@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     siteName: 'EbookSomnorng',
     images: [
       {
-        url: 'https://www.ebooksomnorng.com/favicon.png',
+        url: '/logo.png',
         width: 1200,
         height: 630,
         alt: 'EbookSomnorng Logo',
@@ -57,11 +57,17 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'EbookSomnorng - Civil Engineering E-book Store',
     description: 'Premium e-books and professional documents for civil engineers and construction professionals.',
-    images: ['https://www.ebooksomnorng.com/favicon.png'],
+    images: ['/logo.png'],
   },
   icons: {
-    icon: '/favicon.png',
-    apple: '/favicon.png',
+    icon: [
+      { url: '/favicon.png' },
+      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+    apple: [
+      { url: '/favicon.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
 }
 
@@ -85,7 +91,7 @@ export default function RootLayout({
               "@type": "Store",
               "name": "EbookSomnorng",
               "url": "https://www.ebooksomnorng.com",
-              "logo": "https://www.ebooksomnorng.com/favicon.png",
+              "logo": "https://www.ebooksomnorng.com/logo.png",
               "description": "Premium e-book store for civil engineers and construction professionals in Cambodia.",
               "address": {
                 "@type": "PostalAddress",
@@ -113,7 +119,7 @@ export default function RootLayout({
               "@type": "Organization",
               "name": "EbookSomnorng",
               "url": "https://www.ebooksomnorng.com",
-              "logo": "https://www.ebooksomnorng.com/favicon.png",
+              "logo": "https://www.ebooksomnorng.com/logo.png",
               "sameAs": [
                 "https://www.facebook.com/groups/1157562836264568/",
                 "https://t.me/SORIYA_VAUNG"
