@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: '%s | EbookSomnorng'
   },
   description: 'EbookSomnorng (អេប៊ុកសំណង់) - The #1 premium e-book store for civil engineers and construction professionals. Discover architecture drawings, structural documents, and engineering spreadsheets.',
-  keywords: ['EbookSomnorng', 'Somnorng Ebook', 'Ebook Somnorng', 'somnorng', 'somnang ebook', 'somnong ebook', 'somnoang book', 'somnong', 'samnang', 'samnorng', 'samnorng ebook', 'somnorng book', 'ebook samnorng', 'ebook somnong', 'ebook samnang', 'ebook somnang', 'ebook sormnorng', 'sormnorng ebook', 'Civil Engineering Ebooks', 'Construction Documents', 'អេប៊ុកសំណង់', 'សៀវភៅសំណង់'],
+  keywords: ['EbookSomnorng', 'Somnorng Ebook', 'Ebook Somnorng', 'somnorng', 'somnang ebook', 'somnong ebook', 'somnorng book', 'somnong', 'samnang', 'samnorng', 'samnorng ebook', 'somnorng book', 'ebook samnorng', 'ebook somnong', 'ebook samnang', 'ebook somnang', 'ebook somnorng', 'sormnorng ebook', 'Civil Engineering Ebooks', 'Construction Documents', 'អេប៊ុកសំណង់', 'សៀវភៅសំណង់'],
   generator: 'PoDev',
   authors: [{ name: 'EbookSomnorng Team' }],
   creator: 'EbookSomnorng',
@@ -61,13 +61,14 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.png' },
+      { url: '/favicon.png', type: 'image/png' },
       { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
-      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.png', sizes: '16x16', type: 'image/png' },
     ],
     apple: [
       { url: '/favicon.png', sizes: '180x180', type: 'image/png' },
     ],
+    shortcut: '/favicon.png',
   },
 }
 
