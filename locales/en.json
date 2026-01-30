@@ -212,5 +212,10 @@
         "ready_title": "Ready to Explore?",
         "ready_subtitle": "Browse our collection of engineering e-books and start learning today",
         "browse_button": "Browse E-Books"
+    },
+    "pwa": {
+        "install_title": "Install EbookSomnorng App",
+        "install_description": "Install our app for a better experience and easy access.",
+        "install_button": "Install Now"
     }
 }

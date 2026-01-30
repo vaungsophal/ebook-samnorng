@@ -83,7 +83,7 @@ export function Header() {
 
       {/* Main Header Section - Redesigned Mobile Layout */}
       <div className="bg-[#e9e9cc] w-full border-b border-gray-200 relative">
-        <div className="max-w-7xl mx-auto px-4 h-12 sm:h-16 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 h-14 sm:h-16 flex items-center justify-between">
           {/* Left: Mobile Menu Trigger */}
           <button
             className="lg:hidden w-10 h-10 flex items-center justify-center text-gray-700 bg-white/50 rounded-lg shadow-sm border border-black/5"
@@ -91,7 +91,6 @@ export function Header() {
           >
             <Menu className="w-6 h-6" />
           </button>
-
           {/* Center: Logo (Adjusted responsive size) */}
           <Link href="/" className="flex items-center absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0">
             <Image
@@ -99,7 +98,7 @@ export function Header() {
               alt="EbookSomnorng Logo"
               width={400}
               height={100}
-              className="h-9 w-auto sm:h-13 object-contain"
+              className="h-11 w-auto sm:h-13 object-contain"
               priority
             />
           </Link>
